@@ -51,7 +51,7 @@ function Header() {
     <header className={`sticky top-0 z-50 ${bgC} border-b ${borderC}`}>
       <div className="max-w-4xl mx-auto px-5 flex items-center justify-between h-14 gap-4">
         <span className="font-bold text-lg tracking-tight shrink-0">
-          <span className="text-[#4f8ef7]">La</span>Cha
+          <span className="text-[#4f8ef7]">Lady</span>&Chart
         </span>
         <div className="flex-1 max-w-md">
           <SearchBar />
@@ -77,7 +77,7 @@ function Header() {
 }
 
 export default function App() {
-  const [dark, setDark] = useState(true)
+  const [dark, setDark] = useState(false)
   useEffect(() => {
     document.documentElement.classList.toggle('dark', dark)
   }, [dark])
