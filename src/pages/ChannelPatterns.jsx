@@ -41,8 +41,28 @@ function ChannelSVG({ name }) {
     '더블탑 / 더블바텀':  <><polyline points="8,50 18,20 28,50 38,20 48,50" fill="none" stroke={GRAY} strokeWidth="1.5"/><line x1="8" y1="20" x2="48" y2="20" stroke={RED} strokeWidth="1" strokeDasharray="3 2" opacity="0.6"/></>,
     '아담과 이브':        <><polyline points="8,20 14,54 20,20" fill="none" stroke={GREEN} strokeWidth="2"/><path d="M28 22 Q38 58 48 22" fill="none" stroke={GREEN} strokeWidth="2"/><line x1="8" y1="22" x2="48" y2="22" stroke={GREEN} strokeWidth="1" strokeDasharray="3 2" opacity="0.5"/></>,
     '컵앤핸들':           <><path d="M8 14 Q32 58 56 14" fill="none" stroke={GREEN} strokeWidth="1.5"/><polyline points="56,14 60,24 64,18" fill="none" stroke={GREEN} strokeWidth="1.5"/></>,
-    '불 플래그':          <><line x1="10" y1="58" x2="30" y2="14" stroke={GREEN} strokeWidth="2.5"/><line x1="30" y1="14" x2="56" y2="22" stroke={RED} strokeWidth="1.5" strokeDasharray="3 2"/><line x1="30" y1="28" x2="56" y2="36" stroke={RED} strokeWidth="1.5" strokeDasharray="3 2"/><polyline points="30,14 38,24 44,20 50,28 54,24" fill="none" stroke={RED} strokeWidth="1" opacity="0.7"/></>,
-    '베어 플래그':        <><line x1="10" y1="14" x2="30" y2="58" stroke={RED} strokeWidth="2.5"/><line x1="30" y1="36" x2="56" y2="28" stroke={GREEN} strokeWidth="1.5" strokeDasharray="3 2"/><line x1="30" y1="50" x2="56" y2="42" stroke={GREEN} strokeWidth="1.5" strokeDasharray="3 2"/><polyline points="30,50 38,42 44,46 50,38 54,42" fill="none" stroke={GREEN} strokeWidth="1" opacity="0.7"/></>,
+    '불 플래그':  <>
+      {/* 폴: 급등 */}
+      <line x1="8" y1="58" x2="28" y2="14" stroke={GREEN} strokeWidth="2.5" strokeLinecap="round"/>
+      {/* 채널 상단/하단 */}
+      <line x1="28" y1="14" x2="56" y2="14" stroke="#f0a040" strokeWidth="1.2"/>
+      <line x1="28" y1="28" x2="56" y2="28" stroke="#f0a040" strokeWidth="1.2"/>
+      {/* 채널 내 지그재그 */}
+      <polyline points="28,14 36,27 44,14 52,27 56,18" fill="none" stroke="#4f8ef7" strokeWidth="1.2" strokeLinejoin="round"/>
+      {/* 돌파 화살표 */}
+      <line x1="56" y1="18" x2="62" y2="6" stroke={GREEN} strokeWidth="1.8" strokeLinecap="round"/>
+    </>,
+    '베어 플래그': <>
+      {/* 폴: 급락 */}
+      <line x1="8" y1="10" x2="28" y2="52" stroke={RED} strokeWidth="2.5" strokeLinecap="round"/>
+      {/* 채널 상단/하단 */}
+      <line x1="28" y1="38" x2="56" y2="38" stroke="#f0a040" strokeWidth="1.2"/>
+      <line x1="28" y1="52" x2="56" y2="52" stroke="#f0a040" strokeWidth="1.2"/>
+      {/* 채널 내 지그재그 */}
+      <polyline points="28,52 36,39 44,52 52,39 56,48" fill="none" stroke="#4f8ef7" strokeWidth="1.2" strokeLinejoin="round"/>
+      {/* 돌파 화살표 */}
+      <line x1="56" y1="48" x2="62" y2="62" stroke={RED} strokeWidth="1.8" strokeLinecap="round"/>
+    </>,
   }
   const w = ['컵앤핸들'].includes(name) ? 76 : 64
   return (
