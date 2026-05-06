@@ -30,7 +30,6 @@ const RED   = '#e05a6a'
 const GRAY  = '#888780'
 
 function CandleSVG({ name }) {
-  const w3 = 72
   const shapes = {
     '도지':       <><line x1="32" y1="8"  x2="32" y2="30" stroke={GRAY}  strokeWidth="1.5"/><rect x="20" y="30" width="24" height="3" fill={GRAY} rx="1"/><line x1="32" y1="33" x2="32" y2="56" stroke={GRAY} strokeWidth="1.5"/></>,
     '망치형':     <><line x1="32" y1="14" x2="32" y2="22" stroke={GREEN} strokeWidth="1.5"/><rect x="22" y="22" width="20" height="14" fill={GREEN} rx="1"/><line x1="32" y1="36" x2="32" y2="60" stroke={GREEN} strokeWidth="1.5"/></>,
@@ -44,47 +43,35 @@ function CandleSVG({ name }) {
     '백삼병':     <><rect x="4"  y="44" width="12" height="18" fill={GREEN} rx="1"/><line x1="10" y1="40" x2="10" y2="44" stroke={GREEN} strokeWidth="1.5"/><rect x="26" y="30" width="14" height="20" fill={GREEN} rx="1"/><line x1="33" y1="26" x2="33" y2="30" stroke={GREEN} strokeWidth="1.5"/><rect x="50" y="14" width="14" height="22" fill={GREEN} rx="1"/><line x1="57" y1="10" x2="57" y2="14" stroke={GREEN} strokeWidth="1.5"/></>,
     '흑삼병':     <><rect x="4"  y="10" width="12" height="18" fill={RED}   rx="1"/><line x1="10" y1="28" x2="10" y2="34" stroke={RED}   strokeWidth="1.5"/><rect x="26" y="22" width="14" height="22" fill={RED}   rx="1"/><line x1="33" y1="44" x2="33" y2="50" stroke={RED}   strokeWidth="1.5"/><rect x="50" y="36" width="14" height="22" fill={RED}   rx="1"/><line x1="57" y1="58" x2="57" y2="64" stroke={RED}   strokeWidth="1.5"/></>,
     '하락다람쥐': <>
-      {/* 장대양봉 */}
       <rect x="2"  y="8"  width="16" height="52" fill={GREEN} rx="1"/>
-      {/* 장대음봉 (양봉 감쌈) */}
       <rect x="22" y="4"  width="16" height="60" fill={RED}   rx="1"/>
-      {/* 도지 1 */}
       <rect x="44" y="44" width="8" height="4" fill={RED} rx="1"/>
       <line x1="48" y1="38" x2="48" y2="44" stroke={RED} strokeWidth="1.2"/>
       <line x1="48" y1="48" x2="48" y2="54" stroke={RED} strokeWidth="1.2"/>
-      {/* 도지 2 */}
       <rect x="56" y="48" width="8" height="4" fill={RED} rx="1"/>
       <line x1="60" y1="42" x2="60" y2="48" stroke={RED} strokeWidth="1.2"/>
       <line x1="60" y1="52" x2="60" y2="58" stroke={RED} strokeWidth="1.2"/>
     </>,
     '상승다람쥐': <>
-      {/* 장대음봉 */}
       <rect x="2"  y="8"  width="16" height="52" fill={RED}   rx="1"/>
-      {/* 장대양봉 (음봉 감쌈) */}
       <rect x="22" y="4"  width="16" height="58" fill={GREEN} rx="1"/>
-      {/* 도지 */}
       <rect x="44" y="26" width="8" height="4" fill={GRAY} rx="1"/>
       <line x1="48" y1="20" x2="48" y2="26" stroke={GRAY} strokeWidth="1.2"/>
       <line x1="48" y1="30" x2="48" y2="36" stroke={GRAY} strokeWidth="1.2"/>
-      {/* 작은 양봉 */}
       <rect x="56" y="18" width="8" height="16" fill={GREEN} rx="1"/>
       <line x1="60" y1="14" x2="60" y2="18" stroke={GREEN} strokeWidth="1.2"/>
       <line x1="60" y1="34" x2="60" y2="38" stroke={GREEN} strokeWidth="1.2"/>
     </>,
     '레일로드 트랙': <>
-      {/* 하락 캔들 1 */}
       <rect x="2"  y="10" width="10" height="20" fill={RED}   rx="1"/>
       <line x1="7"  y1="8"  x2="7"  y2="10" stroke={RED}   strokeWidth="1.2"/>
       <line x1="7"  y1="30" x2="7"  y2="36" stroke={RED}   strokeWidth="1.2"/>
-      {/* 하락 캔들 2 */}
       <rect x="16" y="16" width="10" height="22" fill={RED}   rx="1"/>
       <line x1="21" y1="14" x2="21" y2="16" stroke={RED}   strokeWidth="1.2"/>
       <line x1="21" y1="38" x2="21" y2="44" stroke={RED}   strokeWidth="1.2"/>
-      {/* 큰 장대양봉 (로드트랙 핵심) */}
       <rect x="32" y="6"  width="14" height="52" fill={GREEN} rx="1"/>
       <line x1="39" y1="4"  x2="39" y2="6"  stroke={GREEN} strokeWidth="1.5"/>
       <line x1="39" y1="58" x2="39" y2="62" stroke={GREEN} strokeWidth="1.5"/>
-      {/* 이후 하락 */}
       <rect x="52" y="20" width="10" height="30" fill={RED}   rx="1"/>
       <line x1="57" y1="16" x2="57" y2="20" stroke={RED}   strokeWidth="1.2"/>
       <line x1="57" y1="50" x2="57" y2="56" stroke={RED}   strokeWidth="1.2"/>
@@ -105,75 +92,100 @@ function SignalBadge({ signal }) {
   return <span className="text-xs px-2 py-0.5 rounded-full bg-white/5 text-[#7a7f94] border border-white/10">중립</span>
 }
 
+/* ── 이미지 확대 모달 ── */
+function ImageZoomModal({ src, onClose }) {
+  return (
+    <div
+      className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+      style={{ background: 'rgba(0,0,0,0.85)' }}
+      onClick={onClose}
+    >
+      <img src={src} alt="" className="max-w-full max-h-[90vh] rounded-xl object-contain" />
+    </div>
+  )
+}
+
 function Modal({ item, onClose }) {
   const { dark } = useTheme()
-  const [images, setImages] = useState([])
+  const [image, setImage] = useState(null)
+  const [zoomSrc, setZoomSrc] = useState(null)
   const inputRef = useRef()
   const bgC      = dark ? 'bg-[#13161e] border-white/15' : 'bg-white border-black/15'
   const muted    = dark ? 'text-[#7a7f94]' : 'text-gray-500'
   const rowBg    = dark ? 'bg-[#0d0f14]'   : 'bg-gray-50'
   const uploadBg = dark ? 'bg-[#1a1e2a] border-white/15' : 'bg-gray-50 border-black/15'
 
-  const handleFiles = (e) => {
-    Array.from(e.target.files).forEach(file => {
-      const reader = new FileReader()
-      reader.onload = ev => setImages(prev => [...prev, ev.target.result])
-      reader.readAsDataURL(file)
-    })
+  const handleFile = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = ev => setImage(ev.target.result)
+    reader.readAsDataURL(file)
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{background:'rgba(0,0,0,0.6)'}} onClick={onClose}>
-      <div className={`w-full max-w-lg rounded-2xl border p-6 ${bgC} max-h-[90vh] overflow-y-auto`} onClick={e => e.stopPropagation()}>
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <h2 className="text-lg font-semibold">{item.name}</h2>
-            <div className="flex items-center gap-2 mt-1">
-              <span className={`text-xs ${muted}`}>{item.cat}</span>
-              <SignalBadge signal={item.signal} />
+    <>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{background:'rgba(0,0,0,0.6)'}} onClick={onClose}>
+        <div className={`w-full max-w-lg rounded-2xl border p-6 ${bgC} max-h-[90vh] overflow-y-auto`} onClick={e => e.stopPropagation()}>
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <h2 className="text-lg font-semibold">{item.name}</h2>
+              <div className="flex items-center gap-2 mt-1">
+                <span className={`text-xs ${muted}`}>{item.cat}</span>
+                <SignalBadge signal={item.signal} />
+              </div>
+            </div>
+            <button onClick={onClose} className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm ${muted} ${dark ? 'border-white/10 hover:bg-white/5' : 'border-black/10 hover:bg-black/5'}`}>✕</button>
+          </div>
+
+          <div className={`flex gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
+            <div className="shrink-0 flex items-center"><CandleSVG name={item.name} /></div>
+            <div className="flex-1 space-y-2">
+              {[['설명', item.desc], ['구조', item.shape], ['신호', item.signalText], ['참고', item.note]].map(([label, val]) => (
+                <div key={label} className="flex gap-2 text-xs">
+                  <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
+                  <span className={label === '참고' ? muted : ''}>{val}</span>
+                </div>
+              ))}
             </div>
           </div>
-          <button onClick={onClose} className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm ${muted} ${dark ? 'border-white/10 hover:bg-white/5' : 'border-black/10 hover:bg-black/5'}`}>✕</button>
-        </div>
 
-        <div className={`flex gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
-          <div className="shrink-0 flex items-center"><CandleSVG name={item.name} /></div>
-          <div className="flex-1 space-y-2">
-            {[['설명', item.desc], ['구조', item.shape], ['신호', item.signalText], ['참고', item.note]].map(([label, val]) => (
-              <div key={label} className="flex gap-2 text-xs">
-                <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>{val}</span>
-              </div>
+          <div className="flex flex-wrap gap-1.5 mb-5">
+            {item.keywords.map(k => (
+              <span key={k} className={`text-xs px-2 py-0.5 rounded-full border ${dark ? 'bg-white/5 border-white/10 text-[#7a7f94]' : 'bg-black/5 border-black/10 text-gray-500'}`}>{k}</span>
             ))}
           </div>
-        </div>
 
-        <div className="flex flex-wrap gap-1.5 mb-5">
-          {item.keywords.map(k => (
-            <span key={k} className={`text-xs px-2 py-0.5 rounded-full border ${dark ? 'bg-white/5 border-white/10 text-[#7a7f94]' : 'bg-black/5 border-black/10 text-gray-500'}`}>{k}</span>
-          ))}
-        </div>
-
-        <p className="text-xs font-semibold mb-2">예시 차트 사진</p>
-        {images.length > 0 && (
-          <div className="grid grid-cols-3 gap-2 mb-3">
-            {images.map((src, i) => (
-              <div key={i} className="relative group">
-                <img src={src} alt="" className="w-full rounded-lg object-cover aspect-video border border-white/10" />
-                <button onClick={() => setImages(prev => prev.filter((_,j) => j !== i))}
-                  className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/60 text-white text-xs hidden group-hover:flex items-center justify-center">✕</button>
+          <p className="text-xs font-semibold mb-2">예시 차트 사진</p>
+          {image ? (
+            <div className="mb-3">
+              <div className="relative group">
+                <img
+                  src={image}
+                  alt=""
+                  className="w-full rounded-lg object-cover border border-white/10 cursor-zoom-in"
+                  onClick={() => setZoomSrc(image)}
+                />
+                <button
+                  onClick={() => setImage(null)}
+                  className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/60 text-white text-xs hidden group-hover:flex items-center justify-center"
+                >✕</button>
               </div>
-            ))}
-          </div>
-        )}
-        <div onClick={() => inputRef.current.click()}
-          className={`border border-dashed rounded-xl p-4 text-center cursor-pointer hover:opacity-70 transition-opacity ${uploadBg}`}>
-          <p className={`text-lg mb-0.5 ${muted}`}>+</p>
-          <p className={`text-xs ${muted}`}>클릭하여 차트 사진 업로드</p>
+            </div>
+          ) : (
+            <div
+              onClick={() => inputRef.current.click()}
+              className={`border border-dashed rounded-xl p-4 text-center cursor-pointer hover:opacity-70 transition-opacity ${uploadBg}`}
+            >
+              <p className={`text-lg mb-0.5 ${muted}`}>+</p>
+              <p className={`text-xs ${muted}`}>클릭하여 차트 사진 업로드</p>
+            </div>
+          )}
+          <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
         </div>
-        <input ref={inputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleFiles} />
       </div>
-    </div>
+      {zoomSrc && <ImageZoomModal src={zoomSrc} onClose={() => setZoomSrc(null)} />}
+    </>
   )
 }
 

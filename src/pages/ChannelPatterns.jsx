@@ -41,26 +41,18 @@ function ChannelSVG({ name }) {
     '더블탑 / 더블바텀':  <><polyline points="8,50 18,20 28,50 38,20 48,50" fill="none" stroke={GRAY} strokeWidth="1.5"/><line x1="8" y1="20" x2="48" y2="20" stroke={RED} strokeWidth="1" strokeDasharray="3 2" opacity="0.6"/></>,
     '아담과 이브':        <><polyline points="8,20 14,54 20,20" fill="none" stroke={GREEN} strokeWidth="2"/><path d="M28 22 Q38 58 48 22" fill="none" stroke={GREEN} strokeWidth="2"/><line x1="8" y1="22" x2="48" y2="22" stroke={GREEN} strokeWidth="1" strokeDasharray="3 2" opacity="0.5"/></>,
     '컵앤핸들':           <><path d="M8 14 Q32 58 56 14" fill="none" stroke={GREEN} strokeWidth="1.5"/><polyline points="56,14 60,24 64,18" fill="none" stroke={GREEN} strokeWidth="1.5"/></>,
-    '불 플래그':  <>
-      {/* 폴: 급등 */}
+    '불 플래그': <>
       <line x1="8" y1="58" x2="28" y2="14" stroke={GREEN} strokeWidth="2.5" strokeLinecap="round"/>
-      {/* 채널 상단/하단 */}
       <line x1="28" y1="14" x2="56" y2="14" stroke="#f0a040" strokeWidth="1.2"/>
       <line x1="28" y1="28" x2="56" y2="28" stroke="#f0a040" strokeWidth="1.2"/>
-      {/* 채널 내 지그재그 */}
       <polyline points="28,14 36,27 44,14 52,27 56,18" fill="none" stroke="#4f8ef7" strokeWidth="1.2" strokeLinejoin="round"/>
-      {/* 돌파 화살표 */}
       <line x1="56" y1="18" x2="62" y2="6" stroke={GREEN} strokeWidth="1.8" strokeLinecap="round"/>
     </>,
     '베어 플래그': <>
-      {/* 폴: 급락 */}
       <line x1="8" y1="10" x2="28" y2="52" stroke={RED} strokeWidth="2.5" strokeLinecap="round"/>
-      {/* 채널 상단/하단 */}
       <line x1="28" y1="38" x2="56" y2="38" stroke="#f0a040" strokeWidth="1.2"/>
       <line x1="28" y1="52" x2="56" y2="52" stroke="#f0a040" strokeWidth="1.2"/>
-      {/* 채널 내 지그재그 */}
       <polyline points="28,52 36,39 44,52 52,39 56,48" fill="none" stroke="#4f8ef7" strokeWidth="1.2" strokeLinejoin="round"/>
-      {/* 돌파 화살표 */}
       <line x1="56" y1="48" x2="62" y2="62" stroke={RED} strokeWidth="1.8" strokeLinecap="round"/>
     </>,
   }
@@ -78,75 +70,100 @@ function SignalBadge({ signal }) {
   return <span className="text-xs px-2 py-0.5 rounded-full bg-white/5 text-[#7a7f94] border border-white/10">중립</span>
 }
 
+/* ── 이미지 확대 모달 ── */
+function ImageZoomModal({ src, onClose }) {
+  return (
+    <div
+      className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+      style={{ background: 'rgba(0,0,0,0.85)' }}
+      onClick={onClose}
+    >
+      <img src={src} alt="" className="max-w-full max-h-[90vh] rounded-xl object-contain" />
+    </div>
+  )
+}
+
 function Modal({ item, onClose }) {
   const { dark } = useTheme()
-  const [images, setImages] = useState([])
+  const [image, setImage] = useState(null)
+  const [zoomSrc, setZoomSrc] = useState(null)
   const inputRef = useRef()
   const bgC      = dark ? 'bg-[#13161e] border-white/15' : 'bg-white border-black/15'
   const muted    = dark ? 'text-[#7a7f94]' : 'text-gray-500'
   const rowBg    = dark ? 'bg-[#0d0f14]'   : 'bg-gray-50'
   const uploadBg = dark ? 'bg-[#1a1e2a] border-white/15' : 'bg-gray-50 border-black/15'
 
-  const handleFiles = (e) => {
-    Array.from(e.target.files).forEach(file => {
-      const reader = new FileReader()
-      reader.onload = ev => setImages(prev => [...prev, ev.target.result])
-      reader.readAsDataURL(file)
-    })
+  const handleFile = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = ev => setImage(ev.target.result)
+    reader.readAsDataURL(file)
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{background:'rgba(0,0,0,0.6)'}} onClick={onClose}>
-      <div className={`w-full max-w-lg rounded-2xl border p-6 ${bgC} max-h-[90vh] overflow-y-auto`} onClick={e => e.stopPropagation()}>
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <h2 className="text-lg font-semibold">{item.name}</h2>
-            <div className="flex items-center gap-2 mt-1">
-              <span className={`text-xs ${muted}`}>{item.cat}</span>
-              <SignalBadge signal={item.signal} />
+    <>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{background:'rgba(0,0,0,0.6)'}} onClick={onClose}>
+        <div className={`w-full max-w-lg rounded-2xl border p-6 ${bgC} max-h-[90vh] overflow-y-auto`} onClick={e => e.stopPropagation()}>
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <h2 className="text-lg font-semibold">{item.name}</h2>
+              <div className="flex items-center gap-2 mt-1">
+                <span className={`text-xs ${muted}`}>{item.cat}</span>
+                <SignalBadge signal={item.signal} />
+              </div>
+            </div>
+            <button onClick={onClose} className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm ${muted} ${dark ? 'border-white/10 hover:bg-white/5' : 'border-black/10 hover:bg-black/5'}`}>✕</button>
+          </div>
+
+          <div className={`flex gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
+            <div className="shrink-0 flex items-center"><ChannelSVG name={item.name} /></div>
+            <div className="flex-1 space-y-2">
+              {[['설명', item.desc], ['구조', item.structure], ['신호', item.signalText], ['참고', item.note]].map(([label, val]) => (
+                <div key={label} className="flex gap-2 text-xs">
+                  <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
+                  <span className={label === '참고' ? muted : ''}>{val}</span>
+                </div>
+              ))}
             </div>
           </div>
-          <button onClick={onClose} className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm ${muted} ${dark ? 'border-white/10 hover:bg-white/5' : 'border-black/10 hover:bg-black/5'}`}>✕</button>
-        </div>
 
-        <div className={`flex gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
-          <div className="shrink-0 flex items-center"><ChannelSVG name={item.name} /></div>
-          <div className="flex-1 space-y-2">
-            {[['설명', item.desc], ['구조', item.structure], ['신호', item.signalText], ['참고', item.note]].map(([label, val]) => (
-              <div key={label} className="flex gap-2 text-xs">
-                <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>{val}</span>
-              </div>
+          <div className="flex flex-wrap gap-1.5 mb-5">
+            {item.keywords.map(k => (
+              <span key={k} className={`text-xs px-2 py-0.5 rounded-full border ${dark ? 'bg-white/5 border-white/10 text-[#7a7f94]' : 'bg-black/5 border-black/10 text-gray-500'}`}>{k}</span>
             ))}
           </div>
-        </div>
 
-        <div className="flex flex-wrap gap-1.5 mb-5">
-          {item.keywords.map(k => (
-            <span key={k} className={`text-xs px-2 py-0.5 rounded-full border ${dark ? 'bg-white/5 border-white/10 text-[#7a7f94]' : 'bg-black/5 border-black/10 text-gray-500'}`}>{k}</span>
-          ))}
-        </div>
-
-        <p className="text-xs font-semibold mb-2">예시 차트 사진</p>
-        {images.length > 0 && (
-          <div className="grid grid-cols-3 gap-2 mb-3">
-            {images.map((src, i) => (
-              <div key={i} className="relative group">
-                <img src={src} alt="" className="w-full rounded-lg object-cover aspect-video border border-white/10" />
-                <button onClick={() => setImages(prev => prev.filter((_,j) => j !== i))}
-                  className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/60 text-white text-xs hidden group-hover:flex items-center justify-center">✕</button>
+          <p className="text-xs font-semibold mb-2">예시 차트 사진</p>
+          {image ? (
+            <div className="mb-3">
+              <div className="relative group">
+                <img
+                  src={image}
+                  alt=""
+                  className="w-full rounded-lg object-cover border border-white/10 cursor-zoom-in"
+                  onClick={() => setZoomSrc(image)}
+                />
+                <button
+                  onClick={() => setImage(null)}
+                  className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/60 text-white text-xs hidden group-hover:flex items-center justify-center"
+                >✕</button>
               </div>
-            ))}
-          </div>
-        )}
-        <div onClick={() => inputRef.current.click()}
-          className={`border border-dashed rounded-xl p-4 text-center cursor-pointer hover:opacity-70 transition-opacity ${uploadBg}`}>
-          <p className={`text-lg mb-0.5 ${muted}`}>+</p>
-          <p className={`text-xs ${muted}`}>클릭하여 차트 사진 업로드</p>
+            </div>
+          ) : (
+            <div
+              onClick={() => inputRef.current.click()}
+              className={`border border-dashed rounded-xl p-4 text-center cursor-pointer hover:opacity-70 transition-opacity ${uploadBg}`}
+            >
+              <p className={`text-lg mb-0.5 ${muted}`}>+</p>
+              <p className={`text-xs ${muted}`}>클릭하여 차트 사진 업로드</p>
+            </div>
+          )}
+          <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
         </div>
-        <input ref={inputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleFiles} />
       </div>
-    </div>
+      {zoomSrc && <ImageZoomModal src={zoomSrc} onClose={() => setZoomSrc(null)} />}
+    </>
   )
 }
 

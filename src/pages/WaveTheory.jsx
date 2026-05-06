@@ -34,7 +34,7 @@ export default function WaveTheory() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-1">파동 이론</h1>
+        <h1 className="text-2xl font-bold mb-1">엘리어트 파동</h1>
         <p className={`text-sm ${muted}`}>엘리어트 파동 이론 — 충격파동 · 조정파동 · 마무리 패턴</p>
       </div>
 
@@ -83,10 +83,24 @@ export default function WaveTheory() {
   )
 }
 
-/* ── 예시 사진 업로드 ── */
+/* ── 이미지 확대 모달 ── */
+function ImageZoomModal({ src, onClose }) {
+  return (
+    <div
+      className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+      style={{ background: 'rgba(0,0,0,0.85)' }}
+      onClick={onClose}
+    >
+      <img src={src} alt="" className="max-w-full max-h-[90vh] rounded-xl object-contain" />
+    </div>
+  )
+}
+
+/* ── 예시 사진 업로드 (2열, 클릭 확대) ── */
 function ExampleImages({ label = '예시 차트 사진' }) {
   const { dark } = useTheme()
   const [images, setImages] = useState([])
+  const [zoomSrc, setZoomSrc] = useState(null)
   const inputRef = useRef()
   const borderC = dark ? 'border-white/15' : 'border-black/15'
   const bgC     = dark ? 'bg-[#1a1e2a]'   : 'bg-gray-50'
@@ -102,31 +116,40 @@ function ExampleImages({ label = '예시 차트 사진' }) {
   }
 
   return (
-    <div className="mt-4">
-      <p className="text-xs font-semibold mb-2">{label}</p>
-      {images.length > 0 && (
-        <div className="grid grid-cols-3 gap-2 mb-3">
-          {images.map((src, i) => (
-            <div key={i} className="relative group">
-              <img src={src} alt="" className="w-full rounded-lg object-cover aspect-video border border-white/10" />
-              <button
-                onClick={() => setImages(prev => prev.filter((_, j) => j !== i))}
-                className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/60 text-white text-xs hidden group-hover:flex items-center justify-center">
-                ✕
-              </button>
-            </div>
-          ))}
+    <>
+      <div className="mt-4">
+        <p className="text-xs font-semibold mb-2">{label}</p>
+        {images.length > 0 && (
+          <div className="grid grid-cols-2 gap-2 mb-3">
+            {images.map((src, i) => (
+              <div key={i} className="relative group">
+                <img
+                  src={src}
+                  alt=""
+                  className="w-full rounded-lg object-cover aspect-video border border-white/10 cursor-zoom-in"
+                  onClick={() => setZoomSrc(src)}
+                />
+                <button
+                  onClick={() => setImages(prev => prev.filter((_, j) => j !== i))}
+                  className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/60 text-white text-xs hidden group-hover:flex items-center justify-center">
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+        <div
+          onClick={() => inputRef.current.click()}
+          className={`border border-dashed ${borderC} ${bgC} rounded-lg p-4 text-center cursor-pointer hover:opacity-80 transition-opacity`}>
+          <p className="text-lg mb-1">+</p>
+          <p className={`text-xs ${muted}`}>클릭하여 차트 사진 업로드</p>
+          <p className={`text-xs ${muted} mt-0.5`}>PNG · JPG · WEBP</p>
         </div>
-      )}
-      <div
-        onClick={() => inputRef.current.click()}
-        className={`border border-dashed ${borderC} ${bgC} rounded-lg p-4 text-center cursor-pointer hover:opacity-80 transition-opacity`}>
-        <p className="text-lg mb-1">+</p>
-        <p className={`text-xs ${muted}`}>클릭하여 차트 사진 업로드</p>
-        <p className={`text-xs ${muted} mt-0.5`}>PNG · JPG · WEBP</p>
+        <input ref={inputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleFiles} />
       </div>
-      <input ref={inputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleFiles} />
-    </div>
+
+      {zoomSrc && <ImageZoomModal src={zoomSrc} onClose={() => setZoomSrc(null)} />}
+    </>
   )
 }
 

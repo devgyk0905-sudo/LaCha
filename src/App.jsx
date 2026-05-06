@@ -14,7 +14,7 @@ export const useTheme = () => useContext(ThemeContext)
 
 const NAV = [
   { path: '/',          label: '개념 · 용어' },
-  { path: '/wave',      label: '파동 이론' },
+  { path: '/wave',      label: '엘리어트 파동' },
   { path: '/candle',    label: '캔들 패턴' },
   { path: '/channel',   label: '채널 패턴' },
   { path: '/fibonacci', label: '피보나치 확장' },
