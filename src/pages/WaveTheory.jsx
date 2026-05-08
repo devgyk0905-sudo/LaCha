@@ -1,6 +1,7 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { useTheme } from '../App'
 import { Card, Badge, Alert, SectionTitle, Code, Table } from '../components/UI'
+import ChartNote from '../components/ChartNote'
 
 const TABS = [
   { id: 'step',    label: '판별 순서' },
@@ -25,10 +26,10 @@ export default function WaveTheory() {
   const [active, setActive] = useState('step')
   const [subImp, setSubImp] = useState('imp_basic')
   const [subCor, setSubCor] = useState('cor_wxy')
-  const muted      = dark ? 'text-[#7a7f94]' : 'text-gray-500'
-  const tabActive  = dark ? 'bg-[#1a1e2a] text-[#4f8ef7] border border-white/10' : 'bg-white text-[#185fa5] border border-black/10 shadow-sm'
+  const muted       = dark ? 'text-[#7a7f94]' : 'text-gray-500'
+  const tabActive   = dark ? 'bg-[#1a1e2a] text-[#4f8ef7] border border-white/10' : 'bg-white text-[#185fa5] border border-black/10 shadow-sm'
   const tabInactive = dark ? 'text-[#7a7f94] hover:text-[#e8eaf0]' : 'text-gray-500 hover:text-gray-800'
-  const subActive  = dark ? 'bg-[#4f8ef7]/15 text-[#4f8ef7]' : 'bg-[#185fa5]/10 text-[#185fa5]'
+  const subActive   = dark ? 'bg-[#4f8ef7]/15 text-[#4f8ef7]' : 'bg-[#185fa5]/10 text-[#185fa5]'
   const subInactive = dark ? 'text-[#7a7f94] hover:text-[#e8eaf0]' : 'text-gray-400 hover:text-gray-700'
 
   return (
@@ -38,7 +39,6 @@ export default function WaveTheory() {
         <p className={`text-sm ${muted}`}>엘리어트 파동 이론 — 충격파동 · 조정파동 · 마무리 패턴</p>
       </div>
 
-      {/* 메인 탭 */}
       <div className="flex gap-1.5 flex-wrap mb-5">
         {TABS.map(t => (
           <button key={t.id} onClick={() => setActive(t.id)}
@@ -48,7 +48,6 @@ export default function WaveTheory() {
         ))}
       </div>
 
-      {/* 서브 탭 */}
       {active === 'impulse' && (
         <div className="flex gap-1.5 mb-6">
           {SUB_IMPULSE.map(s => (
@@ -83,83 +82,11 @@ export default function WaveTheory() {
   )
 }
 
-/* ── 이미지 확대 모달 ── */
-function ImageZoomModal({ src, onClose }) {
-  return (
-    <div
-      className="fixed inset-0 z-[60] flex items-center justify-center p-4"
-      style={{ background: 'rgba(0,0,0,0.85)' }}
-      onClick={onClose}
-    >
-      <img src={src} alt="" className="max-w-full max-h-[90vh] rounded-xl object-contain" />
-    </div>
-  )
-}
-
-/* ── 예시 사진 업로드 (2열, 클릭 확대) ── */
-function ExampleImages({ label = '예시 차트 사진' }) {
-  const { dark } = useTheme()
-  const [images, setImages] = useState([])
-  const [zoomSrc, setZoomSrc] = useState(null)
-  const inputRef = useRef()
-  const borderC = dark ? 'border-white/15' : 'border-black/15'
-  const bgC     = dark ? 'bg-[#1a1e2a]'   : 'bg-gray-50'
-  const muted   = dark ? 'text-[#7a7f94]' : 'text-gray-400'
-
-  const handleFiles = (e) => {
-    const files = Array.from(e.target.files)
-    files.forEach(file => {
-      const reader = new FileReader()
-      reader.onload = ev => setImages(prev => [...prev, ev.target.result])
-      reader.readAsDataURL(file)
-    })
-  }
-
-  return (
-    <>
-      <div className="mt-4">
-        <p className="text-xs font-semibold mb-2">{label}</p>
-        {images.length > 0 && (
-          <div className="grid grid-cols-2 gap-2 mb-3">
-            {images.map((src, i) => (
-              <div key={i} className="relative group">
-                <img
-                  src={src}
-                  alt=""
-                  className="w-full rounded-lg object-cover aspect-video border border-white/10 cursor-zoom-in"
-                  onClick={() => setZoomSrc(src)}
-                />
-                <button
-                  onClick={() => setImages(prev => prev.filter((_, j) => j !== i))}
-                  className="absolute top-1 right-1 w-5 h-5 rounded-full bg-black/60 text-white text-xs hidden group-hover:flex items-center justify-center">
-                  ✕
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-        <div
-          onClick={() => inputRef.current.click()}
-          className={`border border-dashed ${borderC} ${bgC} rounded-lg p-4 text-center cursor-pointer hover:opacity-80 transition-opacity`}>
-          <p className="text-lg mb-1">+</p>
-          <p className={`text-xs ${muted}`}>클릭하여 차트 사진 업로드</p>
-          <p className={`text-xs ${muted} mt-0.5`}>PNG · JPG · WEBP</p>
-        </div>
-        <input ref={inputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleFiles} />
-      </div>
-
-      {zoomSrc && <ImageZoomModal src={zoomSrc} onClose={() => setZoomSrc(null)} />}
-    </>
-  )
-}
-
-/* ── STEP 판별순서 ── */
 function StepSection() {
   return (
     <div className="space-y-4">
       <SectionTitle color="blue">판별 순서</SectionTitle>
       <p className="text-sm text-[#7a7f94]">채널을 먼저 그린 뒤 단계별로 확인</p>
-
       <Card accent="blue">
         <p className="font-semibold text-sm mb-3">STEP 1 — 채널을 그린다</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -179,7 +106,6 @@ function StepSection() {
           </div>
         </div>
       </Card>
-
       <Card>
         <p className="font-semibold text-sm mb-3">STEP 2 — 채널 지킬 때: 피보나치 확장 수치</p>
         <Table
@@ -193,7 +119,6 @@ function StepSection() {
         />
         <Alert type="red"><strong>절대규칙</strong>: 하나의 파동만 확장 — Y 확장 시 Z는 <Code>0.618~1.0</Code> 이내</Alert>
       </Card>
-
       <Card>
         <p className="font-semibold text-sm mb-3">STEP 2-2 — 채널 안 지킬 때: 되돌림 수치</p>
         <Table
@@ -206,12 +131,11 @@ function StepSection() {
           ]}
         />
       </Card>
-      <ExampleImages label="판별 순서 예시 차트" />
+      <ChartNote page="wave" section="step" label="판별 순서 예시 차트" />
     </div>
   )
 }
 
-/* ── 충격파동: 임펄스 ── */
 function ImpulseBasic() {
   return (
     <div className="space-y-4">
@@ -242,12 +166,11 @@ function ImpulseBasic() {
           <Alert type="amber">하나라도 위반 시 → 12345 아님</Alert>
         </Card>
       </div>
-      <ExampleImages label="임펄스 예시 차트" />
+      <ChartNote page="wave" section="imp_basic" label="임펄스 예시 차트" />
     </div>
   )
 }
 
-/* ── 충격파동: 터미널 ── */
 function ImpulseTerminal() {
   return (
     <div className="space-y-4">
@@ -282,12 +205,11 @@ function ImpulseTerminal() {
           <Alert type="blue">점점 짧아지고 느려지며 쐐기 수렴 → 소진 후 강한 반전</Alert>
         </Card>
       </div>
-      <ExampleImages label="터미널 예시 차트" />
+      <ChartNote page="wave" section="imp_terminal" label="터미널 예시 차트" />
     </div>
   )
 }
 
-/* ── 충격파동: 확장 ── */
 function ImpulseExpand() {
   const { dark } = useTheme()
   const muted = dark ? 'text-[#7a7f94]' : 'text-gray-500'
@@ -313,16 +235,15 @@ function ImpulseExpand() {
         <p className="font-semibold text-sm mb-2">3파 확장이 가장 흔한 이유</p>
         <p className={`text-sm ${muted}`}>3파는 추세의 핵심 구간으로 거래량과 모멘텀이 집중됨. 시장 참여자들이 추세를 인식하고 집중 매수/매도하는 구간이기 때문.</p>
       </Card>
-      <ExampleImages label="확장 임펄스 예시 차트" />
+      <ChartNote page="wave" section="imp_expand" label="확장 임펄스 예시 차트" />
     </div>
   )
 }
 
-/* ── 조정파동: WXY / WXYXZ ── */
 function CorrectWXY() {
   const [sub, setSub] = useState('wxy')
   const { dark } = useTheme()
-  const subActive  = dark ? 'bg-[#9b7de8]/15 text-[#9b7de8]' : 'bg-[#534ab7]/10 text-[#534ab7]'
+  const subActive   = dark ? 'bg-[#9b7de8]/15 text-[#9b7de8]' : 'bg-[#534ab7]/10 text-[#534ab7]'
   const subInactive = dark ? 'text-[#7a7f94] hover:text-[#e8eaf0]' : 'text-gray-400 hover:text-gray-700'
 
   return (
@@ -336,7 +257,6 @@ function CorrectWXY() {
           </button>
         ))}
       </div>
-
       {sub === 'wxy' && (
         <div className="space-y-4">
           <p className="text-sm text-[#7a7f94]">채널을 기막히게 지킨다 — ABC보다 기간이 길다 (기간 조정)</p>
@@ -370,7 +290,6 @@ function CorrectWXY() {
           <Alert type="amber">실시간으로 맞추려 하지 말 것 — 조정 종료 신호 먼저 찾고, 사후에 레이블 붙이기</Alert>
         </div>
       )}
-
       {sub === 'wxyxz' && (
         <div className="space-y-4">
           <p className="text-sm text-[#7a7f94]">Y가 채널 중단이 아닌 최상단/최하단에서 끝났을 때 의심</p>
@@ -404,16 +323,15 @@ function CorrectWXY() {
           </Card>
         </div>
       )}
-      <ExampleImages label="WXY / WXYXZ 예시 차트" />
+      <ChartNote page="wave" section={`cor_wxy_${sub}`} label="WXY / WXYXZ 예시 차트" />
     </div>
   )
 }
 
-/* ── 조정파동: ABC / 플랫 ── */
 function CorrectABC() {
   const [sub, setSub] = useState('abc')
   const { dark } = useTheme()
-  const subActive  = dark ? 'bg-[#2abfb0]/15 text-[#2abfb0]' : 'bg-[#0f6e56]/10 text-[#0f6e56]'
+  const subActive   = dark ? 'bg-[#2abfb0]/15 text-[#2abfb0]' : 'bg-[#0f6e56]/10 text-[#0f6e56]'
   const subInactive = dark ? 'text-[#7a7f94] hover:text-[#e8eaf0]' : 'text-gray-400 hover:text-gray-700'
 
   return (
@@ -427,7 +345,6 @@ function CorrectABC() {
           </button>
         ))}
       </div>
-
       {sub === 'abc' && (
         <div className="space-y-4">
           <p className="text-sm text-[#7a7f94]">큰 추세의 반대 방향 조정 — 가격 조정의 기본</p>
@@ -444,7 +361,6 @@ function CorrectABC() {
           <Alert type="amber">C파 저점을 미리 잡으려 하면 안 됨 — C파 완성 확인 후 진입</Alert>
         </div>
       )}
-
       {sub === 'flat' && (
         <div className="space-y-4">
           <p className="text-sm text-[#7a7f94]">B파 위치와 C파 위치로 구분</p>
@@ -478,12 +394,11 @@ function CorrectABC() {
           </Card>
         </div>
       )}
-      <ExampleImages label="ABC / 플랫 예시 차트" />
+      <ChartNote page="wave" section={`cor_abc_${sub}`} label="ABC / 플랫 예시 차트" />
     </div>
   )
 }
 
-/* ── 마무리 패턴 ── */
 function EndingSection() {
   return (
     <div className="space-y-4">
@@ -520,7 +435,7 @@ function EndingSection() {
           </Card>
         ))}
       </div>
-      <ExampleImages label="마무리 패턴 예시 차트" />
+      <ChartNote page="wave" section="ending" label="마무리 패턴 예시 차트" />
     </div>
   )
 }

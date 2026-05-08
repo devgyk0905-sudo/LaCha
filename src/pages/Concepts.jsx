@@ -1,7 +1,8 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { useTheme } from '../App'
 import { Badge, PageSearch } from '../components/UI'
 import { usePageSearch } from '../hooks/usePageSearch'
+import ChartNote from '../components/ChartNote'
 
 const ICON = {
   '이동평균선': '📈',
@@ -25,6 +26,7 @@ const CONCEPTS = [
       '역배열: 단기 이평선이 아래, 장기 이평선이 위 → 하락 추세',
     ],
     color: 'blue',
+    id: 'ma_ema',
   },
   {
     category: '이동평균선',
@@ -37,6 +39,7 @@ const CONCEPTS = [
       '이평선 간격이 넓을수록 신호 강도 높음',
     ],
     color: 'blue',
+    id: 'golden_dead_cross',
   },
   {
     category: '보조지표',
@@ -50,6 +53,7 @@ const CONCEPTS = [
       '다이버전스: 가격과 RSI 방향이 반대로 움직임',
     ],
     color: 'teal',
+    id: 'rsi',
   },
   {
     category: '보조지표',
@@ -63,6 +67,7 @@ const CONCEPTS = [
       '중립 구간(50 근처)에서는 신호 강도 약함',
     ],
     color: 'teal',
+    id: 'divergence',
   },
   {
     category: '피보나치',
@@ -76,6 +81,7 @@ const CONCEPTS = [
       '0.618 황금비율 — 가장 많이 지지/저항으로 작동',
     ],
     color: 'amber',
+    id: 'fib_retracement',
   },
   {
     category: '피보나치',
@@ -89,6 +95,7 @@ const CONCEPTS = [
       'WXYXZ에서 Z파 목표: 0.618 ~ 1.0 (Y가 확장됐을 경우)',
     ],
     color: 'amber',
+    id: 'fib_extension',
   },
   {
     category: '채널/추세',
@@ -102,6 +109,7 @@ const CONCEPTS = [
       '과거에 많이 거래된 구간일수록 지지/저항 강도 높음',
     ],
     color: 'green',
+    id: 'support_resistance',
   },
   {
     category: '채널/추세',
@@ -115,6 +123,7 @@ const CONCEPTS = [
       '매물대 이탈 시 강한 하락 신호',
     ],
     color: 'green',
+    id: 'supply_zone',
   },
   {
     category: '거래량',
@@ -128,6 +137,7 @@ const CONCEPTS = [
       '백삼병 거래량 미회복 시 지속 상승 어려움',
     ],
     color: 'purple',
+    id: 'volume',
   },
   {
     category: '캔들',
@@ -140,148 +150,72 @@ const CONCEPTS = [
       '꼬리가 길수록 해당 방향 세력이 강했음을 의미',
     ],
     color: 'red',
+    id: 'candle_tail',
   },
 ]
 
-/* ── 이미지 확대 모달 ── */
-function ImageZoomModal({ src, onClose }) {
+function ConceptModal({ item, onClose }) {
+  const { dark } = useTheme()
+  const bgC     = dark ? 'bg-[#13161e] border-white/15' : 'bg-white border-black/15'
+  const muted   = dark ? 'text-[#7a7f94]' : 'text-gray-500'
+  const detailC = dark ? 'text-[#b0b4c4]' : 'text-gray-600'
+  const rowBg   = dark ? 'bg-[#0d0f14]'   : 'bg-gray-50'
+
+  const accentColorMap = {
+    blue:   dark ? '#4f8ef7' : '#185fa5',
+    teal:   dark ? '#2abfb0' : '#0f6e56',
+    amber:  dark ? '#f0a040' : '#854f0b',
+    red:    dark ? '#e05a6a' : '#a32d2d',
+    purple: dark ? '#9b7de8' : '#534ab7',
+    green:  dark ? '#3ec97e' : '#3b6d11',
+  }
+
   return (
-    <div
-      className="fixed inset-0 z-[60] flex items-center justify-center p-4"
-      style={{ background: 'rgba(0,0,0,0.85)' }}
-      onClick={onClose}
-    >
-      <img src={src} alt="" className="max-w-full max-h-[90vh] rounded-xl object-contain" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.6)' }} onClick={onClose}>
+      <div className={`w-full max-w-lg rounded-2xl border p-6 ${bgC} max-h-[90vh] overflow-y-auto`} onClick={e => e.stopPropagation()}>
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">{ICON[item.category] || '📌'}</span>
+            <div>
+              <h2 className="text-base font-semibold">{item.title}</h2>
+              <div className="flex items-center gap-2 mt-0.5">
+                <Badge color={item.color}>{item.category}</Badge>
+              </div>
+            </div>
+          </div>
+          <button onClick={onClose} className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm ${muted} ${dark ? 'border-white/10 hover:bg-white/5' : 'border-black/10 hover:bg-black/5'}`}>✕</button>
+        </div>
+
+        <p className={`text-sm mb-4 ${muted}`}>{item.desc}</p>
+
+        <div className={`rounded-xl p-4 mb-4 ${rowBg}`} style={{ borderLeft: `3px solid ${accentColorMap[item.color]}` }}>
+          <p className="text-xs font-semibold mb-2.5" style={{ color: accentColorMap[item.color] }}>핵심 내용</p>
+          <ul className="space-y-2">
+            {item.details.map((d, i) => (
+              <li key={i} className={`text-xs flex gap-2 ${detailC}`}>
+                <span className="opacity-40 shrink-0 mt-0.5">—</span>
+                <span>{d}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="flex flex-wrap gap-1.5 mb-4">
+          {item.keywords.map(k => (
+            <span key={k} className={`text-xs px-2 py-0.5 rounded-full border ${dark ? 'bg-white/5 border-white/10 text-[#7a7f94]' : 'bg-black/5 border-black/10 text-gray-500'}`}>{k}</span>
+          ))}
+        </div>
+
+        <ChartNote page="concepts" section={`concept_${item.id}`} label="예시 차트 사진" single={true} />
+      </div>
     </div>
   )
 }
 
-/* ── 개념 상세 모달 ── */
-function ConceptModal({ item, onClose }) {
-  const { dark } = useTheme()
-  const [image, setImage] = useState(null)
-  const [zoomSrc, setZoomSrc] = useState(null)
-  const inputRef = useRef()
-
-  const bgC      = dark ? 'bg-[#13161e] border-white/15' : 'bg-white border-black/15'
-  const muted    = dark ? 'text-[#7a7f94]' : 'text-gray-500'
-  const detailC  = dark ? 'text-[#b0b4c4]' : 'text-gray-600'
-  const rowBg    = dark ? 'bg-[#0d0f14]'   : 'bg-gray-50'
-  const uploadBg = dark ? 'bg-[#1a1e2a] border-white/15' : 'bg-gray-50 border-black/15'
-
-  const accentColorMap = {
-    blue:   dark ? '#4f8ef7' : '#185fa5',
-    teal:   dark ? '#2abfb0' : '#0f6e56',
-    amber:  dark ? '#f0a040' : '#854f0b',
-    red:    dark ? '#e05a6a' : '#a32d2d',
-    purple: dark ? '#9b7de8' : '#534ab7',
-    green:  dark ? '#3ec97e' : '#3b6d11',
-  }
-
-  const handleFile = (e) => {
-    const file = e.target.files[0]
-    if (!file) return
-    const reader = new FileReader()
-    reader.onload = ev => setImage(ev.target.result)
-    reader.readAsDataURL(file)
-  }
-
-  return (
-    <>
-      <div
-        className="fixed inset-0 z-50 flex items-center justify-center p-4"
-        style={{ background: 'rgba(0,0,0,0.6)' }}
-        onClick={onClose}
-      >
-        <div
-          className={`w-full max-w-lg rounded-2xl border p-6 ${bgC} max-h-[90vh] overflow-y-auto`}
-          onClick={e => e.stopPropagation()}
-        >
-          {/* 헤더 */}
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{ICON[item.category] || '📌'}</span>
-              <div>
-                <h2 className="text-base font-semibold">{item.title}</h2>
-                <div className="flex items-center gap-2 mt-0.5">
-                  <Badge color={item.color}>{item.category}</Badge>
-                </div>
-              </div>
-            </div>
-            <button
-              onClick={onClose}
-              className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm ${muted} ${dark ? 'border-white/10 hover:bg-white/5' : 'border-black/10 hover:bg-black/5'}`}
-            >✕</button>
-          </div>
-
-          {/* 설명 */}
-          <p className={`text-sm mb-4 ${muted}`}>{item.desc}</p>
-
-          {/* 상세 내용 */}
-          <div className={`rounded-xl p-4 mb-4 ${rowBg}`}
-            style={{ borderLeft: `3px solid ${accentColorMap[item.color]}` }}>
-            <p className="text-xs font-semibold mb-2.5" style={{ color: accentColorMap[item.color] }}>핵심 내용</p>
-            <ul className="space-y-2">
-              {item.details.map((d, i) => (
-                <li key={i} className={`text-xs flex gap-2 ${detailC}`}>
-                  <span className="opacity-40 shrink-0 mt-0.5">—</span>
-                  <span>{d}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* 키워드 */}
-          <div className="flex flex-wrap gap-1.5 mb-5">
-            {item.keywords.map(k => (
-              <span key={k} className={`text-xs px-2 py-0.5 rounded-full border ${dark ? 'bg-white/5 border-white/10 text-[#7a7f94]' : 'bg-black/5 border-black/10 text-gray-500'}`}>
-                {k}
-              </span>
-            ))}
-          </div>
-
-          {/* 이미지 업로드 */}
-          <p className="text-xs font-semibold mb-2">예시 차트 사진</p>
-          {image ? (
-            <div className="mb-3">
-              <div className="relative group">
-                <img
-                  src={image}
-                  alt=""
-                  className="w-full rounded-lg object-cover border border-white/10 cursor-zoom-in"
-                  onClick={() => setZoomSrc(image)}
-                />
-                <button
-                  onClick={() => setImage(null)}
-                  className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/60 text-white text-xs hidden group-hover:flex items-center justify-center"
-                >✕</button>
-              </div>
-            </div>
-          ) : (
-            <div
-              onClick={() => inputRef.current.click()}
-              className={`border border-dashed rounded-xl p-4 text-center cursor-pointer hover:opacity-70 transition-opacity ${uploadBg}`}
-            >
-              <p className={`text-lg mb-0.5 ${muted}`}>+</p>
-              <p className={`text-xs ${muted}`}>클릭하여 차트 사진 업로드</p>
-            </div>
-          )}
-          <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
-        </div>
-      </div>
-
-      {zoomSrc && <ImageZoomModal src={zoomSrc} onClose={() => setZoomSrc(null)} />}
-    </>
-  )
-}
-
-/* ── 개념 카드 ── */
 function ConceptCard({ item, onClick }) {
   const { dark } = useTheme()
-  const cardBg = dark
-    ? 'bg-[#13161e] border-white/8 hover:border-white/20'
-    : 'bg-white border-black/8 hover:border-black/20'
-  const muted = dark ? 'text-[#7a7f94]' : 'text-gray-500'
+  const cardBg = dark ? 'bg-[#13161e] border-white/8 hover:border-white/20' : 'bg-white border-black/8 hover:border-black/20'
+  const muted  = dark ? 'text-[#7a7f94]' : 'text-gray-500'
 
   const accentColorMap = {
     blue:   dark ? '#4f8ef7' : '#185fa5',
@@ -293,11 +227,8 @@ function ConceptCard({ item, onClick }) {
   }
 
   return (
-    <button
-      onClick={onClick}
-      className={`rounded-xl border p-4 text-left transition-all cursor-pointer w-full ${cardBg}`}
-      style={{ borderLeft: `3px solid ${accentColorMap[item.color]}` }}
-    >
+    <button onClick={onClick} className={`rounded-xl border p-4 text-left transition-all cursor-pointer w-full ${cardBg}`}
+      style={{ borderLeft: `3px solid ${accentColorMap[item.color]}` }}>
       <div className="flex items-start gap-3">
         <span className="text-xl shrink-0 mt-0.5">{ICON[item.category] || '📌'}</span>
         <div className="flex-1 min-w-0">
@@ -309,7 +240,6 @@ function ConceptCard({ item, onClick }) {
   )
 }
 
-/* ── 메인 ── */
 export default function Concepts() {
   const { dark } = useTheme()
   const { query, setQuery, filtered } = usePageSearch(CONCEPTS, ['title', 'desc', 'keywords', 'details'])
