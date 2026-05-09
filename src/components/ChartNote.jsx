@@ -113,7 +113,7 @@ function ImageZoomModal({ src, onClose }) {
  * label   — 표시 레이블 (기본: '추가 이미지')
  * single  — true면 이미지 1장만
  */
-export default function ChartNote({ page, section, label = '추가 이미지', single = false }) {
+export default function ChartNote({ page, section, label = '추가 이미지' }) {
   const { dark } = useTheme()
   const [records, setRecords] = useState([])
   const [loading, setLoading] = useState(true)
@@ -217,7 +217,7 @@ export default function ChartNote({ page, section, label = '추가 이미지', s
     ])
   }
 
-  const showUpload = single ? records.length === 0 : true
+  const showUpload = true
 
   return (
     <>
@@ -246,7 +246,7 @@ export default function ChartNote({ page, section, label = '추가 이미지', s
                         className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/50 text-white text-xs flex items-center justify-center hover:bg-black/70 transition-colors"
                       >✕</button>
                       {/* 순서 버튼 */}
-                      {!single && records.length > 1 && (
+                      {records.length > 1 && (
                         <div className="absolute bottom-2 right-2 flex flex-col gap-1">
                           <button
                             onClick={() => handleMove(index, -1)}
