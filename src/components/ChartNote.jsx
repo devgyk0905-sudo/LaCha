@@ -1,15 +1,107 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { useTheme } from '../App'
 import { supabase } from '../lib/supabase'
 
+/* ── 이미지 확대 모달 (휠/핀치 줌 지원) ── */
 function ImageZoomModal({ src, onClose }) {
+  const [scale, setScale] = useState(1)
+  const [pos, setPos] = useState({ x: 0, y: 0 })
+  const [dragging, setDragging] = useState(false)
+  const dragStart = useRef(null)
+  const lastTouches = useRef(null)
+  const imgRef = useRef()
+
+  /* 마우스 휠 줌 */
+  const handleWheel = useCallback((e) => {
+    e.preventDefault()
+    setScale(prev => Math.min(5, Math.max(1, prev - e.deltaY * 0.002)))
+  }, [])
+
+  /* 드래그 이동 */
+  const handleMouseDown = (e) => {
+    if (scale <= 1) return
+    setDragging(true)
+    dragStart.current = { x: e.clientX - pos.x, y: e.clientY - pos.y }
+  }
+  const handleMouseMove = (e) => {
+    if (!dragging) return
+    setPos({ x: e.clientX - dragStart.current.x, y: e.clientY - dragStart.current.y })
+  }
+  const handleMouseUp = () => setDragging(false)
+
+  /* 핀치 줌 (모바일) */
+  const handleTouchStart = (e) => {
+    if (e.touches.length === 2) {
+      lastTouches.current = e.touches
+    }
+  }
+  const handleTouchMove = (e) => {
+    if (e.touches.length === 2 && lastTouches.current) {
+      e.preventDefault()
+      const prev = lastTouches.current
+      const prevDist = Math.hypot(prev[0].clientX - prev[1].clientX, prev[0].clientY - prev[1].clientY)
+      const currDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY)
+      const ratio = currDist / prevDist
+      setScale(prev => Math.min(5, Math.max(1, prev * ratio)))
+      lastTouches.current = e.touches
+    }
+  }
+
+  /* 더블클릭 리셋 */
+  const handleDoubleClick = () => {
+    setScale(1)
+    setPos({ x: 0, y: 0 })
+  }
+
+  useEffect(() => {
+    const el = imgRef.current?.parentElement
+    if (el) el.addEventListener('wheel', handleWheel, { passive: false })
+    return () => { if (el) el.removeEventListener('wheel', handleWheel) }
+  }, [handleWheel])
+
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center p-4"
-      style={{ background: 'rgba(0,0,0,0.85)' }}
-      onClick={onClose}
+      className="fixed inset-0 z-[60] flex items-center justify-center"
+      style={{ background: 'rgba(0,0,0,0.9)' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
-      <img src={src} alt="" className="max-w-full max-h-[90vh] rounded-xl object-contain" />
+      {/* 닫기 */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 text-white flex items-center justify-center text-sm hover:bg-white/20 z-10"
+      >✕</button>
+      {/* 힌트 */}
+      <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/40 text-xs">
+        휠·핀치로 확대 · 더블클릭으로 초기화 · 확대 시 드래그 이동
+      </p>
+
+      <div
+        ref={imgRef}
+        className="overflow-hidden"
+        style={{ width: '90vw', height: '90vh', cursor: scale > 1 ? (dragging ? 'grabbing' : 'grab') : 'default' }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onDoubleClick={handleDoubleClick}
+      >
+        <img
+          src={src}
+          alt=""
+          draggable={false}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            transform: `scale(${scale}) translate(${pos.x / scale}px, ${pos.y / scale}px)`,
+            transformOrigin: 'center',
+            transition: dragging ? 'none' : 'transform 0.1s',
+            userSelect: 'none',
+          }}
+        />
+      </div>
     </div>
   )
 }
@@ -33,7 +125,9 @@ export default function ChartNote({ page, section, label = '추가 이미지', s
   const bgC     = dark ? 'bg-[#1a1e2a]'   : 'bg-gray-50'
   const muted   = dark ? 'text-[#7a7f94]' : 'text-gray-400'
   const cardBg  = dark ? 'bg-[#1a1e2a] border-white/10' : 'bg-gray-50 border-black/10'
-  const inputC  = dark ? 'bg-[#0d0f14] border-white/10 text-[#e8eaf0] placeholder-[#7a7f94]' : 'bg-white border-black/10 text-[#1a1e2a] placeholder-gray-400'
+  const inputC  = dark
+    ? 'bg-[#0d0f14] border-white/10 text-[#e8eaf0] placeholder-[#7a7f94]'
+    : 'bg-white border-black/10 text-[#1a1e2a] placeholder-gray-400'
 
   useEffect(() => { fetchRecords() }, [page, section])
 
@@ -44,7 +138,7 @@ export default function ChartNote({ page, section, label = '추가 이미지', s
       .select('*')
       .eq('page', page)
       .eq('section', section)
-      .order('created_at', { ascending: true })
+      .order('sort_order', { ascending: true })
     if (!error && data) setRecords(data)
     setLoading(false)
   }
@@ -53,6 +147,7 @@ export default function ChartNote({ page, section, label = '추가 이미지', s
     const file = e.target.files[0]
     if (!file) return
     setUploading(true)
+
     const ext = file.name.split('.').pop().toLowerCase()
     const fileName = `${page}/${section}/${Date.now()}.${ext}`
 
@@ -66,8 +161,14 @@ export default function ChartNote({ page, section, label = '추가 이미지', s
       .from('chart-images')
       .getPublicUrl(fileName)
 
+    const maxOrder = records.length > 0 ? Math.max(...records.map(r => r.sort_order || 0)) : -1
+
     await supabase.from('chart_notes').insert({
-      page, section, image_url: urlData.publicUrl, note: ''
+      page,
+      section,
+      image_url: urlData.publicUrl,
+      note: '',
+      sort_order: maxOrder + 1,
     })
 
     await fetchRecords()
@@ -80,7 +181,8 @@ export default function ChartNote({ page, section, label = '추가 이미지', s
   }
 
   async function handleNoteBlur(id, note) {
-    await supabase.from('chart_notes')
+    await supabase
+      .from('chart_notes')
       .update({ note, updated_at: new Date().toISOString() })
       .eq('id', id)
   }
@@ -94,14 +196,25 @@ export default function ChartNote({ page, section, label = '추가 이미지', s
     setRecords(prev => prev.filter(r => r.id !== id))
   }
 
-  function handleMove(index, direction) {
+  async function handleMove(index, direction) {
     const newRecords = [...records]
     const targetIndex = index + direction
     if (targetIndex < 0 || targetIndex >= newRecords.length) return
+
+    /* 순서 교환 */
     const temp = newRecords[index]
     newRecords[index] = newRecords[targetIndex]
     newRecords[targetIndex] = temp
-    setRecords(newRecords)
+
+    /* sort_order 재계산 후 state 업데이트 */
+    const updated = newRecords.map((r, i) => ({ ...r, sort_order: i }))
+    setRecords(updated)
+
+    /* Supabase 업데이트 (두 레코드만) */
+    await Promise.all([
+      supabase.from('chart_notes').update({ sort_order: updated[index].sort_order }).eq('id', updated[index].id),
+      supabase.from('chart_notes').update({ sort_order: updated[targetIndex].sort_order }).eq('id', updated[targetIndex].id),
+    ])
   }
 
   const showUpload = single ? records.length === 0 : true
@@ -119,7 +232,6 @@ export default function ChartNote({ page, section, label = '추가 이미지', s
               <div className="space-y-2 mb-3">
                 {records.map((record, index) => (
                   <div key={record.id} className={`rounded-xl border overflow-hidden ${cardBg}`}>
-                    {/* 이미지 영역 */}
                     <div className="relative">
                       <img
                         src={record.image_url}
@@ -128,30 +240,30 @@ export default function ChartNote({ page, section, label = '추가 이미지', s
                         style={{ maxHeight: '320px' }}
                         onClick={() => setZoomSrc(record.image_url)}
                       />
-                      {/* 삭제 버튼 (우상단) */}
+                      {/* 삭제 버튼 */}
                       <button
                         onClick={() => handleDelete(record.id, record.image_url)}
                         className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/50 text-white text-xs flex items-center justify-center hover:bg-black/70 transition-colors"
                       >✕</button>
-                      {/* 순서 버튼 (우하단) */}
+                      {/* 순서 버튼 */}
                       {!single && records.length > 1 && (
                         <div className="absolute bottom-2 right-2 flex flex-col gap-1">
                           <button
                             onClick={() => handleMove(index, -1)}
                             disabled={index === 0}
                             className="w-7 h-7 rounded-md bg-black/45 text-white text-sm flex items-center justify-center transition-opacity"
-                            style={{ opacity: index === 0 ? 0.35 : 1 }}
+                            style={{ opacity: index === 0 ? 0.3 : 1 }}
                           >↑</button>
                           <button
                             onClick={() => handleMove(index, 1)}
                             disabled={index === records.length - 1}
                             className="w-7 h-7 rounded-md bg-black/45 text-white text-sm flex items-center justify-center transition-opacity"
-                            style={{ opacity: index === records.length - 1 ? 0.35 : 1 }}
+                            style={{ opacity: index === records.length - 1 ? 0.3 : 1 }}
                           >↓</button>
                         </div>
                       )}
                     </div>
-                    {/* 노트 텍스트 */}
+                    {/* 노트 */}
                     <textarea
                       value={record.note || ''}
                       onChange={e => handleNoteChange(record.id, e.target.value)}
