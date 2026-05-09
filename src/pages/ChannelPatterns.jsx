@@ -7,7 +7,7 @@ import ChartNote from '../components/ChartNote'
 const GREEN = '#3ec97e'
 const RED   = '#e05a6a'
 const GRAY  = '#888780'
-const SW    = 1.2  // 통일 선 두께
+const SW    = 1.0  // 통일 선 두께
 
 function ChannelSVG({ name }) {
   const svgs = {
