@@ -60,7 +60,8 @@ export default function ChartNote({ page, section, label = '예시 차트 사진
     if (!file) return
     setUploading(true)
 
-    const fileName = `${page}/${section}/${Date.now()}_${file.name}`
+    const ext = file.name.split('.').pop().toLowerCase()
+    const fileName = `${page}/${section}/${Date.now()}.${ext}`
     const { error: uploadError } = await supabase.storage
       .from('chart-images')
       .upload(fileName, file)
