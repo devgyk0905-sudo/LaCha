@@ -223,7 +223,7 @@ function ImpulseExpandSVG() {
     <div className="grid grid-cols-3 gap-4">
       {/* 1파 연장 — Frame_19 */}
       <div className="flex flex-col items-center gap-2">
-        <svg width="100%" viewBox="0 0 280 353" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="100%" height="160" viewBox="0 0 280 353" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="0.322911" y1="245.618" x2="279.323" y2="9.61826" stroke={c} strokeOpacity="0.5"/>
           <line x1="144.189" y1="307.796" x2="267.189" y2="32.7958" stroke={c} strokeOpacity="0.5"/>
           <path d="M51.6458 352L64.6458 268L86.1458 307.5L99.1458 197.5L128.646 235L147.146 124.5L199.646 183L208.646 71.5L240.146 92.5L247.646 38.5" stroke={c} strokeWidth="2"/>
@@ -239,7 +239,7 @@ function ImpulseExpandSVG() {
 
       {/* 3파 연장 — Frame_20 */}
       <div className="flex flex-col items-center gap-2">
-        <svg width="100%" viewBox="0 0 209 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="100%" height="160" viewBox="0 0 209 360" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="5.38308" y1="272.686" x2="208.383" y2="20.6864" stroke={c} strokeOpacity="0.5"/>
           <line x1="0.386232" y1="359.682" x2="208.386" y2="106.682" stroke={c} strokeOpacity="0.5"/>
           <path d="M2.77246 353.5L24.2725 251L56.2725 297L68.7725 212.5L81.7725 232.5L96.2725 89L114.772 144.5L120.272 67.5L174.772 144.5L200.772 31.5" stroke={c} strokeWidth="2"/>
@@ -254,7 +254,7 @@ function ImpulseExpandSVG() {
 
       {/* 5파 연장 — Frame_21 */}
       <div className="flex flex-col items-center gap-2">
-        <svg width="100%" viewBox="0 0 280 361" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="100%" height="160" viewBox="0 0 280 361" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="4.50525" y1="320.767" x2="150.505" y2="43.7669" stroke={c} strokeOpacity="0.5"/>
           <line x1="21.6594" y1="330.591" x2="279.659" y2="148.591" stroke={c} strokeOpacity="0.5"/>
           <path d="M0.947571 360.5L30.4476 273L51.9476 308L93.9476 157L137.448 246L148.448 142.5L181.448 167L199.448 80.5L224.948 116.5L246.448 30.5" stroke={c} strokeWidth="2"/>
