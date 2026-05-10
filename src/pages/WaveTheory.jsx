@@ -18,7 +18,7 @@ const SUB_IMPULSE = [
 
 const SUB_CORRECT = [
   { id: 'cor_wxy', label: 'WXY / WXYXZ' },
-  { id: 'cor_abc', label: 'ABC / 플랫' },
+  { id: 'cor_abc', label: 'ABC' },
 ]
 
 export default function WaveTheory() {
@@ -137,7 +137,7 @@ function StepSection() {
   )
 }
 
-/* ── 임펄스 ── */
+/* ── 임펄스 기본 ── */
 function ImpulseBasic() {
   return (
     <div className="space-y-4">
@@ -222,31 +222,22 @@ function ImpulseExpandSVG() {
   return (
     <svg width="100%" viewBox="0 0 660 220" xmlns="http://www.w3.org/2000/svg">
       {/* ── 1파 연장 ── */}
-      {/* 채널 하단선 */}
       <line x1="10" y1="205" x2="185" y2="90" stroke={stroke} strokeWidth="1" strokeLinecap="round"/>
-      {/* 채널 상단선 */}
       <line x1="55" y1="185" x2="210" y2="55" stroke={stroke} strokeWidth="1" strokeLinecap="round"/>
-      {/* 파동: 1파(길게), 2파, 3파, 4파, 5파 */}
-      <polyline
-        points="18,200 65,72 85,118 115,58 135,92 160,70 185,88"
-        fill="none" stroke={stroke} strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"
-      />
-      {/* 숫자 레이블 */}
+      <polyline points="18,200 65,72 85,118 115,58 135,92 160,70 185,88"
+        fill="none" stroke={stroke} strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/>
       <text x="60" y="64" fontSize="11" fill={stroke} textAnchor="middle">1</text>
       <text x="88" y="130" fontSize="11" fill={stroke} textAnchor="middle">2</text>
       <text x="118" y="50" fontSize="11" fill={stroke} textAnchor="middle">3</text>
       <text x="138" y="104" fontSize="11" fill={stroke} textAnchor="middle">4</text>
       <text x="188" y="80" fontSize="11" fill={stroke} textAnchor="middle">5</text>
-      {/* 제목 */}
       <text x="110" y="218" fontSize="12" fill={muted} textAnchor="middle">임펄스 1파 연장</text>
 
       {/* ── 3파 연장 ── */}
       <line x1="240" y1="205" x2="415" y2="90" stroke={stroke} strokeWidth="1" strokeLinecap="round"/>
       <line x1="275" y1="195" x2="440" y2="55" stroke={stroke} strokeWidth="1" strokeLinecap="round"/>
-      <polyline
-        points="248,200 278,148 298,178 345,55 370,105 398,80 418,92"
-        fill="none" stroke={stroke} strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"
-      />
+      <polyline points="248,200 278,148 298,178 345,55 370,105 398,80 418,92"
+        fill="none" stroke={stroke} strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/>
       <text x="275" y="140" fontSize="11" fill={stroke} textAnchor="middle">1</text>
       <text x="302" y="192" fontSize="11" fill={stroke} textAnchor="middle">2</text>
       <text x="348" y="46" fontSize="11" fill={stroke} textAnchor="middle">3</text>
@@ -257,10 +248,8 @@ function ImpulseExpandSVG() {
       {/* ── 5파 연장 ── */}
       <line x1="468" y1="205" x2="643" y2="90" stroke={stroke} strokeWidth="1" strokeLinecap="round"/>
       <line x1="500" y1="195" x2="655" y2="68" stroke={stroke} strokeWidth="1" strokeLinecap="round"/>
-      <polyline
-        points="475,200 505,155 525,178 558,120 578,148 618,60 645,78"
-        fill="none" stroke={stroke} strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"
-      />
+      <polyline points="475,200 505,155 525,178 558,120 578,148 618,60 645,78"
+        fill="none" stroke={stroke} strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/>
       <text x="502" y="147" fontSize="11" fill={stroke} textAnchor="middle">1</text>
       <text x="528" y="192" fontSize="11" fill={stroke} textAnchor="middle">2</text>
       <text x="560" y="112" fontSize="11" fill={stroke} textAnchor="middle">3</text>
@@ -268,7 +257,6 @@ function ImpulseExpandSVG() {
       <text x="648" y="52" fontSize="11" fill={stroke} textAnchor="middle">5</text>
       <text x="560" y="218" fontSize="12" fill={muted} textAnchor="middle">임펄스 5파 연장</text>
 
-      {/* 구분선 */}
       <line x1="222" y1="20" x2="222" y2="205" stroke={muted} strokeWidth="0.5" opacity="0.4"/>
       <line x1="452" y1="20" x2="452" y2="205" stroke={muted} strokeWidth="0.5" opacity="0.4"/>
     </svg>
@@ -283,13 +271,10 @@ function ImpulseExpand() {
     <div className="space-y-4">
       <SectionTitle color="purple">확장 임펄스</SectionTitle>
       <p className="text-sm text-[#7a7f94]">1, 3, 5파 중 하나가 비정상적으로 길게 연장되는 패턴</p>
-
-      {/* 1파/3파/5파 연장 다이어그램 */}
       <Card>
         <p className="font-semibold text-sm mb-4">파동별 연장 유형</p>
         <ImpulseExpandSVG />
       </Card>
-
       <Card>
         <p className="font-semibold text-sm mb-3">확장 유형 비교</p>
         <Table
@@ -318,32 +303,22 @@ function CorrectWXY() {
   const { dark } = useTheme()
   const wxyRef   = useRef(null)
   const wxyxzRef = useRef(null)
+  const scrollTo = (ref) => ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
-  const scrollTo = (ref) => {
-    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-
-  const subActive   = dark ? 'bg-[#9b7de8]/15 text-[#9b7de8] border border-[#9b7de8]/30' : 'bg-[#534ab7]/10 text-[#534ab7] border border-[#534ab7]/20'
-  const subInactive = dark ? 'text-[#7a7f94] border border-white/10 hover:text-[#e8eaf0]' : 'text-gray-400 border border-black/10 hover:text-gray-700'
-  const divC        = dark ? 'border-white/8' : 'border-black/8'
+  const anchorActive   = dark ? 'bg-[#9b7de8]/15 text-[#9b7de8] border border-[#9b7de8]/30' : 'bg-[#534ab7]/10 text-[#534ab7] border border-[#534ab7]/20'
+  const anchorInactive = dark ? 'text-[#7a7f94] border border-white/10 hover:text-[#e8eaf0]' : 'text-gray-400 border border-black/10 hover:text-gray-700'
+  const divC           = dark ? 'border-white/8' : 'border-black/8'
 
   return (
     <div className="space-y-4">
       <SectionTitle color="purple">WXY / WXYXZ 복합조정</SectionTitle>
 
-      {/* 앵커 링크 버튼 */}
       <div className="flex gap-2">
-        <button onClick={() => scrollTo(wxyRef)}
-          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${subActive}`}>
-          WXY
-        </button>
-        <button onClick={() => scrollTo(wxyxzRef)}
-          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${subInactive}`}>
-          WXYXZ
-        </button>
+        <button onClick={() => scrollTo(wxyRef)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${anchorActive}`}>WXY</button>
+        <button onClick={() => scrollTo(wxyxzRef)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${anchorInactive}`}>WXYXZ</button>
       </div>
 
-      {/* WXY 섹션 */}
+      {/* WXY */}
       <div ref={wxyRef} className="scroll-mt-24 space-y-4">
         <p className="text-xs font-semibold text-[#9b7de8] pt-2">WXY</p>
         <p className="text-sm text-[#7a7f94]">채널을 기막히게 지킨다 — ABC보다 기간이 길다 (기간 조정)</p>
@@ -377,10 +352,9 @@ function CorrectWXY() {
         <Alert type="amber">실시간으로 맞추려 하지 말 것 — 조정 종료 신호 먼저 찾고, 사후에 레이블 붙이기</Alert>
       </div>
 
-      {/* 구분선 */}
       <div className={`border-t ${divC} my-6`} />
 
-      {/* WXYXZ 섹션 */}
+      {/* WXYXZ */}
       <div ref={wxyxzRef} className="scroll-mt-24 space-y-4">
         <p className="text-xs font-semibold text-[#9b7de8]">WXYXZ</p>
         <p className="text-sm text-[#7a7f94]">Y가 채널 중단이 아닌 최상단/최하단에서 끝났을 때 의심</p>
@@ -419,141 +393,73 @@ function CorrectWXY() {
   )
 }
 
-/* ── ABC / 플랫 — 통합 + SVG ── */
+/* ── ABC / 플랫 ── */
 function CorrectABC() {
   const { dark } = useTheme()
   const divC = dark ? 'border-white/8' : 'border-black/8'
 
-  /* 플랫 다이어그램 SVG (Figma 수정본) */
-  const FlatDiagram = () => {
-    const stroke = dark ? '#e8eaf0' : '#1a1e2a'
-    const muted  = dark ? '#7a7f94' : '#888780'
-    const green  = '#3ec97e'
-    const red    = '#e05a6a'
-    return (
-      <svg width="100%" viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg">
-        {/* 제목 */}
-        <text x="340" y="22" fontSize="13" fontWeight="500" fill={stroke} textAnchor="middle">플랫 유형 비교</text>
-        <text x="340" y="38" fontSize="11" fill={muted} textAnchor="middle">B파 위치와 C파 위치로 유형 구분</text>
-
-        {/* ── 기본 플랫 (좌) ── */}
-        <text x="100" y="62" fontSize="12" fontWeight="500" fill={stroke} textAnchor="middle">기본 플랫</text>
-        <text x="100" y="76" fontSize="10" fill={muted} textAnchor="middle">B: A 시작점 미돌파</text>
-        {/* 기준선 */}
-        <line x1="18" y1="100" x2="190" y2="100" stroke={muted} strokeWidth="0.5" strokeDasharray="4 3"/>
-        <line x1="18" y1="270" x2="190" y2="270" stroke={muted} strokeWidth="0.5" strokeDasharray="4 3"/>
-        {/* A파 */}
-        <polyline points="30,100 70,270" fill="none" stroke={red} strokeWidth="2" strokeLinecap="round"/>
-        {/* B파 */}
-        <polyline points="70,270 110,145" fill="none" stroke={green} strokeWidth="2" strokeLinecap="round"/>
-        {/* C파 */}
-        <polyline points="110,145 170,288" fill="none" stroke={red} strokeWidth="2" strokeLinecap="round"/>
-        {/* 레이블 */}
-        <text x="44" y="192" fontSize="11" fill={red}>A</text>
-        <text x="82" y="218" fontSize="11" fill={green}>B</text>
-        <text x="142" y="228" fontSize="11" fill={red}>C</text>
-        {/* 기준선 레이블 */}
-        <text x="20" y="97" fontSize="9" fill={muted}>A 시작점</text>
-        <text x="20" y="267" fontSize="9" fill={muted}>A 저점</text>
-        {/* B 고점 표시 */}
-        <line x1="110" y1="100" x2="110" y2="145" stroke={green} strokeWidth="0.8" strokeDasharray="3 2"/>
-        <text x="114" y="125" fontSize="9" fill={green}>B 0.382~0.5</text>
-        {/* C 저점 이탈 */}
-        <line x1="18" y1="288" x2="190" y2="288" stroke={red} strokeWidth="0.5" strokeDasharray="3 2" opacity="0.6"/>
-        <text x="22" y="302" fontSize="9" fill={red}>C 저점 이탈</text>
-
-        {/* ── 확장 플랫 (중) ── */}
-        <text x="340" y="62" fontSize="12" fontWeight="500" fill={stroke} textAnchor="middle">확장 플랫</text>
-        <text x="340" y="76" fontSize="10" fill={muted} textAnchor="middle">B: A 시작점 돌파</text>
-        <line x1="258" y1="100" x2="430" y2="100" stroke={muted} strokeWidth="0.5" strokeDasharray="4 3"/>
-        <line x1="258" y1="270" x2="430" y2="270" stroke={muted} strokeWidth="0.5" strokeDasharray="4 3"/>
-        <polyline points="270,100 310,270" fill="none" stroke={red} strokeWidth="2" strokeLinecap="round"/>
-        <polyline points="310,270 350,72" fill="none" stroke={green} strokeWidth="2" strokeLinecap="round"/>
-        <polyline points="350,72 410,305" fill="none" stroke={red} strokeWidth="2" strokeLinecap="round"/>
-        <text x="284" y="192" fontSize="11" fill={red}>A</text>
-        <text x="322" y="192" fontSize="11" fill={green}>B</text>
-        <text x="382" y="210" fontSize="11" fill={red}>C</text>
-        <text x="260" y="97" fontSize="9" fill={muted}>A 시작점</text>
-        <text x="260" y="267" fontSize="9" fill={muted}>A 저점</text>
-        {/* B 고점 (A 시작점 돌파) */}
-        <line x1="258" y1="72" x2="430" y2="72" stroke={green} strokeWidth="0.8" strokeDasharray="3 2" opacity="0.7"/>
-        <text x="262" y="68" fontSize="9" fill={green}>B 고점 1.09~1.272 (시작점 돌파)</text>
-        {/* C 저점 크게 이탈 */}
-        <line x1="258" y1="305" x2="430" y2="305" stroke={red} strokeWidth="0.5" strokeDasharray="3 2" opacity="0.6"/>
-        <text x="262" y="318" fontSize="9" fill={red}>C 저점 크게 이탈</text>
-
-        {/* ── 러닝 플랫 (우) ── */}
-        <text x="580" y="62" fontSize="12" fontWeight="500" fill={stroke} textAnchor="middle">러닝 플랫</text>
-        <text x="580" y="76" fontSize="10" fill={muted} textAnchor="middle">C: A 저점 미이탈</text>
-        <line x1="498" y1="100" x2="660" y2="100" stroke={muted} strokeWidth="0.5" strokeDasharray="4 3"/>
-        <line x1="498" y1="270" x2="660" y2="270" stroke={muted} strokeWidth="0.5" strokeDasharray="4 3"/>
-        <polyline points="510,100 550,270" fill="none" stroke={red} strokeWidth="2" strokeLinecap="round"/>
-        <polyline points="550,270 590,74" fill="none" stroke={green} strokeWidth="2" strokeLinecap="round"/>
-        {/* C파 — 약한 하락 (점선) */}
-        <polyline points="590,74 645,252" fill="none" stroke={red} strokeWidth="2" strokeLinecap="round" strokeDasharray="6 3"/>
-        <text x="524" y="192" fontSize="11" fill={red}>A</text>
-        <text x="562" y="188" fontSize="11" fill={green}>B</text>
-        <text x="620" y="175" fontSize="11" fill={red}>C</text>
-        <text x="500" y="97" fontSize="9" fill={muted}>A 시작점</text>
-        <text x="500" y="267" fontSize="9" fill={muted}>A 저점</text>
-        {/* B 고점 */}
-        <line x1="498" y1="74" x2="660" y2="74" stroke={green} strokeWidth="0.8" strokeDasharray="3 2" opacity="0.7"/>
-        <text x="502" y="70" fontSize="9" fill={green}>B 고점 (시작점 돌파)</text>
-        {/* C 저점 미이탈 */}
-        <text x="502" y="258" fontSize="9" fill={green}>C 저점 미이탈 ↑</text>
-        <text x="502" y="315" fontSize="9" fill={muted}>C파 점선 = 약한 하락</text>
-
-        {/* 구분선 */}
-        <line x1="228" y1="50" x2="228" y2="340" stroke={muted} strokeWidth="0.5" opacity="0.3"/>
-        <line x1="468" y1="50" x2="468" y2="340" stroke={muted} strokeWidth="0.5" opacity="0.3"/>
-
-        {/* 하단 요약 */}
-        <rect x="18" y="330" width="190" height="36" rx="6" fill="none" stroke={muted} strokeWidth="0.5"/>
-        <text x="113" y="345" fontSize="10" fill={green} textAnchor="middle">B: 0.382~0.5</text>
-        <text x="113" y="359" fontSize="10" fill={red} textAnchor="middle">C: A 저점 이탈</text>
-
-        <rect x="250" y="330" width="190" height="36" rx="6" fill="none" stroke={muted} strokeWidth="0.5"/>
-        <text x="345" y="345" fontSize="10" fill={green} textAnchor="middle">B: 1.09~1.272</text>
-        <text x="345" y="359" fontSize="10" fill={red} textAnchor="middle">C: A 저점 크게 이탈</text>
-
-        <rect x="478" y="330" width="190" height="36" rx="6" fill="none" stroke={muted} strokeWidth="0.5"/>
-        <text x="573" y="345" fontSize="10" fill={green} textAnchor="middle">B: A 시작점 돌파</text>
-        <text x="573" y="359" fontSize="10" fill={green} textAnchor="middle">C: A 저점 미이탈</text>
-      </svg>
-    )
-  }
-
   return (
     <div className="space-y-4">
-      <SectionTitle color="teal">ABC 조정 / 플랫 유형</SectionTitle>
+      <SectionTitle color="teal">ABC 조정</SectionTitle>
+      <p className="text-sm text-[#7a7f94]">큰 추세의 반대 방향 조정 — 가격 조정의 기본</p>
 
-      {/* ABC 섹션 */}
-      <div className="space-y-4">
-        <p className="text-sm text-[#7a7f94]">큰 추세의 반대 방향 조정 — 가격 조정의 기본</p>
-        <Card>
-          <Table
-            headers={['파동', '내부 구성', '피보나치 기준', '규칙']}
-            rows={[
-              [<Code>A파</Code>, '3파동 또는 5파동', '—', '조정 시작'],
-              [<Code>B파</Code>, <><span className="text-red-400">가장 더럽고 길다</span><br/>3파동 (ABC or WXY)</>, <><Code>기본: 0.382~0.5</Code><br/><Code>불규칙: 1.09~1.272</Code></>, 'A 시작점 기준'],
-              [<Code>C파</Code>, <><strong>무조건 5파동</strong><br/>임펄스/터미널/WXYXZ</>, <><Code>1:1</Code> / <Code>1:1.236</Code><br/><Code>1:1.382</Code> / <Code>1:1.618</Code></>, 'A파 저점 이탈'],
-            ]}
-          />
-        </Card>
-        <Alert type="amber">C파 저점을 미리 잡으려 하면 안 됨 — C파 완성 확인 후 진입</Alert>
-      </div>
+      {/* ABC 내용 */}
+      <Card>
+        <Table
+          headers={['파동', '내부 구성', '피보나치 기준', '규칙']}
+          rows={[
+            [<Code>A파</Code>, '3파동 또는 5파동', '—', '조정 시작'],
+            [<Code>B파</Code>, <><span className="text-red-400">가장 더럽고 길다</span><br/>3파동 (ABC or WXY)</>, <><Code>기본: 0.382~0.5</Code><br/><Code>불규칙: 1.09~1.272</Code></>, 'A 시작점 기준'],
+            [<Code>C파</Code>, <><strong>무조건 5파동</strong><br/>임펄스/터미널/WXYXZ</>, <><Code>1:1</Code> / <Code>1:1.236</Code><br/><Code>1:1.382</Code> / <Code>1:1.618</Code></>, 'A파 저점 이탈'],
+          ]}
+        />
+      </Card>
+      <Alert type="amber">C파 저점을 미리 잡으려 하면 안 됨 — C파 완성 확인 후 진입</Alert>
 
       {/* 구분선 */}
       <div className={`border-t ${divC} my-2`} />
 
-      {/* 플랫 유형 섹션 */}
+      {/* 플랫 유형 */}
       <div className="space-y-4">
         <p className="text-xs font-semibold text-[#2abfb0]">플랫 유형</p>
         <p className="text-sm text-[#7a7f94]">B파 위치와 C파 위치로 구분</p>
 
-        {/* 플랫 SVG 다이어그램 */}
+        {/* flat_patterns_1.svg 인라인 삽입 */}
         <Card>
-          <FlatDiagram />
+          <div className="w-full overflow-x-auto">
+            <svg width="100%" viewBox="0 0 921 605" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g clipPath="url(#clip0_flat)">
+                <rect width="921" height="605" fill={dark ? '#0d0f14' : 'white'}/>
+                <path d="M122.11 73.004H122.95C123.715 73.004 124.471 72.9853 125.218 72.948C125.974 72.9013 126.786 72.8033 127.654 72.654L127.752 73.606C126.865 73.7647 126.039 73.8673 125.274 73.914C124.518 73.9513 123.743 73.97 122.95 73.97H122.11V73.004ZM122.082 65.822H126.59V70.218H123.23V73.41H122.11V69.28H125.47V66.774H122.082V65.822ZM131.322 64.422H132.428V77.092H131.322V64.422ZM127.192 68.972H129.25V69.938H127.192V68.972ZM128.76 64.73H129.852V76.42H128.76V64.73ZM137.635 69.42H138.797V71.996H137.635V69.42ZM141.807 69.42H142.955V71.996H141.807V69.42ZM136.025 64.926H144.173V65.864H136.025V64.926ZM134.569 68.958H146.049V69.896H134.569V68.958ZM143.417 64.926H144.565V65.738C144.565 66.186 144.551 66.7087 144.523 67.306C144.495 67.9033 144.397 68.5893 144.229 69.364L143.081 69.238C143.249 68.4727 143.347 67.81 143.375 67.25C143.403 66.6807 143.417 66.1767 143.417 65.738V64.926ZM135.927 71.548H144.593V74.614H137.103V76.35H135.955V73.788H143.445V72.472H135.927V71.548ZM135.955 76.014H144.915V76.938H135.955V76.014ZM156.702 64.422H157.85V77.106H156.702V64.422ZM154.294 69.28H156.982V70.246H154.294V69.28ZM147.924 73.088H148.89C149.637 73.088 150.323 73.0787 150.948 73.06C151.573 73.0413 152.18 73.004 152.768 72.948C153.356 72.892 153.958 72.8033 154.574 72.682L154.672 73.648C154.037 73.76 153.421 73.8487 152.824 73.914C152.236 73.97 151.62 74.012 150.976 74.04C150.341 74.0587 149.646 74.068 148.89 74.068H147.924V73.088ZM147.882 65.598H153.538V70.036H149.072V73.396H147.924V69.084H152.404V66.55H147.882V65.598ZM165.328 64.814H174.61V65.71H165.328V64.814ZM165.37 68.118H174.568V69.014H165.37V68.118ZM167.232 65.15H168.394V68.72H167.232V65.15ZM171.544 65.15H172.706V68.72H171.544V65.15ZM164.264 70.064H175.702V71.002H164.264V70.064ZM165.65 72.108H174.232V74.894H166.812V76.42H165.678V74.054H173.098V72.976H165.65V72.108ZM165.678 76.056H174.61V76.952H165.678V76.056ZM186.705 64.436H187.811V73.046H186.705V64.436ZM184.675 67.74H187.055V68.692H184.675V67.74ZM183.905 64.674H184.997V71.954H183.905V64.674ZM177.717 70.834H178.543C179.141 70.834 179.691 70.8247 180.195 70.806C180.709 70.7873 181.208 70.75 181.693 70.694C182.179 70.638 182.673 70.554 183.177 70.442L183.303 71.38C182.771 71.4827 182.258 71.562 181.763 71.618C181.269 71.674 180.76 71.7113 180.237 71.73C179.715 71.7487 179.15 71.758 178.543 71.758H177.717V70.834ZM177.689 65.416H182.449V68.972H178.837V71.45H177.717V68.09H181.329V66.368H177.689V65.416ZM183.023 72.472H184.017V72.794C184.017 73.354 183.887 73.872 183.625 74.348C183.364 74.8147 183.005 75.23 182.547 75.594C182.099 75.958 181.586 76.2613 181.007 76.504C180.438 76.756 179.836 76.9333 179.201 77.036L178.739 76.126C179.178 76.0607 179.607 75.958 180.027 75.818C180.457 75.6687 180.849 75.4913 181.203 75.286C181.567 75.0807 181.885 74.8473 182.155 74.586C182.426 74.3247 182.636 74.0447 182.785 73.746C182.944 73.4473 183.023 73.13 183.023 72.794V72.472ZM183.191 72.472H184.185V72.794C184.185 73.13 184.26 73.4473 184.409 73.746C184.568 74.0447 184.783 74.3247 185.053 74.586C185.324 74.8473 185.637 75.0807 185.991 75.286C186.355 75.4913 186.747 75.6687 187.167 75.818C187.597 75.958 188.031 76.0607 188.469 76.126L188.007 77.036C187.373 76.9333 186.766 76.756 186.187 76.504C185.618 76.2613 185.105 75.958 184.647 75.594C184.199 75.23 183.845 74.8147 183.583 74.348C183.322 73.872 183.191 73.354 183.191 72.794V72.472Z" fill={dark ? '#e8eaf0' : '#1A1E2A'}/>
+                <path d="M37.9235 193.885H265.465" stroke="#888780" strokeWidth="0.5" strokeDasharray="4 3"/>
+                <path d="M37.9235 235H265.465" stroke="#888780" strokeWidth="0.5" strokeDasharray="4 3"/>
+                <path d="M37.9235 403.308H265.465" stroke="#888780" strokeWidth="0.5" strokeDasharray="4 3"/>
+                <path d="M54.1765 193.885L108.353 403.308" stroke="#E05A6A" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M108.353 403.308L162.529 234.606" stroke="#3EC97E" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M162.529 235L216.706 421.569" stroke="#E05A6A" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M37.9235 421.569H265.465" stroke="#888780" strokeWidth="0.5" strokeDasharray="4 3"/>
+                <path d="M351.712 136.731H579.253" stroke="#888780" strokeWidth="0.5" strokeDasharray="4 3"/>
+                <path d="M351.712 403.308H579.253" stroke="#888780" strokeWidth="0.5" strokeDasharray="4 3"/>
+                <path d="M351.712 459.938H579.253" stroke="#888780" strokeWidth="0.5" strokeDasharray="4 3"/>
+                <path d="M367.965 403.308L422.141 136.731" stroke="#E05A6A" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M422.141 136.731L476.318 97.4236" stroke="#3EC97E" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M476.318 97.4236L530.494 459.938" stroke="#E05A6A" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M665.5 193.885H893.041" stroke="#888780" strokeWidth="0.5" strokeDasharray="4 3"/>
+                <path d="M665.5 403.308H893.041" stroke="#888780" strokeWidth="0.5" strokeDasharray="4 3"/>
+                <path d="M665.5 100.308H893.041" stroke="#888780" strokeWidth="0.5" strokeDasharray="4 3"/>
+                <path d="M681.753 403.308L735.929 193.885" stroke="#E05A6A" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M735.929 193.885L790.106 96.5385" stroke="#3EC97E" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M790.106 96.5385L844.282 340" stroke="#E05A6A" strokeWidth="2" strokeLinecap="round" strokeDasharray="6 3"/>
+                <path d="M665.5 340H893.041" stroke="#888780" strokeWidth="0.5" strokeDasharray="4 3"/>
+                <path d="M420.509 533H419.452C419.39 532.696 419.28 532.429 419.124 532.199C418.971 531.969 418.783 531.776 418.562 531.619C418.343 531.46 418.1 531.341 417.833 531.261C417.566 531.182 417.288 531.142 416.998 531.142C416.469 531.142 415.991 531.276 415.562 531.543C415.136 531.81 414.796 532.203 414.543 532.723C414.293 533.243 414.168 533.881 414.168 534.636C414.168 535.392 414.293 536.03 414.543 536.55C414.796 537.07 415.136 537.463 415.562 537.73C415.991 537.997 416.469 538.131 416.998 538.131C417.288 538.131 417.566 538.091 417.833 538.011C418.1 537.932 418.343 537.814 418.562 537.658C418.783 537.499 418.971 537.304 419.124 537.074C419.28 536.841 419.39 536.574 419.452 536.273H420.509C420.43 536.719 420.285 537.118 420.074 537.47C419.864 537.822 419.603 538.122 419.29 538.369C418.978 538.614 418.627 538.8 418.238 538.928C417.851 539.055 417.438 539.119 416.998 539.119C416.253 539.119 415.592 538.938 415.012 538.574C414.432 538.21 413.976 537.693 413.644 537.023C413.312 536.352 413.145 535.557 413.145 534.636C413.145 533.716 413.312 532.92 413.644 532.25C413.976 531.58 414.432 531.062 415.012 530.699C415.592 530.335 416.253 530.153 416.998 530.153C417.438 530.153 417.851 530.217 418.238 530.345C418.627 530.473 418.978 530.661 419.29 530.908C419.603 531.152 419.864 531.45 420.074 531.803C420.285 532.152 420.43 532.551 420.509 533Z" fill={dark ? '#e8eaf0' : '#1A1E2A'}/>
+              </g>
+              <defs>
+                <clipPath id="clip0_flat">
+                  <rect width="921" height="605" fill="white"/>
+                </clipPath>
+              </defs>
+            </svg>
+          </div>
         </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
