@@ -110,16 +110,12 @@ function ChannelSVG({ name }) {
       <svg width="80" height="70" viewBox="0 0 80 70" fill="none">
         <polyline points="4,58 16,22 28,58 40,22 52,58" fill="none" stroke={RED} strokeWidth={SW}/>
         <line x1="4" y1="22" x2="52" y2="22" stroke={RED} strokeWidth={SW} strokeDasharray="4 3" opacity="0.7"/>
-        <line x1="52" y1="58" x2="66" y2="70" stroke={RED} strokeWidth={SW} strokeLinecap="round"/>
-        <polygon points="66,70 60,66 63,62" fill={RED}/>
       </svg>
     ),
     '더블바텀': (
       <svg width="80" height="70" viewBox="0 0 80 70" fill="none">
         <polyline points="4,12 16,48 28,12 40,48 52,12" fill="none" stroke={GREEN} strokeWidth={SW}/>
         <line x1="4" y1="48" x2="52" y2="48" stroke={GREEN} strokeWidth={SW} strokeDasharray="4 3" opacity="0.7"/>
-        <line x1="52" y1="12" x2="66" y2="0" stroke={GREEN} strokeWidth={SW} strokeLinecap="round"/>
-        <polygon points="66,0 60,6 63,10" fill={GREEN}/>
       </svg>
     ),
     '아담과 이브': (
@@ -127,8 +123,6 @@ function ChannelSVG({ name }) {
         <polyline points="8,20 14,58 20,20" fill="none" stroke={GREEN} strokeWidth={SW}/>
         <path d="M30 22 Q42 62 54 22" fill="none" stroke={GREEN} strokeWidth={SW}/>
         <line x1="8" y1="22" x2="54" y2="22" stroke={GREEN} strokeWidth={SW} strokeDasharray="3 2" opacity="0.5"/>
-        <line x1="54" y1="22" x2="68" y2="8" stroke={GREEN} strokeWidth={SW} strokeLinecap="round"/>
-        <polygon points="68,8 62,12 65,17" fill={GREEN}/>
       </svg>
     ),
     '컵앤핸들': (
@@ -136,8 +130,6 @@ function ChannelSVG({ name }) {
         <line x1="4" y1="12" x2="76" y2="12" stroke={GRAY} strokeWidth={SW} strokeDasharray="3 2"/>
         <path d="M4 12 Q26 56 48 12" fill="none" stroke={GREEN} strokeWidth={SW}/>
         <polyline points="48,12 56,24 64,16" fill="none" stroke={GREEN} strokeWidth={SW}/>
-        <line x1="64" y1="16" x2="76" y2="4" stroke={GREEN} strokeWidth={SW} strokeLinecap="round"/>
-        <polygon points="76,4 70,8 73,13" fill={GREEN}/>
       </svg>
     ),
 
