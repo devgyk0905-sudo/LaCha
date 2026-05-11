@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { useTheme } from '../App'
-import { Card, Badge, Alert, SectionTitle, Code, Table } from '../components/UI'
+import { Code, Table, Alert } from '../components/UI'
 import ChartNote from '../components/ChartNote'
 
 const TABS = [
@@ -21,16 +21,115 @@ const SUB_CORRECT = [
   { id: 'cor_abc', label: 'ABC' },
 ]
 
+/* ── 공통 컴포넌트 ── */
+function SectionHead({ num, title }) {
+  const { dark } = useTheme()
+  const numC  = dark ? 'text-white/30'   : 'text-black/30'
+  const lineC = dark ? 'border-white/10' : 'border-black/10'
+  return (
+    <div className="flex items-center gap-2.5 mb-5 mt-7 first:mt-0">
+      <span className={`text-xs font-mono ${numC}`}>{String(num).padStart(2,'0')}</span>
+      <span className="text-xs font-semibold uppercase tracking-widest">{title}</span>
+      <div className={`flex-1 border-t ${lineC}`} />
+    </div>
+  )
+}
+
+function Desc({ children }) {
+  return <p className="text-sm text-[#7a7f94] mb-5 leading-relaxed">{children}</p>
+}
+
+function WaveAlert({ type = 'blue', children }) {
+  const colors = {
+    blue:  'border-[#4f8ef7] bg-[#4f8ef7]/5',
+    red:   'border-[#e05a6a] bg-[#e05a6a]/5',
+    amber: 'border-[#f0a040] bg-[#f0a040]/5',
+    green: 'border-[#3ec97e] bg-[#3ec97e]/5',
+    teal:  'border-[#2abfb0] bg-[#2abfb0]/5',
+  }
+  return (
+    <div className={`border-l-2 px-4 py-3 text-xs leading-relaxed my-4 ${colors[type]}`}>
+      {children}
+    </div>
+  )
+}
+
+function WaveTable({ headers, rows }) {
+  const { dark } = useTheme()
+  const thC   = dark ? 'text-[#7a7f94] border-white/10' : 'text-gray-400 border-black/10'
+  const tdC   = dark ? 'border-white/8'  : 'border-black/8'
+  return (
+    <div className="w-full overflow-x-auto mb-1">
+      <table className="w-full text-xs border-collapse">
+        <thead>
+          <tr>
+            {headers.map((h, i) => (
+              <th key={i} className={`text-left font-medium pb-2 pr-4 border-b ${thC}`}>{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, ri) => (
+            <tr key={ri}>
+              {row.map((cell, ci) => (
+                <td key={ci} className={`py-2 pr-4 border-b leading-relaxed align-top ${tdC} last-of-type:border-b-0`}>{cell}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
+function StepList({ steps }) {
+  return (
+    <div className="space-y-0">
+      {steps.map((s, i) => (
+        <div key={i} className="flex gap-3 py-2.5 border-b border-white/6 last:border-b-0 text-xs leading-relaxed">
+          <span className="w-5 h-5 rounded-full bg-[#4f8ef7]/15 text-[#4f8ef7] flex items-center justify-center text-[10px] font-mono shrink-0 mt-0.5">{i+1}</span>
+          <span>{s}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function RuleList({ rules }) {
+  return (
+    <div className="space-y-0">
+      {rules.map((r, i) => (
+        <div key={i} className="flex gap-3 py-2.5 border-b border-white/6 last:border-b-0 text-xs leading-relaxed">
+          <span className="font-mono text-[10px] bg-white/5 border border-white/10 px-1.5 py-0.5 rounded shrink-0 mt-0.5">{i+1}</span>
+          <span>{r}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function Divider() {
+  const { dark } = useTheme()
+  return <div className={`border-t my-7 ${dark ? 'border-white/8' : 'border-black/8'}`} />
+}
+
+/* ── 메인 ── */
 export default function WaveTheory() {
   const { dark } = useTheme()
   const [active, setActive] = useState('step')
   const [subImp, setSubImp] = useState('imp_basic')
   const [subCor, setSubCor] = useState('cor_wxy')
+
   const muted       = dark ? 'text-[#7a7f94]' : 'text-gray-500'
-  const tabActive   = dark ? 'bg-[#1a1e2a] text-[#4f8ef7] border border-white/10' : 'bg-white text-[#185fa5] border border-black/10 shadow-sm'
-  const tabInactive = dark ? 'text-[#7a7f94] hover:text-[#e8eaf0]' : 'text-gray-500 hover:text-gray-800'
-  const subActive   = dark ? 'bg-[#4f8ef7]/15 text-[#4f8ef7]' : 'bg-[#185fa5]/10 text-[#185fa5]'
-  const subInactive = dark ? 'text-[#7a7f94] hover:text-[#e8eaf0]' : 'text-gray-400 hover:text-gray-700'
+  const tabBorderC  = dark ? 'border-white/10' : 'border-black/10'
+  const tabActiveC  = 'text-[color:var(--tw-text-opacity)] font-medium border-b-2 border-[#3ec97e] text-current'
+  const tabInactiveC = `${muted} border-b-2 border-transparent hover:text-current`
+  const subActiveC  = dark
+    ? 'bg-white/8 text-[#e8eaf0] border-white/15 font-medium'
+    : 'bg-black/5 text-gray-800 border-black/15 font-medium'
+  const subInactiveC = dark
+    ? 'text-[#7a7f94] border-white/8 hover:text-[#e8eaf0]'
+    : 'text-gray-400 border-black/8 hover:text-gray-700'
 
   return (
     <div>
@@ -39,30 +138,32 @@ export default function WaveTheory() {
         <p className={`text-sm ${muted}`}>엘리어트 파동 이론 — 충격파동 · 조정파동 · 마무리 패턴</p>
       </div>
 
-      <div className="flex gap-1.5 flex-wrap mb-5">
+      {/* 메인 탭 */}
+      <div className={`flex gap-0 border-b mb-7 ${tabBorderC}`}>
         {TABS.map(t => (
           <button key={t.id} onClick={() => setActive(t.id)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${active === t.id ? tabActive : tabInactive}`}>
+            className={`px-0 mr-6 py-2 text-xs transition-all ${active === t.id ? tabActiveC : tabInactiveC}`}>
             {t.label}
           </button>
         ))}
       </div>
 
+      {/* 서브탭 */}
       {active === 'impulse' && (
-        <div className="flex gap-1.5 mb-6">
+        <div className="flex gap-2 mb-7">
           {SUB_IMPULSE.map(s => (
             <button key={s.id} onClick={() => setSubImp(s.id)}
-              className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${subImp === s.id ? subActive : subInactive}`}>
+              className={`px-3 py-1 rounded-full text-xs border transition-all ${subImp === s.id ? subActiveC : subInactiveC}`}>
               {s.label}
             </button>
           ))}
         </div>
       )}
       {active === 'correct' && (
-        <div className="flex gap-1.5 mb-6">
+        <div className="flex gap-2 mb-7">
           {SUB_CORRECT.map(s => (
             <button key={s.id} onClick={() => setSubCor(s.id)}
-              className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${subCor === s.id ? subActive : subInactive}`}>
+              className={`px-3 py-1 rounded-full text-xs border transition-all ${subCor === s.id ? subActiveC : subInactiveC}`}>
               {s.label}
             </button>
           ))}
@@ -72,8 +173,8 @@ export default function WaveTheory() {
       <div className="page-enter">
         {active === 'step'    && <StepSection />}
         {active === 'impulse' && subImp === 'imp_basic'    && <ImpulseBasic />}
-        {active === 'impulse' && subImp === 'imp_terminal' && <ImpulseTerminal />}
         {active === 'impulse' && subImp === 'imp_expand'   && <ImpulseExpand />}
+        {active === 'impulse' && subImp === 'imp_terminal' && <ImpulseTerminal />}
         {active === 'correct' && subCor === 'cor_wxy'      && <CorrectWXY />}
         {active === 'correct' && subCor === 'cor_abc'      && <CorrectABC />}
         {active === 'ending'  && <EndingSection />}
@@ -85,53 +186,48 @@ export default function WaveTheory() {
 /* ── 판별 순서 ── */
 function StepSection() {
   return (
-    <div className="space-y-4">
-      <SectionTitle color="blue">판별 순서</SectionTitle>
-      <p className="text-sm text-[#7a7f94]">채널을 먼저 그린 뒤 단계별로 확인</p>
-      <Card accent="blue">
-        <p className="font-semibold text-sm mb-3">STEP 1 — 채널을 그린다</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <p className="text-xs font-semibold mb-2 text-[#4f8ef7]">채널 지킬 때</p>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {['WXY', 'WXYXZ', '이중플랫(ABC X ABC)', '3파연장 임펄스'].map(t => <Code key={t}>{t}</Code>)}
-            </div>
-            <Alert type="blue">피보나치 <strong>확장</strong>으로 판별<br/>시작점 0(1) → W(2) → X(3) 지점 연결</Alert>
+    <div>
+      <SectionHead num={1} title="STEP 1 — 채널을 그린다" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-4">
+        <div>
+          <p className="text-xs font-semibold text-[#4f8ef7] mb-3">채널 지킬 때</p>
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {['WXY', 'WXYXZ', '이중플랫(ABC X ABC)', '3파연장 임펄스'].map(t => <Code key={t}>{t}</Code>)}
           </div>
-          <div>
-            <p className="text-xs font-semibold mb-2 text-[#f0a040]">채널 안 지킬 때</p>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {['ABC', '12345'].map(t => <Code key={t}>{t}</Code>)}
-            </div>
-            <Alert type="amber">피보나치 <strong>되돌림</strong>으로 판별<br/>추세 방향이면 12345 / 반대면 ABC</Alert>
-          </div>
+          <WaveAlert type="blue">피보나치 <strong>확장</strong>으로 판별<br/>시작점 0(1) → W(2) → X(3) 지점 연결</WaveAlert>
         </div>
-      </Card>
-      <Card>
-        <p className="font-semibold text-sm mb-3">STEP 2 — 채널 지킨다면: 추세 기반 피보나치 확장</p>
-        <Table
-          headers={['Y/Z 마무리 위치', '채널 중단 여부', '결론']}
-          rows={[
-            [<Code>0.618 ~ 1.0</Code>, <span className="text-green-400">O</span>, <span className="text-green-400">WXY 종료</span>],
-            [<Code>0.618 ~ 1.0</Code>, <span className="text-red-400">X</span>, <span className="text-amber-400">ABC / 12345 / WXYXZ 추가 확인</span>],
-            [<Code>1.0 ~ 1.618</Code>, <span className="text-red-400">X</span>, <span className="text-amber-400">WXYXZ 가능성 → Z 찾기</span>],
-            [<Code>1.618 초과</Code>, '—', <span className="text-red-400">카운팅 재검토</span>],
-          ]}
-        />
-        <Alert type="red"><strong>절대규칙</strong>: Y와 Z 중 하나의 파동만 확장 — Y 확장 시 Z는 <Code>0.618~1.0</Code> 이내 종료</Alert>
-      </Card>
-      <Card>
-        <p className="font-semibold text-sm mb-3">STEP 2-2 — 채널 안 지킨다면: 피모나치 되돌림</p>
-        <Table
-          headers={['확인 항목', '수치', '결론']}
-          rows={[
-            ['되돌림 후 추세 방향 재개', <Code>2파가 1파의 0.382~0.618</Code>, <span className="text-blue-400">12345 의심</span>],
-            ['되돌림 후 반대 방향 재개', <Code>B파가 A파의 0.382~0.618</Code>, <span className="text-teal-400">ABC 의심</span>],
-            ['C파 길이', <Code>A파의 1.0~1.618</Code>, <span className="text-teal-400">ABC 확정</span>],
-            ['3규칙 모두 충족', '2파 미이탈 / 3파 최단 아님 / 4파 미겹침', <span className="text-blue-400">12345 확정</span>],
-          ]}
-        />
-      </Card>
+        <div>
+          <p className="text-xs font-semibold text-[#f0a040] mb-3">채널 안 지킬 때</p>
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {['ABC', '12345'].map(t => <Code key={t}>{t}</Code>)}
+          </div>
+          <WaveAlert type="amber">피보나치 <strong>되돌림</strong>으로 판별<br/>추세 방향이면 12345 / 반대면 ABC</WaveAlert>
+        </div>
+      </div>
+
+      <SectionHead num={2} title="STEP 2 — 채널 지킨다면: 피보나치 확장" />
+      <WaveTable
+        headers={['Y/Z 마무리 위치', '채널 중단 여부', '결론']}
+        rows={[
+          [<Code>0.618 ~ 1.0</Code>, <span className="text-green-400">O</span>, <span className="text-green-400">WXY 종료</span>],
+          [<Code>0.618 ~ 1.0</Code>, <span className="text-red-400">X</span>, <span className="text-amber-400">ABC / 12345 / WXYXZ 추가 확인</span>],
+          [<Code>1.0 ~ 1.618</Code>, <span className="text-red-400">X</span>, <span className="text-amber-400">WXYXZ 가능성 → Z 찾기</span>],
+          [<Code>1.618 초과</Code>, '—', <span className="text-red-400">카운팅 재검토</span>],
+        ]}
+      />
+      <WaveAlert type="red"><strong>절대규칙</strong>: Y와 Z 중 하나의 파동만 확장 — Y 확장 시 Z는 <Code>0.618~1.0</Code> 이내 종료</WaveAlert>
+
+      <SectionHead num={3} title="STEP 2-2 — 채널 안 지킨다면: 피보나치 되돌림" />
+      <WaveTable
+        headers={['확인 항목', '수치', '결론']}
+        rows={[
+          ['되돌림 후 추세 방향 재개', <Code>2파가 1파의 0.382~0.618</Code>, <span className="text-[#4f8ef7]">12345 의심</span>],
+          ['되돌림 후 반대 방향 재개', <Code>B파가 A파의 0.382~0.618</Code>, <span className="text-[#2abfb0]">ABC 의심</span>],
+          ['C파 길이', <Code>A파의 1.0~1.618</Code>, <span className="text-[#2abfb0]">ABC 확정</span>],
+          ['3규칙 모두 충족', '2파 미이탈 / 3파 최단 아님 / 4파 미겹침', <span className="text-[#4f8ef7]">12345 확정</span>],
+        ]}
+      />
+
       <ChartNote page="wave" section="step" label="추가 이미지" />
     </div>
   )
@@ -140,13 +236,14 @@ function StepSection() {
 /* ── 임펄스 기본 ── */
 function ImpulseBasic() {
   return (
-    <div className="space-y-4">
-      <SectionTitle color="blue">임펄스 12345</SectionTitle>
-      <p className="text-sm text-[#7a7f94]">추세 방향으로 강하고 빠르게 움직이는 기본 충격파동</p>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card>
-          <p className="font-semibold text-sm mb-3">파동 구성</p>
-          <Table
+    <div>
+      <SectionHead num={1} title="임펄스 12345" />
+      <Desc>추세 방향으로 강하고 빠르게 움직이는 기본 충격파동</Desc>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-2">
+        <div>
+          <p className="text-xs font-semibold mb-4">파동 구성</p>
+          <WaveTable
             headers={['파동', '방향', '조건']}
             rows={[
               [<Code>1파</Code>, <span className="text-green-400">추세</span>, '시작'],
@@ -156,18 +253,18 @@ function ImpulseBasic() {
               [<Code>5파</Code>, <span className="text-green-400">추세</span>, '거래량 감소하며 마무리'],
             ]}
           />
-        </Card>
-        <Card accent="red">
-          <p className="font-semibold text-sm mb-3">3가지 절대 규칙</p>
-          {['2파 저점이 1파 저점 아래로 내려가면 안 됨', '1,3,5파 중 3파가 가장 짧으면 안 됨', '4파가 1파 영역과 겹치면 안 됨'].map((r, i) => (
-            <div key={i} className="flex gap-3 py-2.5 border-b border-white/6 last:border-b-0 text-sm">
-              <span className="font-mono text-xs bg-white/5 border border-white/10 px-2 py-0.5 rounded shrink-0 mt-0.5">{i+1}</span>
-              <span>{r}</span>
-            </div>
-          ))}
-          <Alert type="amber">하나라도 위반 시 → 12345 아님</Alert>
-        </Card>
+        </div>
+        <div>
+          <p className="text-xs font-semibold mb-4">3가지 절대 규칙</p>
+          <RuleList rules={[
+            '2파 저점이 1파 저점 아래로 내려가면 안 됨',
+            '1,3,5파 중 3파가 가장 짧으면 안 됨',
+            '4파가 1파 영역과 겹치면 안 됨',
+          ]} />
+          <WaveAlert type="amber">하나라도 위반 시 → 12345 아님</WaveAlert>
+        </div>
       </div>
+
       <ChartNote page="wave" section="imp_basic" label="추가 이미지" />
     </div>
   )
@@ -176,26 +273,27 @@ function ImpulseBasic() {
 /* ── 터미널 ── */
 function ImpulseTerminal() {
   return (
-    <div className="space-y-4">
-      <SectionTitle color="teal">터미널 12345 (다이아고날)</SectionTitle>
-      <p className="text-sm text-[#7a7f94]">쐐기형으로 수렴하는 충격파동 — 추세 소진 신호</p>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card>
-          <p className="font-semibold text-sm mb-3">임펄스와의 차이</p>
-          <Table
+    <div>
+      <SectionHead num={1} title="터미널 12345 (다이아고날)" />
+      <Desc>쐐기형으로 수렴하는 충격파동 — 추세 소진 신호</Desc>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-2">
+        <div>
+          <p className="text-xs font-semibold mb-4">임펄스와의 차이</p>
+          <WaveTable
             headers={['항목', '임펄스', '터미널']}
             rows={[
-              ['모양', '평행/확장', <span className="text-teal-400">쐐기형 수렴</span>],
-              ['1-4파 겹침', '불가', <span className="text-teal-400">허용</span>],
-              ['5파 길이', '3파보다 짧아도 됨', <span className="text-teal-400">3파보다 짧음</span>],
-              ['속도', '빠름', <span className="text-teal-400">느리고 지침</span>],
-              ['의미', '추세 강함', <span className="text-teal-400">추세 소진</span>],
+              ['모양', '평행/확장', <span className="text-[#2abfb0]">쐐기형 수렴</span>],
+              ['1-4파 겹침', '불가', <span className="text-[#2abfb0]">허용</span>],
+              ['5파 길이', '3파보다 짧아도 됨', <span className="text-[#2abfb0]">3파보다 짧음</span>],
+              ['속도', '빠름', <span className="text-[#2abfb0]">느리고 지침</span>],
+              ['의미', '추세 강함', <span className="text-[#2abfb0]">추세 소진</span>],
             ]}
           />
-        </Card>
-        <Card accent="teal">
-          <p className="font-semibold text-sm mb-3">파동 조건</p>
-          <Table
+        </div>
+        <div>
+          <p className="text-xs font-semibold mb-4">파동 조건</p>
+          <WaveTable
             headers={['파동', '조건']}
             rows={[
               [<Code>1파</Code>, '시작'],
@@ -205,25 +303,24 @@ function ImpulseTerminal() {
               [<Code>5파</Code>, '3파보다 짧음 — 가장 짧음'],
             ]}
           />
-          <Alert type="blue">점점 짧아지고 느려지며 쐐기 수렴 → 소진 후 강한 반전</Alert>
-        </Card>
+          <WaveAlert type="blue">점점 짧아지고 느려지며 쐐기 수렴 → 소진 후 강한 반전</WaveAlert>
+        </div>
       </div>
+
       <ChartNote page="wave" section="imp_terminal" label="추가 이미지" />
     </div>
   )
 }
 
-/* ── 확장 임펄스 SVG (Figma Frame_19/20/21) ── */
+/* ── 확장 임펄스 SVG ── */
 function ImpulseExpandSVG() {
   const { dark } = useTheme()
   const c = dark ? '#e8eaf0' : '#1a1e2a'
   const m = dark ? '#7a7f94' : '#888780'
-
   return (
     <div className="grid grid-cols-3 gap-4">
-      {/* 1파 연장 — Frame_19 */}
       <div className="flex flex-col items-center gap-2">
-        <svg width="100%" height="160" viewBox="0 0 280 353" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="100%" height="160" viewBox="0 0 280 353" fill="none">
           <line x1="0.322911" y1="245.618" x2="279.323" y2="9.61826" stroke={c} strokeOpacity="0.5"/>
           <line x1="144.189" y1="307.796" x2="267.189" y2="32.7958" stroke={c} strokeOpacity="0.5"/>
           <path d="M51.6458 352L64.6458 268L86.1458 307.5L99.1458 197.5L128.646 235L147.146 124.5L199.646 183L208.646 71.5L240.146 92.5L247.646 38.5" stroke={c} strokeWidth="2"/>
@@ -234,12 +331,10 @@ function ImpulseExpandSVG() {
           <path d="M245.626 12.1193C245.126 12.1193 244.676 12.0199 244.275 11.821C243.875 11.6222 243.554 11.3494 243.312 11.0028C243.071 10.6562 242.939 10.2614 242.916 9.81818H243.939C243.978 10.2131 244.157 10.5398 244.476 10.7983C244.797 11.054 245.18 11.1818 245.626 11.1818C245.984 11.1818 246.302 11.098 246.581 10.9304C246.862 10.7628 247.082 10.5327 247.241 10.2401C247.403 9.9446 247.484 9.6108 247.484 9.23864C247.484 8.85795 247.4 8.51847 247.233 8.22017C247.068 7.91903 246.841 7.68182 246.551 7.50852C246.261 7.33523 245.93 7.24716 245.558 7.24432C245.291 7.24148 245.017 7.28267 244.735 7.3679C244.454 7.45028 244.223 7.55682 244.041 7.6875L243.052 7.56818L243.581 3.27273H248.115V4.21023H244.467L244.16 6.78409H244.211C244.39 6.64205 244.615 6.52415 244.885 6.4304C245.155 6.33665 245.436 6.28977 245.728 6.28977C246.262 6.28977 246.738 6.41761 247.156 6.6733C247.576 6.92614 247.906 7.27273 248.145 7.71307C248.386 8.15341 248.507 8.65625 248.507 9.22159C248.507 9.77841 248.382 10.2756 248.132 10.7131C247.885 11.1477 247.544 11.4915 247.109 11.7443C246.674 11.9943 246.18 12.1193 245.626 12.1193Z" fill={c}/>
           <path d="M54.8906 348.273V357H53.8338V349.381H53.7827L51.652 350.795V349.722L53.8338 348.273H54.8906Z" fill={c}/>
         </svg>
-        <p className="text-xs text-center" style={{color: m}}>임펄스 1파 연장</p>
+        <p className="text-xs text-center" style={{color: m}}>1파 연장</p>
       </div>
-
-      {/* 3파 연장 — Frame_20 */}
       <div className="flex flex-col items-center gap-2">
-        <svg width="100%" height="160" viewBox="0 0 209 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="100%" height="160" viewBox="0 0 209 360" fill="none">
           <line x1="5.38308" y1="272.686" x2="208.383" y2="20.6864" stroke={c} strokeOpacity="0.5"/>
           <line x1="0.386232" y1="359.682" x2="208.386" y2="106.682" stroke={c} strokeOpacity="0.5"/>
           <path d="M2.77246 353.5L24.2725 251L56.2725 297L68.7725 212.5L81.7725 232.5L96.2725 89L114.772 144.5L120.272 67.5L174.772 144.5L200.772 31.5" stroke={c} strokeWidth="2"/>
@@ -249,12 +344,10 @@ function ImpulseExpandSVG() {
           <path d="M170.622 180.21V179.341L174.457 173.273H175.088V174.619H174.661L171.764 179.205V179.273H176.929V180.21H170.622ZM174.73 182V179.946V179.541V173.273H175.735V182H174.73Z" fill={c}/>
           <path d="M197.753 12.1193C197.253 12.1193 196.802 12.0199 196.402 11.821C196.001 11.6222 195.68 11.3494 195.439 11.0028C195.197 10.6562 195.065 10.2614 195.043 9.81818H196.065C196.105 10.2131 196.284 10.5398 196.602 10.7983C196.923 11.054 197.307 11.1818 197.753 11.1818C198.111 11.1818 198.429 11.098 198.707 10.9304C198.989 10.7628 199.209 10.5327 199.368 10.2401C199.53 9.9446 199.611 9.6108 199.611 9.23864C199.611 8.85795 199.527 8.51847 199.359 8.22017C199.195 7.91903 198.967 7.68182 198.677 7.50852C198.388 7.33523 198.057 7.24716 197.685 7.24432C197.418 7.24148 197.143 7.28267 196.862 7.3679C196.581 7.45028 196.349 7.55682 196.168 7.6875L195.179 7.56818L195.707 3.27273H200.241V4.21023H196.594L196.287 6.78409H196.338C196.517 6.64205 196.741 6.52415 197.011 6.4304C197.281 6.33665 197.562 6.28977 197.855 6.28977C198.389 6.28977 198.865 6.41761 199.283 6.6733C199.703 6.92614 200.033 7.27273 200.271 7.71307C200.513 8.15341 200.633 8.65625 200.633 9.22159C200.633 9.77841 200.508 10.2756 200.258 10.7131C200.011 11.1477 199.67 11.4915 199.236 11.7443C198.801 11.9943 198.307 12.1193 197.753 12.1193Z" fill={c}/>
         </svg>
-        <p className="text-xs text-center" style={{color: m}}>임펄스 3파 연장</p>
+        <p className="text-xs text-center" style={{color: m}}>3파 연장</p>
       </div>
-
-      {/* 5파 연장 — Frame_21 */}
       <div className="flex flex-col items-center gap-2">
-        <svg width="100%" height="160" viewBox="0 0 280 361" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="100%" height="160" viewBox="0 0 280 361" fill="none">
           <line x1="4.50525" y1="320.767" x2="150.505" y2="43.7669" stroke={c} strokeOpacity="0.5"/>
           <line x1="21.6594" y1="330.591" x2="279.659" y2="148.591" stroke={c} strokeOpacity="0.5"/>
           <path d="M0.947571 360.5L30.4476 273L51.9476 308L93.9476 157L137.448 246L148.448 142.5L181.448 167L199.448 80.5L224.948 116.5L246.448 30.5" stroke={c} strokeWidth="2"/>
@@ -264,7 +357,7 @@ function ImpulseExpandSVG() {
           <path d="M134.797 277.21V276.341L138.632 270.273H139.263V271.619H138.837L135.939 276.205V276.273H141.104V277.21H134.797ZM138.905 279V276.946V276.541V270.273H139.91V279H138.905Z" fill={c}/>
           <path d="M243.928 12.1193C243.428 12.1193 242.978 12.0199 242.577 11.821C242.176 11.6222 241.855 11.3494 241.614 11.0028C241.372 10.6562 241.24 10.2614 241.218 9.81818H242.24C242.28 10.2131 242.459 10.5398 242.777 10.7983C243.098 11.054 243.482 11.1818 243.928 11.1818C244.286 11.1818 244.604 11.098 244.882 10.9304C245.164 10.7628 245.384 10.5327 245.543 10.2401C245.705 9.9446 245.786 9.6108 245.786 9.23864C245.786 8.85795 245.702 8.51847 245.534 8.22017C245.37 7.91903 245.142 7.68182 244.853 7.50852C244.563 7.33523 244.232 7.24716 243.86 7.24432C243.593 7.24148 243.318 7.28267 243.037 7.3679C242.756 7.45028 242.524 7.55682 242.343 7.6875L241.354 7.56818L241.882 3.27273H246.416V4.21023H242.769L242.462 6.78409H242.513C242.692 6.64205 242.916 6.52415 243.186 6.4304C243.456 6.33665 243.738 6.28977 244.03 6.28977C244.564 6.28977 245.04 6.41761 245.458 6.6733C245.878 6.92614 246.208 7.27273 246.446 7.71307C246.688 8.15341 246.809 8.65625 246.809 9.22159C246.809 9.77841 246.684 10.2756 246.434 10.7131C246.186 11.1477 245.845 11.4915 245.411 11.7443C244.976 11.9943 244.482 12.1193 243.928 12.1193Z" fill={c}/>
         </svg>
-        <p className="text-xs text-center" style={{color: m}}>임펄스 5파 연장</p>
+        <p className="text-xs text-center" style={{color: m}}>5파 연장</p>
       </div>
     </div>
   )
@@ -275,16 +368,14 @@ function ImpulseExpand() {
   const { dark } = useTheme()
   const muted = dark ? 'text-[#7a7f94]' : 'text-gray-500'
   return (
-    <div className="space-y-4">
-      <SectionTitle color="purple">확장 임펄스</SectionTitle>
-      <p className="text-sm text-[#7a7f94]">1, 3, 5파 중 하나가 비정상적으로 길게 연장되는 패턴</p>
-      <Card>
-        <p className="font-semibold text-sm mb-4">파동별 연장 유형</p>
-        <ImpulseExpandSVG />
-      </Card>
-      <Card>
-        <p className="font-semibold text-sm mb-3">확장 유형 비교</p>
-        <Table
+    <div>
+      <SectionHead num={1} title="확장 임펄스" />
+      <Desc>1, 3, 5파 중 하나가 비정상적으로 길게 연장되는 패턴</Desc>
+
+      <ImpulseExpandSVG />
+
+      <div className="mt-6">
+        <WaveTable
           headers={['유형', '특징', '비고']}
           rows={[
             ['1파 확장', '1파가 가장 길게 연장', '비교적 드묾'],
@@ -292,108 +383,76 @@ function ImpulseExpand() {
             ['5파 확장', '5파가 가장 길게 연장', '거래량 감소 확인 중요'],
           ]}
         />
-      </Card>
-      <Alert type="amber">
-        <strong>절대규칙</strong>: 1,3,5파 중 하나만 확장됨 — 두 개 이상 확장되면 카운팅 재검토
-      </Alert>
-      <Card accent="purple">
-        <p className="font-semibold text-sm mb-2">3파 확장이 가장 흔한 이유</p>
-        <p className={`text-sm ${muted}`}>3파는 추세의 핵심 구간으로 거래량과 모멘텀이 집중됨. 시장 참여자들이 추세를 인식하고 집중 매수/매도하는 구간이기 때문.</p>
-      </Card>
+      </div>
+
+      <WaveAlert type="amber"><strong>절대규칙</strong>: 1,3,5파 중 하나만 확장 — 두 개 이상 확장되면 카운팅 재검토</WaveAlert>
+      <p className={`text-xs leading-relaxed ${muted}`}>3파는 추세의 핵심 구간으로 거래량과 모멘텀이 집중됨. 시장 참여자들이 추세를 인식하고 집중 매수/매도하는 구간이기 때문에 가장 흔하게 연장됨.</p>
+
       <ChartNote page="wave" section="imp_expand" label="추가 이미지" />
     </div>
   )
 }
 
-/* ── WXY / WXYXZ — 앵커 스크롤 ── */
+/* ── WXY / WXYXZ ── */
 function CorrectWXY() {
-  const { dark } = useTheme()
-  const wxyRef   = useRef(null)
-  const wxyxzRef = useRef(null)
-  const scrollTo = (ref) => ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
-  const anchorActive   = dark ? 'bg-[#9b7de8]/15 text-[#9b7de8] border border-[#9b7de8]/30' : 'bg-[#534ab7]/10 text-[#534ab7] border border-[#534ab7]/20'
-  const anchorInactive = dark ? 'text-[#7a7f94] border border-white/10 hover:text-[#e8eaf0]' : 'text-gray-400 border border-black/10 hover:text-gray-700'
-  const divC           = dark ? 'border-white/8' : 'border-black/8'
-
   return (
-    <div className="space-y-4">
-      <SectionTitle color="purple">WXY / WXYXZ 복합조정</SectionTitle>
-
-      <div className="flex gap-2">
-        <button onClick={() => scrollTo(wxyRef)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${anchorActive}`}>WXY</button>
-        <button onClick={() => scrollTo(wxyxzRef)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${anchorInactive}`}>WXYXZ</button>
-      </div>
-
+    <div>
       {/* WXY */}
-      <div ref={wxyRef} className="scroll-mt-24 space-y-4">
-        <p className="text-xs font-semibold text-[#9b7de8] pt-2">WXY</p>
-        <p className="text-sm text-[#7a7f94]">채널을 기막히게 지킨다 — ABC보다 기간이 길다 (기간 조정)</p>
-        <Card accent="purple">
-          <p className="font-semibold text-sm mb-3">핵심 2가지</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <Alert type="blue">채널을 잘 지키네? → <strong>WXY</strong></Alert>
-            <Alert type="green">피보나치 확장 <Code>0.618~1.0</Code> + 채널 중단 → <strong>진입 타점</strong></Alert>
-          </div>
-        </Card>
-        <Card>
-          <p className="font-semibold text-sm mb-3">파동 구성</p>
-          <Table
-            headers={['파동', '내부 구성', '비율', '위치']}
-            rows={[
-              [<Code>W파</Code>, '3파동 (ABC or WXY)', '기준', '조정 첫 번째'],
-              [<Code>X파</Code>, '어떤 파동도 가능', '—', '연결 반등'],
-              [<Code>Y파</Code>, '5파동 (임펄스/터미널/삼각수렴)', <Code>W:Y = 1:0.618~1.0</Code>, '채널 중단 종료'],
-            ]}
-          />
-        </Card>
-        <Card>
-          <p className="font-semibold text-sm mb-3">WXY 찾는 순서</p>
-          {['채널을 그린다 → 채널을 지키는가?', '피보나치 확장 (W시작→W끝→X끝)', '0.618~1.0 + 채널 중단 → WXY', '이중플랫 배제: Y/Z 확장 개별 확인'].map((s, i) => (
-            <div key={i} className="flex gap-3 py-2.5 border-b border-white/6 last:border-b-0 text-sm">
-              <span className="w-6 h-6 rounded-full bg-[#4f8ef7]/20 text-[#4f8ef7] flex items-center justify-center text-xs shrink-0 font-mono">{i+1}</span>
-              <span>{s}</span>
-            </div>
-          ))}
-        </Card>
-        <Alert type="amber">실시간으로 맞추려 하지 말 것 — 조정 종료 신호 먼저 찾고, 사후에 레이블 붙이기</Alert>
-      </div>
+      <SectionHead num={1} title="WXY 복합조정" />
+      <Desc>채널을 기막히게 지킨다 — ABC보다 기간이 길다. WXY는 "기간 조정"이다.</Desc>
 
-      <div className={`border-t ${divC} my-6`} />
+      <WaveTable
+        headers={['파동', '내부 구성', '비율', '위치']}
+        rows={[
+          [<Code>W파</Code>, '3파동 (ABC or WXY)', '기준', '조정 첫 번째'],
+          [<Code>X파</Code>, '어떤 파동도 가능', '—', '연결 반등'],
+          [<Code>Y파</Code>, '5파동 (임펄스/터미널/삼각수렴)', <Code>W:Y = 1:0.618~1.0</Code>, '채널 중단 종료'],
+        ]}
+      />
+
+      <WaveAlert type="blue">채널 지키네? → <strong>WXY</strong><br/>피보나치 확장 <Code>0.618~1.0</Code> + 채널 중단 → 진입 타점</WaveAlert>
+
+      <p className="text-xs font-semibold mb-3">WXY 찾는 순서</p>
+      <StepList steps={[
+        '채널을 그린다 → 채널을 지키는가?',
+        '피보나치 확장 (W시작 → W끝 → X끝)',
+        '0.618~1.0 + 채널 중단 → WXY 종료',
+        '이중플랫 배제: Y/Z 확장 개별 확인',
+      ]} />
+
+      <WaveAlert type="amber">실시간으로 맞추려 하지 말 것 — 조정 종료 신호 먼저 찾고, 사후에 레이블 붙이기</WaveAlert>
+
+      <Divider />
 
       {/* WXYXZ */}
-      <div ref={wxyxzRef} className="scroll-mt-24 space-y-4">
-        <p className="text-xs font-semibold text-[#9b7de8]">WXYXZ</p>
-        <p className="text-sm text-[#7a7f94]">Y가 채널 중단이 아닌 최상단/최하단에서 끝났을 때 의심</p>
-        <Card>
-          <p className="font-semibold text-sm mb-3">파동 구성</p>
-          <Table
-            headers={['파동', '내부 구성', '비율 / 위치']}
-            rows={[
-              [<Code>W파</Code>, '3파동', '기준'],
-              [<Code>X파</Code>, '어떤 파동도 가능', '—'],
-              [<Code>Y파</Code>, '5파동', <><Code>1.0~1.618</Code> 확장 → 채널 중단 아님</>],
-              [<Code>X파</Code>, '어떤 파동도 가능', '—'],
-              [<Code>Z파</Code>, '5파동', <><Code>0.618~1.0</Code> → 채널 <strong>중단</strong> 종료</>],
-            ]}
-          />
-        </Card>
-        <Alert type="red">
-          <strong>절대규칙 — 하나의 파동만 확장</strong><br/>
-          Y 확장(<Code>1.0~1.618</Code>) → Z는 반드시 <Code>0.618~1.0</Code> 이내
-        </Alert>
-        <Card accent="amber">
-          <p className="font-semibold text-sm mb-3">WXY vs WXYXZ 판별</p>
-          <Table
-            headers={['Y 마무리', '채널 중단', '결론']}
-            rows={[
-              [<Code>0.618~1.0</Code>, <span className="text-green-400">O</span>, <span className="text-green-400">WXY 종료</span>],
-              [<Code>0.618~1.0</Code>, <span className="text-red-400">X</span>, <span className="text-amber-400">추가 확인</span>],
-              [<Code>1.0~1.618</Code>, <span className="text-red-400">X</span>, <span className="text-amber-400">WXYXZ → Z 찾기</span>],
-            ]}
-          />
-        </Card>
-      </div>
+      <SectionHead num={2} title="WXYXZ" />
+      <Desc>Y가 채널 중단이 아닌 최상단/최하단에서 끝났을 때 의심</Desc>
+
+      <WaveTable
+        headers={['파동', '내부 구성', '비율 / 위치']}
+        rows={[
+          [<Code>W파</Code>, '3파동', '기준'],
+          [<Code>X파</Code>, '어떤 파동도 가능', '—'],
+          [<Code>Y파</Code>, '5파동', <><Code>1.0~1.618</Code> 확장 — <span className="text-red-400">채널 중단 아님</span></>],
+          [<Code>X파</Code>, '어떤 파동도 가능', '—'],
+          [<Code>Z파</Code>, '5파동', <><Code>0.618~1.0</Code> — <span className="text-green-400">채널 중단 종료</span></>],
+        ]}
+      />
+
+      <WaveAlert type="red">
+        <strong>절대규칙 — 하나의 파동만 확장</strong><br/>
+        Y 확장(<Code>1.0~1.618</Code>) → Z는 반드시 <Code>0.618~1.0</Code> 이내
+      </WaveAlert>
+
+      <p className="text-xs font-semibold mb-3">WXY vs WXYXZ 판별</p>
+      <WaveTable
+        headers={['Y 마무리', '채널 중단', '결론']}
+        rows={[
+          [<Code>0.618~1.0</Code>, <span className="text-green-400">O</span>, <span className="text-green-400">WXY 종료</span>],
+          [<Code>0.618~1.0</Code>, <span className="text-red-400">X</span>, <span className="text-amber-400">추가 확인</span>],
+          [<Code>1.0~1.618</Code>, <span className="text-red-400">X</span>, <span className="text-amber-400">WXYXZ → Z 찾기</span>],
+        ]}
+      />
 
       <ChartNote page="wave" section="cor_wxy" label="추가 이미지" />
     </div>
@@ -406,72 +465,74 @@ function CorrectABC() {
   const divC = dark ? 'border-white/8' : 'border-black/8'
 
   return (
-    <div className="space-y-4">
-      <SectionTitle color="teal">ABC 조정</SectionTitle>
-      <p className="text-sm text-[#7a7f94]">큰 추세의 반대 방향 조정 — 가격 조정의 기본</p>
+    <div>
+      <SectionHead num={1} title="ABC 조정" />
+      <Desc>큰 추세의 반대 방향 조정 — 가격 조정의 기본. 채널을 지키지 않는다.</Desc>
 
-      {/* ABC 내용 */}
-      <Card>
-        <Table
-          headers={['파동', '내부 구성', '피보나치 기준', '규칙']}
-          rows={[
-            [<Code>A파</Code>, '3파동 또는 5파동', '—', '조정 시작'],
-            [<Code>B파</Code>, <><span className="text-red-400">가장 더럽고 길다</span><br/>3파동 (ABC or WXY)</>, <><Code>기본: 0.382~0.5</Code><br/><Code>불규칙: 1.09~1.272</Code></>, 'A 시작점 기준'],
-            [<Code>C파</Code>, <><strong>무조건 5파동</strong><br/>임펄스/터미널/WXYXZ</>, <><Code>1:1</Code> / <Code>1:1.236</Code><br/><Code>1:1.382</Code> / <Code>1:1.618</Code></>, 'A파 저점 이탈'],
-          ]}
-        />
-      </Card>
-      <Alert type="amber">C파 저점을 미리 잡으려 하면 안 됨 — C파 완성 확인 후 진입</Alert>
+      <WaveTable
+        headers={['파동', '내부 구성', '피보나치 기준', '규칙']}
+        rows={[
+          [<Code>A파</Code>, '3파동 또는 5파동', '—', '조정 시작'],
+          [<Code>B파</Code>, <><span className="text-red-400">가장 더럽고 길다</span><br/>3파동 (ABC or WXY)</>, <><Code>기본: 0.382~0.5</Code><br/><Code>불규칙: 1.09~1.272</Code></>, 'A 시작점 기준'],
+          [<Code>C파</Code>, <><strong>무조건 5파동</strong><br/>임펄스/터미널/WXYXZ</>, <><Code>1:1</Code> / <Code>1:1.236</Code><br/><Code>1:1.382</Code> / <Code>1:1.618</Code></>, 'A파 저점 이탈'],
+        ]}
+      />
+      <WaveAlert type="amber">C파 저점을 미리 잡으려 하면 안 됨 — C파 완성 확인 후 진입</WaveAlert>
 
-      {/* 구분선 */}
-      <div className={`border-t ${divC} my-2`} />
+      <Divider />
 
       {/* 플랫 유형 */}
-      <div className="space-y-4">
-        <p className="text-xs font-semibold text-[#2abfb0]">플랫 유형</p>
-        <p className="text-sm text-[#7a7f94]">B파 위치와 C파 위치로 구분</p>
+      <SectionHead num={2} title="플랫 유형" />
+      <Desc>B파 위치와 C파 위치로 구분</Desc>
 
-        {/* flat_patterns_1.svg 인라인 삽입 — 원본 전체 */}
-        <Card>
-          <div className="w-full overflow-x-auto">
-            <img
-              src="/flat_patterns_1.svg"
-              alt="플랫 유형 비교 다이어그램"
-              className="w-full"
-              style={{ filter: dark ? 'invert(1) hue-rotate(180deg)' : 'none' }}
-            />
-          </div>
-        </Card>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {[
-            { label: '기본 플랫', color: 'teal', b: '0.382~0.5\nA 시작점 미돌파', c: 'A 저점 이탈', note: '가장 일반적' },
-            { label: '확장 플랫 (Expanded)', color: 'amber', b: '1.09~1.272\nA 시작점 돌파', c: 'A 저점 이탈', note: 'B가 A 시작점 스윕' },
-            { label: '러닝 플랫 (Running)', color: 'purple', b: 'A 시작점 돌파', c: 'A 저점 미이탈', note: 'C파 약함' },
-          ].map(item => (
-            <Card key={item.label} accent={item.color}>
-              <Badge color={item.color}>{item.label}</Badge>
-              <div className="mt-3 space-y-2 text-xs">
-                <div className="flex gap-2"><Code>B파</Code><span className="whitespace-pre-line">{item.b}</span></div>
-                <div className="flex gap-2"><Code>C파</Code><span>{item.c}</span></div>
-                <p className="text-[#7a7f94] mt-1">{item.note}</p>
-              </div>
-            </Card>
-          ))}
-        </div>
-        <Card>
-          <p className="font-semibold text-sm mb-3">C파 목표값</p>
-          <Table
-            headers={['목표', '비율', '비고']}
-            rows={[
-              ['기본', <Code>1:1</Code>, '가장 흔함'],
-              ['확장 1', <Code>1:1.236</Code>, '—'],
-              ['확장 2', <Code>1:1.382</Code>, '—'],
-              ['확장 3', <Code>1:1.618</Code>, '강한 하락 시'],
-            ]}
-          />
-        </Card>
+      <div className="w-full overflow-x-auto mb-6">
+        <img
+          src="/flat_patterns_1.svg"
+          alt="플랫 유형 비교 다이어그램"
+          className="w-full"
+          style={{ filter: dark ? 'invert(1) hue-rotate(180deg)' : 'none' }}
+        />
       </div>
+
+      <WaveTable
+        headers={['유형', 'B파', 'C파', '비고']}
+        rows={[
+          ['기본 플랫', <Code>1:0.382~0.5</Code>, 'A 저점 이탈', '가장 일반적'],
+          ['확장 플랫', <Code>1.09~1.272 (A 시작점 돌파)</Code>, 'A 저점 이탈', 'B가 A 시작점 스윕'],
+          ['러닝 플랫', 'A 시작점 돌파', <span className="text-amber-400">A 저점 미이탈</span>, 'C파 약함'],
+        ]}
+      />
+
+      <Divider />
+
+      {/* ABC X ABC 이중플랫 */}
+      <SectionHead num={3} title="ABC X ABC 이중플랫" />
+      <Desc>채널 내에서 WXYXZ처럼 보이지만 다른 구조 — 절대규칙 위반 시 이중플랫으로 판별</Desc>
+
+      <p className="text-xs font-semibold mb-3">판별 순서</p>
+      <StepList steps={[
+        '1차 판별: 채널 중단에서 끝난 파동이 없음 → Y 또는 Z가 될 수 없음',
+        '2차 판별: 소파동을 들여다보면 ABC + ABC 구조 확인 → 두 저점(B-B)을 연결하면 BB 추세선(채널 하단) 완성 → 두 ABC 사이를 X로 설정',
+      ]} />
+
+      <WaveAlert type="red">
+        <strong>WXYXZ가 될 수 없는 이유</strong><br/>
+        WXY 절대규칙 "한 파동에서 연장은 하나만" — Y가 1.382로 연장, Z도 1 초과로 연장 → 연장 2개 → WXYXZ 불가 → ABC X ABC로 확정
+      </WaveAlert>
+
+      <p className="text-xs font-semibold mb-3">C파 목표</p>
+      <WaveTable
+        headers={['레벨', '비고']}
+        rows={[
+          [<Code>1.382</Code>, '1차 목표'],
+          [<Code>1.272</Code>, '2차 목표'],
+        ]}
+      />
+
+      <WaveAlert type="blue">
+        <strong>플랜A / 플랜B 항상 병행</strong><br/>
+        채널 내 파동 → 플랜A: WXYXZ / 플랜B: ABC X ABC — 항상 두 가지 시나리오를 동시에 열어둘 것
+      </WaveAlert>
 
       <ChartNote page="wave" section="cor_abc" label="추가 이미지" />
     </div>
@@ -481,40 +542,38 @@ function CorrectABC() {
 /* ── 마무리 패턴 ── */
 function EndingSection() {
   return (
-    <div className="space-y-4">
-      <SectionTitle color="green">Y파 / C파 마무리 패턴</SectionTitle>
-      <p className="text-sm text-[#7a7f94]">조정 종료 신호 — 이 중 하나가 나오면 반대 방향 전환</p>
-      <Alert type="blue">
+    <div>
+      <SectionHead num={1} title="Y파 / C파 마무리 패턴" />
+      <Desc>조정 종료 신호 — 이 중 하나가 나오면 반대 방향 전환</Desc>
+
+      <WaveAlert type="blue">
         <strong>공통</strong>: 5개 파동 / 조정 종료 신호 / 반대 방향 전환<br/>
         <strong>C파</strong>: 임펄스 / 터미널만 가능 — <span className="text-red-400">삼각수렴 불가</span><br/>
         <strong>Y파</strong>: 임펄스 / 터미널 / 삼각수렴 모두 가능
-      </Alert>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        {[
-          { label: '임펄스 12345', color: 'blue',
-            rows: [['1파','시작'],['2파','1파의 0.382~0.618'],['3파','가장 짧으면 안 됨'],['4파','1파 영역 겹침 불가'],['5파','거래량 감소']],
-            note: '겹침 없음 / 강하고 빠름', trust: '높음', tc: 'text-green-400' },
-          { label: '터미널 12345', color: 'teal',
-            rows: [['1파','시작'],['2파','1파와 겹침 허용'],['3파','1파보다 길어야 함'],['4파','1파 영역 겹침 허용'],['5파','3파보다 짧음']],
-            note: '쐐기형 수렴 / 점점 짧아짐', trust: '중간', tc: 'text-amber-400' },
-          { label: '삼각수렴 ABCDE', color: 'green',
-            rows: [['A파','가장 긴 하락'],['B파','A 시작점 미돌파'],['C파','A 저점 미이탈'],['D파','B 고점 미돌파'],['E파','가장 짧음']],
-            note: '고점↓ 저점↑ / E파 후 돌파 / Y파만', trust: '중간', tc: 'text-amber-400' },
-        ].map(item => (
-          <Card key={item.label} accent={item.color}>
-            <Badge color={item.color}>{item.label}</Badge>
-            <div className="mt-3 space-y-1.5">
-              {item.rows.map(([w, c]) => (
-                <div key={w} className="flex gap-2 text-xs">
-                  <Code>{w}</Code><span className="text-[#7a7f94]">{c}</span>
-                </div>
-              ))}
-            </div>
-            <p className="text-xs text-[#7a7f94] mt-3">{item.note}</p>
-            <p className="text-xs mt-1">신뢰도: <span className={item.tc}>{item.trust}</span></p>
-          </Card>
-        ))}
-      </div>
+      </WaveAlert>
+
+      {[
+        { label: '임펄스 12345',
+          rows: [['1파','시작'],['2파','1파의 0.382~0.618'],['3파','가장 짧으면 안 됨'],['4파','1파 영역 겹침 불가'],['5파','거래량 감소']],
+          note: '겹침 없음 / 강하고 빠름', trust: '높음', tc: 'text-green-400' },
+        { label: '터미널 12345',
+          rows: [['1파','시작'],['2파','1파와 겹침 허용'],['3파','1파보다 길어야 함'],['4파','1파 영역 겹침 허용'],['5파','3파보다 짧음']],
+          note: '쐐기형 수렴 / 점점 짧아짐', trust: '중간', tc: 'text-amber-400' },
+        { label: '삼각수렴 ABCDE (Y파만)',
+          rows: [['A파','가장 긴 하락'],['B파','A 시작점 미돌파'],['C파','A 저점 미이탈'],['D파','B 고점 미돌파'],['E파','가장 짧음']],
+          note: '고점↓ 저점↑ / E파 후 돌파', trust: '중간', tc: 'text-amber-400' },
+      ].map((item, i) => (
+        <div key={i} className="mb-6">
+          <p className="text-xs font-semibold mb-3">{item.label}</p>
+          <WaveTable
+            headers={['파동', '조건']}
+            rows={item.rows.map(([w, c]) => [<Code>{w}</Code>, c])}
+          />
+          <p className="text-xs text-[#7a7f94] mt-2">{item.note} — 신뢰도: <span className={item.tc}>{item.trust}</span></p>
+          {i < 2 && <Divider />}
+        </div>
+      ))}
+
       <ChartNote page="wave" section="ending" label="추가 이미지" />
     </div>
   )
