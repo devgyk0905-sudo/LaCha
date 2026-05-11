@@ -1,12 +1,19 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { useTheme } from '../App'
 import { PageSearch } from '../components/UI'
 import { usePageSearch } from '../hooks/usePageSearch'
 import ChartNote from '../components/ChartNote'
 
+/* ── 색상 상수 ── */
+const GREEN  = '#3ec97e'
+const RED    = '#e05a6a'
+const GRAY   = '#888780'
+const BLUE   = '#4f8ef7'
+const AMBER  = '#f0a040'
+const TEAL   = '#2abfb0'
+
 /* ── 데이터 ── */
 const CONCEPTS = [
-  /* 캔들 기초 */
   {
     category: '캔들 기초',
     title: '시가 / 종가 / 고가 / 저가',
@@ -19,9 +26,7 @@ const CONCEPTS = [
       '저가(Low): 봉 기간 중 가장 낮은 가격 — 아래꼬리 끝',
       '몸통: 시가와 종가 사이의 구간',
     ],
-    color: 'red',
-    id: 'ohlc',
-    svgType: 'ohlc',
+    color: 'red', id: 'ohlc', svgType: 'ohlc',
   },
   {
     category: '캔들 기초',
@@ -29,14 +34,12 @@ const CONCEPTS = [
     desc: '종가가 시가보다 높으면 양봉, 낮으면 음봉.',
     keywords: ['양봉', '음봉', '불리쉬', '베어리쉬'],
     details: [
-      '양봉: 종가 > 시가 — 매수세가 우세한 봉 (TradingView 기준 초록)',
-      '음봉: 종가 < 시가 — 매도세가 우세한 봉 (TradingView 기준 빨강)',
+      '양봉: 종가 > 시가 — 매수세 우세 (TradingView 기준 초록)',
+      '음봉: 종가 < 시가 — 매도세 우세 (TradingView 기준 빨강)',
       '한국 HTS는 반대 — 양봉이 빨강, 음봉이 파랑',
       '장대양봉/장대음봉: 몸통이 크고 꼬리가 짧음 → 강한 방향성',
     ],
-    color: 'red',
-    id: 'bullbear',
-    svgType: 'bullbear',
+    color: 'red', id: 'bullbear', svgType: 'bullbear',
   },
   {
     category: '캔들 기초',
@@ -50,12 +53,8 @@ const CONCEPTS = [
       '꼬리가 길수록 해당 방향 세력이 강했다는 의미',
       '도지: 시가 ≈ 종가 — 몸통 거의 없음, 방향 탐색 중',
     ],
-    color: 'red',
-    id: 'body_tail',
-    svgType: 'body_tail',
+    color: 'red', id: 'body_tail', svgType: 'body_tail',
   },
-
-  /* 이동평균선 */
   {
     category: '이동평균선',
     title: '이동평균선 (MA / EMA)',
@@ -67,9 +66,7 @@ const CONCEPTS = [
       '정배열: 단기 이평선이 위, 장기 이평선이 아래 → 상승 추세',
       '역배열: 단기 이평선이 아래, 장기 이평선이 위 → 하락 추세',
     ],
-    color: 'blue',
-    id: 'ma_ema',
-    svgType: 'ma',
+    color: 'blue', id: 'ma_ema', svgType: 'ma',
   },
   {
     category: '이동평균선',
@@ -81,12 +78,8 @@ const CONCEPTS = [
       '데드크로스: 단기 MA가 장기 MA를 하향 돌파 → 매도 신호',
       '이평선 간격이 넓을수록 신호 강도 높음',
     ],
-    color: 'blue',
-    id: 'golden_dead_cross',
-    svgType: 'cross',
+    color: 'blue', id: 'golden_dead_cross', svgType: 'cross',
   },
-
-  /* 보조지표 */
   {
     category: '보조지표',
     title: 'RSI (상대강도지수)',
@@ -98,9 +91,7 @@ const CONCEPTS = [
       '50 근처: 중립 구간',
       '다이버전스: 가격과 RSI 방향이 반대로 움직임',
     ],
-    color: 'teal',
-    id: 'rsi',
-    svgType: 'rsi',
+    color: 'teal', id: 'rsi', svgType: 'rsi',
   },
   {
     category: '보조지표',
@@ -113,12 +104,8 @@ const CONCEPTS = [
       '30/70 근처에서 발생 시 신뢰도 높음',
       '중립 구간(50 근처)에서는 신호 강도 약함',
     ],
-    color: 'teal',
-    id: 'divergence',
-    svgType: 'divergence',
+    color: 'teal', id: 'divergence', svgType: 'divergence',
   },
-
-  /* 피보나치 */
   {
     category: '피보나치',
     title: '피보나치 되돌림',
@@ -130,9 +117,7 @@ const CONCEPTS = [
       '하락 추세: 고점 → 저점 방향으로 그음',
       '0.618 황금비율 — 가장 많이 지지/저항으로 작동',
     ],
-    color: 'amber',
-    id: 'fib_retracement',
-    svgType: 'fib_ret',
+    color: 'amber', id: 'fib_retracement', svgType: 'fib_ret',
   },
   {
     category: '피보나치',
@@ -145,12 +130,8 @@ const CONCEPTS = [
       'WXY에서 Y파 목표: 0.618 ~ 1.0 구간',
       'WXYXZ에서 Z파 목표: 0.618 ~ 1.0 (Y가 확장됐을 경우)',
     ],
-    color: 'amber',
-    id: 'fib_extension',
-    svgType: 'fib_ext',
+    color: 'amber', id: 'fib_extension', svgType: 'fib_ext',
   },
-
-  /* 채널/추세 */
   {
     category: '채널/추세',
     title: '추세선',
@@ -162,9 +143,7 @@ const CONCEPTS = [
       '추세선 이탈 시 추세 전환 가능성',
       '접촉 횟수가 많을수록 신뢰도 높음',
     ],
-    color: 'green',
-    id: 'trendline',
-    svgType: 'trendline',
+    color: 'green', id: 'trendline', svgType: 'trendline',
   },
   {
     category: '채널/추세',
@@ -177,27 +156,21 @@ const CONCEPTS = [
       '역할 전환: 지지를 이탈하면 저항으로, 저항을 돌파하면 지지로 바뀜',
       '과거에 많이 거래된 구간일수록 강도 높음',
     ],
-    color: 'green',
-    id: 'support_resistance',
-    svgType: 'sr',
+    color: 'green', id: 'support_resistance', svgType: 'sr',
   },
   {
     category: '채널/추세',
     title: '매물대 (공급존)',
     desc: '과거에 거래가 많이 몰린 가격대 — 강한 지지/저항 역할.',
-    keywords: ['매물대', '공급존', '수요존', '거래량'],
+    keywords: ['매물대', '공급존', '수요존'],
     details: [
       '고거래량 + 횡보 구간 → 강한 매물대',
       '급등/급락 구간 → 되돌아올 때 강한 지지/저항',
       '매물대 돌파 시 강한 상승 신호',
       '매물대 이탈 시 강한 하락 신호',
     ],
-    color: 'green',
-    id: 'supply_zone',
-    svgType: 'supply',
+    color: 'green', id: 'supply_zone', svgType: 'supply',
   },
-
-  /* 거래량 */
   {
     category: '거래량',
     title: '거래량 (식용꽃)',
@@ -210,233 +183,310 @@ const CONCEPTS = [
       '돌파/이탈 시 거래량 급증이 동반되면 신호가 더 선명해짐',
       '단, 거래량만으로 매매 판단을 내리지 않음 — 어디까지나 마지막 마무리 확인 수단',
     ],
-    color: 'purple',
-    id: 'volume',
-    svgType: 'volume',
+    color: 'purple', id: 'volume', svgType: 'volume',
   },
 ]
 
-const GREEN  = '#3ec97e'
-const RED    = '#e05a6a'
-const GRAY   = '#888780'
-const BLUE   = '#4f8ef7'
-const AMBER  = '#f0a040'
-const TEAL   = '#2abfb0'
-const PURPLE = '#9b7de8'
+/* ── SVG 개념도 ── */
+function ConceptSVG({ type, dark }) {
+  const text = dark ? '#b0b4c4' : '#5a5852'
 
-/* ── 개념별 SVG ── */
-function ConceptSVG({ type }) {
   const svgs = {
+
     ohlc: (
-      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+      <svg width="100%" height="130" viewBox="0 0 380 130" fill="none">
         {/* 양봉 */}
-        <line x1="20" y1="8" x2="20" y2="20" stroke={GREEN} strokeWidth="1.5"/>
-        <rect x="12" y="20" width="16" height="36" fill={GREEN} rx="1"/>
-        <line x1="20" y1="56" x2="20" y2="68" stroke={GREEN} strokeWidth="1.5"/>
-        {/* 레이블 */}
-        <line x1="36" y1="8" x2="48" y2="8" stroke={GRAY} strokeWidth="0.8" strokeDasharray="2 2"/>
-        <text x="50" y="11" fontSize="7" fill={GRAY}>고가</text>
-        <line x1="36" y1="20" x2="48" y2="20" stroke={GRAY} strokeWidth="0.8" strokeDasharray="2 2"/>
-        <text x="50" y="23" fontSize="7" fill={GRAY}>종가</text>
-        <line x1="36" y1="56" x2="48" y2="56" stroke={GRAY} strokeWidth="0.8" strokeDasharray="2 2"/>
-        <text x="50" y="59" fontSize="7" fill={GRAY}>시가</text>
-        <line x1="36" y1="68" x2="48" y2="68" stroke={GRAY} strokeWidth="0.8" strokeDasharray="2 2"/>
-        <text x="50" y="71" fontSize="7" fill={GRAY}>저가</text>
-        {/* 몸통 브라켓 */}
-        <line x1="4" y1="20" x2="4" y2="56" stroke={GREEN} strokeWidth="1"/>
-        <line x1="4" y1="20" x2="7" y2="20" stroke={GREEN} strokeWidth="1"/>
-        <line x1="4" y1="56" x2="7" y2="56" stroke={GREEN} strokeWidth="1"/>
-        <text x="1" y="41" fontSize="6" fill={GREEN} transform="rotate(-90,1,41)">몸통</text>
-      </svg>
-    ),
-    bullbear: (
-      <svg width="80" height="72" viewBox="0 0 80 72" fill="none">
-        {/* 양봉 */}
-        <line x1="20" y1="6" x2="20" y2="14" stroke={GREEN} strokeWidth="1.5"/>
-        <rect x="13" y="14" width="14" height="36" fill={GREEN} rx="1"/>
-        <line x1="20" y1="50" x2="20" y2="60" stroke={GREEN} strokeWidth="1.5"/>
-        <text x="13" y="70" fontSize="8" fill={GREEN}>양봉</text>
+        <line x1="80" y1="10" x2="80" y2="30" stroke={GREEN} strokeWidth="2"/>
+        <rect x="62" y="30" width="36" height="60" fill={GREEN} rx="2"/>
+        <line x1="80" y1="90" x2="80" y2="118" stroke={GREEN} strokeWidth="2"/>
+        <line x1="104" y1="10"  x2="118" y2="10"  stroke={GRAY} strokeWidth="1" strokeDasharray="3 2" opacity="0.6"/>
+        <text x="121" y="14"  fontSize="11" fill={text}>고가</text>
+        <line x1="104" y1="30"  x2="118" y2="30"  stroke={GRAY} strokeWidth="1" strokeDasharray="3 2" opacity="0.6"/>
+        <text x="121" y="34"  fontSize="11" fill={text}>종가</text>
+        <line x1="104" y1="90"  x2="118" y2="90"  stroke={GRAY} strokeWidth="1" strokeDasharray="3 2" opacity="0.6"/>
+        <text x="121" y="94"  fontSize="11" fill={text}>시가</text>
+        <line x1="104" y1="118" x2="118" y2="118" stroke={GRAY} strokeWidth="1" strokeDasharray="3 2" opacity="0.6"/>
+        <text x="121" y="122" fontSize="11" fill={text}>저가</text>
+        <line x1="44" y1="30" x2="44" y2="90" stroke={GREEN} strokeWidth="1.2"/>
+        <line x1="44" y1="30" x2="50" y2="30" stroke={GREEN} strokeWidth="1.2"/>
+        <line x1="44" y1="90" x2="50" y2="90" stroke={GREEN} strokeWidth="1.2"/>
+        <text x="4"  y="64" fontSize="11" fill={GREEN}>몸통</text>
+        <text x="64" y="128" fontSize="12" fill={GREEN} fontWeight="500">양봉</text>
+        {/* vs */}
+        <text x="190" y="68" fontSize="13" fill={GRAY} opacity="0.4" textAnchor="middle">vs</text>
         {/* 음봉 */}
-        <line x1="60" y1="10" x2="60" y2="18" stroke={RED} strokeWidth="1.5"/>
-        <rect x="53" y="18" width="14" height="36" fill={RED} rx="1"/>
-        <line x1="60" y1="54" x2="60" y2="64" stroke={RED} strokeWidth="1.5"/>
-        <text x="53" y="70" fontSize="8" fill={RED}>음봉</text>
-        {/* 구분선 */}
-        <line x1="40" y1="4" x2="40" y2="66" stroke={GRAY} strokeWidth="0.5" strokeDasharray="3 3" opacity="0.4"/>
+        <line x1="290" y1="10" x2="290" y2="30" stroke={RED} strokeWidth="2"/>
+        <rect x="272" y="30" width="36" height="60" fill={RED} rx="2"/>
+        <line x1="290" y1="90" x2="290" y2="118" stroke={RED} strokeWidth="2"/>
+        <line x1="314" y1="10"  x2="328" y2="10"  stroke={GRAY} strokeWidth="1" strokeDasharray="3 2" opacity="0.6"/>
+        <text x="331" y="14"  fontSize="11" fill={text}>고가</text>
+        <line x1="314" y1="30"  x2="328" y2="30"  stroke={GRAY} strokeWidth="1" strokeDasharray="3 2" opacity="0.6"/>
+        <text x="331" y="34"  fontSize="11" fill={text}>시가</text>
+        <line x1="314" y1="90"  x2="328" y2="90"  stroke={GRAY} strokeWidth="1" strokeDasharray="3 2" opacity="0.6"/>
+        <text x="331" y="94"  fontSize="11" fill={text}>종가</text>
+        <line x1="314" y1="118" x2="328" y2="118" stroke={GRAY} strokeWidth="1" strokeDasharray="3 2" opacity="0.6"/>
+        <text x="331" y="122" fontSize="11" fill={text}>저가</text>
+        <text x="274" y="128" fontSize="12" fill={RED} fontWeight="500">음봉</text>
       </svg>
     ),
+
+    bullbear: (
+      <svg width="100%" height="120" viewBox="0 0 380 120" fill="none">
+        <line x1="60"  y1="8"  x2="60"  y2="18" stroke={GREEN} strokeWidth="2"/>
+        <rect x="44"  y="18" width="32" height="72" fill={GREEN} rx="2"/>
+        <line x1="60"  y1="90" x2="60"  y2="108" stroke={GREEN} strokeWidth="2"/>
+        <text x="36"  y="118" fontSize="11" fill={GREEN}>장대양봉</text>
+        <line x1="140" y1="30" x2="140" y2="42" stroke={GREEN} strokeWidth="2"/>
+        <rect x="124" y="42" width="32" height="32" fill={GREEN} rx="2"/>
+        <line x1="140" y1="74" x2="140" y2="90" stroke={GREEN} strokeWidth="2"/>
+        <text x="124" y="118" fontSize="11" fill={GREEN}>양봉</text>
+        <line x1="190" y1="4" x2="190" y2="108" stroke={GRAY} strokeWidth="0.8" strokeDasharray="4 3" opacity="0.3"/>
+        <line x1="240" y1="30" x2="240" y2="42" stroke={RED} strokeWidth="2"/>
+        <rect x="224" y="42" width="32" height="32" fill={RED} rx="2"/>
+        <line x1="240" y1="74" x2="240" y2="90" stroke={RED} strokeWidth="2"/>
+        <text x="224" y="118" fontSize="11" fill={RED}>음봉</text>
+        <line x1="320" y1="8"  x2="320" y2="18" stroke={RED} strokeWidth="2"/>
+        <rect x="304" y="18" width="32" height="72" fill={RED} rx="2"/>
+        <line x1="320" y1="90" x2="320" y2="108" stroke={RED} strokeWidth="2"/>
+        <text x="300" y="118" fontSize="11" fill={RED}>장대음봉</text>
+      </svg>
+    ),
+
     body_tail: (
-      <svg width="80" height="72" viewBox="0 0 80 72" fill="none">
-        <line x1="40" y1="4" x2="40" y2="18" stroke={RED} strokeWidth="1.5"/>
-        <rect x="29" y="18" width="22" height="32" fill={RED} rx="1"/>
-        <line x1="40" y1="50" x2="40" y2="66" stroke={RED} strokeWidth="1.5"/>
-        {/* 위꼬리 레이블 */}
-        <line x1="56" y1="4" x2="64" y2="4" stroke={GRAY} strokeWidth="0.8"/>
-        <line x1="56" y1="18" x2="64" y2="18" stroke={GRAY} strokeWidth="0.8"/>
-        <line x1="64" y1="4" x2="64" y2="18" stroke={GRAY} strokeWidth="0.8"/>
-        <text x="66" y="13" fontSize="7" fill={GRAY}>위꼬리</text>
-        {/* 아래꼬리 레이블 */}
-        <line x1="56" y1="50" x2="64" y2="50" stroke={GRAY} strokeWidth="0.8"/>
-        <line x1="56" y1="66" x2="64" y2="66" stroke={GRAY} strokeWidth="0.8"/>
-        <line x1="64" y1="50" x2="64" y2="66" stroke={GRAY} strokeWidth="0.8"/>
-        <text x="66" y="60" fontSize="7" fill={GRAY}>아래꼬리</text>
-        {/* 몸통 레이블 */}
-        <line x1="14" y1="18" x2="6" y2="18" stroke={GRAY} strokeWidth="0.8"/>
-        <line x1="14" y1="50" x2="6" y2="50" stroke={GRAY} strokeWidth="0.8"/>
-        <line x1="6" y1="18" x2="6" y2="50" stroke={GRAY} strokeWidth="0.8"/>
-        <text x="1" y="37" fontSize="7" fill={GRAY} transform="rotate(-90,1,37)">몸통</text>
+      <svg width="100%" height="130" viewBox="0 0 380 130" fill="none">
+        {/* 양봉 */}
+        <line x1="100" y1="8"   x2="100" y2="28"  stroke={GREEN} strokeWidth="2"/>
+        <rect x="82"  y="28"  width="36" height="60" fill={GREEN} rx="2"/>
+        <line x1="100" y1="88"  x2="100" y2="115" stroke={GREEN} strokeWidth="2"/>
+        <line x1="122" y1="8"   x2="145" y2="8"   stroke={GRAY} strokeWidth="1"/>
+        <line x1="122" y1="28"  x2="145" y2="28"  stroke={GRAY} strokeWidth="1"/>
+        <line x1="145" y1="8"   x2="145" y2="28"  stroke={GRAY} strokeWidth="1"/>
+        <text x="149" y="16" fontSize="10" fill={text}>위꼬리</text>
+        <text x="149" y="28" fontSize="9"  fill={text} opacity="0.6">매도 저항 흔적</text>
+        <line x1="58"  y1="28"  x2="35"  y2="28"  stroke={GRAY} strokeWidth="1"/>
+        <line x1="58"  y1="88"  x2="35"  y2="88"  stroke={GRAY} strokeWidth="1"/>
+        <line x1="35"  y1="28"  x2="35"  y2="88"  stroke={GRAY} strokeWidth="1"/>
+        <text x="2"  y="62" fontSize="10" fill={text}>몸통</text>
+        <line x1="122" y1="88"  x2="145" y2="88"  stroke={GRAY} strokeWidth="1"/>
+        <line x1="122" y1="115" x2="145" y2="115" stroke={GRAY} strokeWidth="1"/>
+        <line x1="145" y1="88"  x2="145" y2="115" stroke={GRAY} strokeWidth="1"/>
+        <text x="149" y="100" fontSize="10" fill={text}>아래꼬리</text>
+        <text x="149" y="112" fontSize="9"  fill={text} opacity="0.6">매수 지지 흔적</text>
+        <text x="82"  y="128" fontSize="12" fill={GREEN} fontWeight="500">양봉</text>
+        {/* vs */}
+        <text x="190" y="68" fontSize="13" fill={GRAY} opacity="0.4" textAnchor="middle">vs</text>
+        {/* 음봉 */}
+        <line x1="280" y1="8"   x2="280" y2="28"  stroke={RED} strokeWidth="2"/>
+        <rect x="262" y="28"  width="36" height="60" fill={RED} rx="2"/>
+        <line x1="280" y1="88"  x2="280" y2="115" stroke={RED} strokeWidth="2"/>
+        <line x1="302" y1="8"   x2="325" y2="8"   stroke={GRAY} strokeWidth="1"/>
+        <line x1="302" y1="28"  x2="325" y2="28"  stroke={GRAY} strokeWidth="1"/>
+        <line x1="325" y1="8"   x2="325" y2="28"  stroke={GRAY} strokeWidth="1"/>
+        <text x="329" y="20" fontSize="10" fill={text}>위꼬리</text>
+        <line x1="302" y1="88"  x2="325" y2="88"  stroke={GRAY} strokeWidth="1"/>
+        <line x1="302" y1="115" x2="325" y2="115" stroke={GRAY} strokeWidth="1"/>
+        <line x1="325" y1="88"  x2="325" y2="115" stroke={GRAY} strokeWidth="1"/>
+        <text x="329" y="104" fontSize="10" fill={text}>아래꼬리</text>
+        <text x="262" y="128" fontSize="12" fill={RED} fontWeight="500">음봉</text>
       </svg>
     ),
+
     ma: (
-      <svg width="80" height="60" viewBox="0 0 80 60" fill="none">
-        <path d="M4 48 L16 36 L28 40 L40 24 L52 28 L64 12 L76 16" stroke={GRAY} strokeWidth="0.8" opacity="0.5"/>
-        <path d="M4 50 L16 44 L28 42 L40 34 L52 30 L64 22 L76 20" stroke={BLUE} strokeWidth="1.5" strokeDasharray="4 2"/>
-        <path d="M4 54 L16 50 L28 48 L40 44 L52 40 L64 34 L76 30" stroke={RED} strokeWidth="1.5"/>
-        <text x="4" y="9" fontSize="7" fill={BLUE}>단기 MA</text>
-        <text x="4" y="18" fontSize="7" fill={RED}>장기 MA</text>
-        <line x1="4" y1="5" x2="18" y2="5" stroke={BLUE} strokeWidth="1.5" strokeDasharray="4 2"/>
-        <line x1="4" y1="14" x2="18" y2="14" stroke={RED} strokeWidth="1.5"/>
+      <svg width="100%" height="110" viewBox="0 0 380 110" fill="none">
+        <path d="M20 80 L60 55 L100 65 L140 35 L180 50 L220 25 L260 40 L300 20 L340 32 L375 18" stroke={GRAY} strokeWidth="1" opacity="0.35"/>
+        <path d="M20 82 L60 60 L100 68 L140 42 L180 55 L220 32 L260 46 L300 28 L340 38 L375 24" stroke={BLUE} strokeWidth="2" strokeDasharray="6 3"/>
+        <path d="M20 90 L60 78 L100 74 L140 65 L180 62 L220 55 L260 52 L300 46 L340 44 L375 40" stroke={RED} strokeWidth="2"/>
+        <line x1="20"  y1="102" x2="44"  y2="102" stroke={BLUE} strokeWidth="2" strokeDasharray="6 3"/>
+        <text x="48"  y="106" fontSize="11" fill={BLUE}>단기 MA (20, 50)</text>
+        <line x1="200" y1="102" x2="224" y2="102" stroke={RED} strokeWidth="2"/>
+        <text x="228" y="106" fontSize="11" fill={RED}>장기 MA (100, 200, 365)</text>
       </svg>
     ),
+
     cross: (
-      <svg width="80" height="64" viewBox="0 0 80 64" fill="none">
-        {/* 골든크로스 */}
-        <path d="M4 46 L22 28" stroke={BLUE} strokeWidth="1.5" strokeDasharray="4 2"/>
-        <path d="M4 30 L22 36" stroke={RED} strokeWidth="1.5"/>
-        <circle cx="17" cy="32" r="3" fill={GREEN} opacity="0.9"/>
-        <text x="4" y="58" fontSize="7" fill={GREEN}>골든크로스</text>
-        {/* 데드크로스 */}
-        <path d="M44 28 L62 46" stroke={BLUE} strokeWidth="1.5" strokeDasharray="4 2"/>
-        <path d="M44 36 L62 30" stroke={RED} strokeWidth="1.5"/>
-        <circle cx="57" cy="32" r="3" fill={RED} opacity="0.9"/>
-        <text x="44" y="58" fontSize="7" fill={RED}>데드크로스</text>
-        <line x1="38" y1="4" x2="38" y2="60" stroke={GRAY} strokeWidth="0.5" strokeDasharray="3 3" opacity="0.3"/>
+      <svg width="100%" height="120" viewBox="0 0 380 120" fill="none">
+        <text x="65"  y="14" fontSize="12" fill={GREEN} fontWeight="500" textAnchor="middle">골든크로스</text>
+        <path d="M10 80 L120 28" stroke={BLUE} strokeWidth="2" strokeDasharray="5 3"/>
+        <path d="M10 38 L120 72" stroke={RED}  strokeWidth="2"/>
+        <circle cx="67" cy="54" r="5" fill={GREEN} opacity="0.9"/>
+        <text x="65"  y="100" fontSize="10" fill={text} textAnchor="middle">단기↑ 장기 상향 돌파</text>
+        <text x="65"  y="113" fontSize="10" fill={GREEN} textAnchor="middle">→ 매수 신호</text>
+        <line x1="190" y1="8" x2="190" y2="115" stroke={GRAY} strokeWidth="0.8" strokeDasharray="4 3" opacity="0.3"/>
+        <text x="315" y="14" fontSize="12" fill={RED} fontWeight="500" textAnchor="middle">데드크로스</text>
+        <path d="M250 28 L370 80" stroke={BLUE} strokeWidth="2" strokeDasharray="5 3"/>
+        <path d="M250 72 L370 38" stroke={RED}  strokeWidth="2"/>
+        <circle cx="313" cy="54" r="5" fill={RED} opacity="0.9"/>
+        <text x="315" y="100" fontSize="10" fill={text} textAnchor="middle">단기↓ 장기 하향 돌파</text>
+        <text x="315" y="113" fontSize="10" fill={RED} textAnchor="middle">→ 매도 신호</text>
+        <line x1="140" y1="6" x2="158" y2="6" stroke={BLUE} strokeWidth="2" strokeDasharray="5 3"/>
+        <text x="162" y="10" fontSize="10" fill={BLUE}>단기</text>
+        <line x1="140" y1="18" x2="158" y2="18" stroke={RED} strokeWidth="2"/>
+        <text x="162" y="22" fontSize="10" fill={RED}>장기</text>
       </svg>
     ),
+
     rsi: (
-      <svg width="80" height="64" viewBox="0 0 80 64" fill="none">
-        <line x1="4" y1="16" x2="76" y2="16" stroke={RED} strokeWidth="0.8" strokeDasharray="3 2" opacity="0.7"/>
-        <line x1="4" y1="48" x2="76" y2="48" stroke={GREEN} strokeWidth="0.8" strokeDasharray="3 2" opacity="0.7"/>
-        <line x1="4" y1="32" x2="76" y2="32" stroke={GRAY} strokeWidth="0.5" strokeDasharray="3 2" opacity="0.4"/>
-        <path d="M4 40 L16 28 L24 12 L32 20 L40 36 L52 52 L60 60 L72 44" stroke={TEAL} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <text x="58" y="14" fontSize="7" fill={RED}>70</text>
-        <text x="58" y="46" fontSize="7" fill={GREEN}>30</text>
-        <text x="58" y="30" fontSize="7" fill={GRAY}>50</text>
+      <svg width="100%" height="110" viewBox="0 0 380 110" fill="none">
+        <rect x="20" y="4"  width="340" height="28" fill={RED}   opacity="0.05" rx="2"/>
+        <rect x="20" y="82" width="340" height="22" fill={GREEN} opacity="0.06" rx="2"/>
+        <line x1="20" y1="22" x2="360" y2="22" stroke={RED}   strokeWidth="1.2" strokeDasharray="4 2" opacity="0.7"/>
+        <line x1="20" y1="88" x2="360" y2="88" stroke={GREEN} strokeWidth="1.2" strokeDasharray="4 2" opacity="0.7"/>
+        <line x1="20" y1="55" x2="360" y2="55" stroke={GRAY}  strokeWidth="0.8" strokeDasharray="4 2" opacity="0.35"/>
+        <path d="M20 70 L60 50 L90 15 L120 30 L150 60 L190 95 L230 105 L270 78 L310 40 L350 55"
+          stroke={TEAL} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <text x="365" y="26"  fontSize="11" fill={RED}>70</text>
+        <text x="365" y="92"  fontSize="11" fill={GREEN}>30</text>
+        <text x="365" y="59"  fontSize="11" fill={GRAY}>50</text>
+        <text x="25"  y="17"  fontSize="10" fill={RED}   opacity="0.8">과매수 구간</text>
+        <text x="25"  y="103" fontSize="10" fill={GREEN} opacity="0.8">과매도 구간</text>
       </svg>
     ),
+
     divergence: (
-      <svg width="80" height="68" viewBox="0 0 80 68" fill="none">
-        {/* 가격 */}
-        <text x="4" y="8" fontSize="7" fill={GRAY}>가격</text>
-        <path d="M4 30 L24 20 L44 28 L64 16" stroke={GRAY} strokeWidth="1" opacity="0.6"/>
-        <circle cx="4" cy="30" r="2" fill={GRAY}/>
-        <circle cx="44" cy="28" r="2" fill={GRAY}/>
-        <line x1="4" y1="30" x2="44" y2="28" stroke={RED} strokeWidth="0.8" strokeDasharray="3 2"/>
-        {/* RSI */}
-        <text x="4" y="44" fontSize="7" fill={GRAY}>RSI</text>
-        <path d="M4 62 L24 56 L44 50 L64 44" stroke={TEAL} strokeWidth="1" opacity="0.6"/>
-        <circle cx="4" cy="62" r="2" fill={TEAL}/>
-        <circle cx="44" cy="50" r="2" fill={TEAL}/>
-        <line x1="4" y1="62" x2="44" y2="50" stroke={GREEN} strokeWidth="0.8" strokeDasharray="3 2"/>
-        <text x="48" y="24" fontSize="7" fill={RED}>↓</text>
-        <text x="48" y="52" fontSize="7" fill={GREEN}>↑</text>
-        <text x="56" y="36" fontSize="7" fill={GREEN}>Bull</text>
+      <svg width="100%" height="130" viewBox="0 0 380 130" fill="none">
+        <text x="85"  y="12" fontSize="12" fill={GREEN} fontWeight="500" textAnchor="middle">Bull 다이버전스</text>
+        <text x="10"  y="26" fontSize="9"  fill={GRAY}>가격</text>
+        <path d="M20 35 L60 22 L100 34 L140 40" stroke={GRAY} strokeWidth="1.2" opacity="0.55"/>
+        <circle cx="20"  cy="35" r="3" fill={GRAY}/>
+        <circle cx="100" cy="34" r="3" fill={GRAY}/>
+        <line x1="20" y1="35" x2="100" y2="34" stroke={RED} strokeWidth="1.2" strokeDasharray="3 2" opacity="0.8"/>
+        <text x="50"  y="50" fontSize="9"  fill={RED} opacity="0.8">저점↓↓</text>
+        <text x="10"  y="68" fontSize="9"  fill={GRAY}>RSI</text>
+        <path d="M20 80 L60 70 L100 60 L140 50" stroke={TEAL} strokeWidth="1.2" opacity="0.55"/>
+        <circle cx="20"  cy="80" r="3" fill={TEAL}/>
+        <circle cx="100" cy="60" r="3" fill={TEAL}/>
+        <line x1="20" y1="80" x2="100" y2="60" stroke={GREEN} strokeWidth="1.2" strokeDasharray="3 2"/>
+        <text x="50"  y="94" fontSize="9"  fill={GREEN} opacity="0.9">저점↑↑</text>
+        <text x="85"  y="115" fontSize="10" fill={GREEN} textAnchor="middle" fontWeight="500">→ 상승 반전</text>
+        <line x1="190" y1="4" x2="190" y2="126" stroke={GRAY} strokeWidth="0.8" strokeDasharray="4 3" opacity="0.3"/>
+        <text x="295" y="12" fontSize="12" fill={RED} fontWeight="500" textAnchor="middle">Bear 다이버전스</text>
+        <text x="210" y="26" fontSize="9"  fill={GRAY}>가격</text>
+        <path d="M220 40 L260 28 L300 20 L340 12" stroke={GRAY} strokeWidth="1.2" opacity="0.55"/>
+        <circle cx="220" cy="40" r="3" fill={GRAY}/>
+        <circle cx="300" cy="20" r="3" fill={GRAY}/>
+        <line x1="220" y1="40" x2="300" y2="20" stroke={GREEN} strokeWidth="1.2" strokeDasharray="3 2" opacity="0.8"/>
+        <text x="250" y="50" fontSize="9"  fill={GREEN} opacity="0.8">고점↑↑</text>
+        <text x="210" y="68" fontSize="9"  fill={GRAY}>RSI</text>
+        <path d="M220 58 L260 60 L300 64 L340 68" stroke={TEAL} strokeWidth="1.2" opacity="0.55"/>
+        <circle cx="220" cy="58" r="3" fill={TEAL}/>
+        <circle cx="300" cy="64" r="3" fill={TEAL}/>
+        <line x1="220" y1="58" x2="300" y2="64" stroke={RED} strokeWidth="1.2" strokeDasharray="3 2"/>
+        <text x="250" y="80" fontSize="9"  fill={RED} opacity="0.9">고점↓↓</text>
+        <text x="295" y="115" fontSize="10" fill={RED} textAnchor="middle" fontWeight="500">→ 하락 반전</text>
       </svg>
     ),
+
     fib_ret: (
-      <svg width="80" height="68" viewBox="0 0 80 68" fill="none">
-        <line x1="4" y1="60" x2="40" y2="8" stroke={GREEN} strokeWidth="1.5" strokeLinecap="round"/>
+      <svg width="100%" height="130" viewBox="0 0 380 130" fill="none">
+        <line x1="30" y1="115" x2="180" y2="15" stroke={GREEN} strokeWidth="2" strokeLinecap="round"/>
         {[
-          { y: 8,  label: '0', color: GREEN },
-          { y: 20, label: '0.236', color: GRAY },
-          { y: 28, label: '0.382', color: AMBER },
-          { y: 34, label: '0.5', color: GRAY },
-          { y: 40, label: '0.618', color: AMBER },
-          { y: 48, label: '0.786', color: GRAY },
-          { y: 60, label: '1', color: RED },
+          { y: 15,  label: '0',       color: GREEN },
+          { y: 35,  label: '0.236',   color: GRAY  },
+          { y: 55,  label: '0.382',   color: AMBER },
+          { y: 65,  label: '0.5',     color: GRAY  },
+          { y: 78,  label: '0.618 ★', color: AMBER },
+          { y: 95,  label: '0.786',   color: GRAY  },
+          { y: 115, label: '1',       color: RED   },
         ].map(({ y, label, color }) => (
           <g key={label}>
-            <line x1="40" y1={y} x2="76" y2={y} stroke={color} strokeWidth="0.8" strokeDasharray="3 2" opacity="0.7"/>
-            <text x="42" y={y - 1} fontSize="6" fill={color}>{label}</text>
+            <line x1="180" y1={y} x2="360" y2={y} stroke={color} strokeWidth="1" strokeDasharray="4 2" opacity="0.8"/>
+            <text x="186" y={y - 2} fontSize="11" fill={color}>{label}</text>
           </g>
         ))}
-        <path d="M40 8 L60 40" stroke={RED} strokeWidth="1" strokeDasharray="3 2" opacity="0.6"/>
+        <path d="M180 15 L275 78" stroke={RED} strokeWidth="1.5" strokeDasharray="5 3" opacity="0.55"/>
+        <text x="30" y="128" fontSize="10" fill={GRAY}>저점 → 고점 방향으로 그음 (상승 추세 기준)</text>
       </svg>
     ),
+
     fib_ext: (
-      <svg width="80" height="68" viewBox="0 0 80 68" fill="none">
-        <line x1="4" y1="52" x2="24" y2="12" stroke={GREEN} strokeWidth="1.5" strokeLinecap="round"/>
-        <line x1="24" y1="12" x2="38" y2="36" stroke={RED} strokeWidth="1.5" strokeLinecap="round"/>
-        <text x="2" y="58" fontSize="6" fill={GRAY}>①</text>
-        <text x="22" y="10" fontSize="6" fill={GRAY}>②</text>
-        <text x="36" y="42" fontSize="6" fill={GRAY}>③</text>
+      <svg width="100%" height="130" viewBox="0 0 380 130" fill="none">
+        <line x1="30"  y1="100" x2="120" y2="20"  stroke={GREEN} strokeWidth="2" strokeLinecap="round"/>
+        <line x1="120" y1="20"  x2="180" y2="65"  stroke={RED}   strokeWidth="2" strokeLinecap="round"/>
+        <circle cx="30"  cy="100" r="4" fill={GRAY}/>
+        <circle cx="120" cy="20"  r="4" fill={GRAY}/>
+        <circle cx="180" cy="65"  r="4" fill={GRAY}/>
+        <text x="14"  y="115" fontSize="10" fill={GRAY}>①</text>
+        <text x="114" y="14"  fontSize="10" fill={GRAY}>②</text>
+        <text x="174" y="80"  fontSize="10" fill={GRAY}>③</text>
         {[
-          { y: 36, label: '0', color: GRAY },
-          { y: 28, label: '0.618', color: AMBER },
-          { y: 20, label: '1.0', color: GREEN },
-          { y: 12, label: '1.382', color: AMBER },
-          { y: 4,  label: '1.618', color: RED },
+          { y: 65, label: '0',       color: GRAY  },
+          { y: 52, label: '0.618',   color: AMBER },
+          { y: 38, label: '1.0',     color: GREEN },
+          { y: 24, label: '1.382',   color: AMBER },
+          { y: 10, label: '1.618 ★', color: RED   },
         ].map(({ y, label, color }) => (
           <g key={label}>
-            <line x1="44" y1={y} x2="76" y2={y} stroke={color} strokeWidth="0.8" strokeDasharray="3 2" opacity="0.7"/>
-            <text x="46" y={y - 1} fontSize="6" fill={color}>{label}</text>
+            <line x1="200" y1={y} x2="370" y2={y} stroke={color} strokeWidth="1" strokeDasharray="4 2" opacity="0.8"/>
+            <text x="206" y={y - 2} fontSize="11" fill={color}>{label}</text>
           </g>
         ))}
+        <text x="30" y="128" fontSize="10" fill={GRAY}>① W시작 → ② W끝 → ③ X끝 순으로 클릭</text>
       </svg>
     ),
+
     trendline: (
-      <svg width="80" height="60" viewBox="0 0 80 60" fill="none">
-        {/* 상승 추세 */}
-        <path d="M4 52 L16 40 L24 44 L36 30 L48 34 L60 20 L72 24" stroke={GRAY} strokeWidth="0.8" opacity="0.5"/>
-        <line x1="4" y1="56" x2="72" y2="28" stroke={GREEN} strokeWidth="1.5" strokeLinecap="round"/>
-        <text x="4" y="10" fontSize="7" fill={GREEN}>상승 추세선 (지지)</text>
-        <circle cx="16" cy="40" r="2" fill={GRAY} opacity="0.6"/>
-        <circle cx="36" cy="30" r="2" fill={GRAY} opacity="0.6"/>
-        <circle cx="60" cy="20" r="2" fill={GRAY} opacity="0.6"/>
+      <svg width="100%" height="110" viewBox="0 0 380 110" fill="none">
+        <path d="M20 95 L80 68 L120 78 L180 48 L230 60 L290 30 L350 42" stroke={GRAY} strokeWidth="1" opacity="0.45"/>
+        <line x1="20" y1="100" x2="350" y2="46" stroke={GREEN} strokeWidth="2" strokeLinecap="round"/>
+        <circle cx="80"  cy="68" r="3.5" fill={GREEN} opacity="0.7"/>
+        <circle cx="180" cy="48" r="3.5" fill={GREEN} opacity="0.7"/>
+        <circle cx="290" cy="30" r="3.5" fill={GREEN} opacity="0.7"/>
+        <text x="20" y="14" fontSize="11" fill={GREEN} fontWeight="500">상승 추세선 (지지)</text>
+        <text x="20" y="27" fontSize="10" fill={GRAY} opacity="0.8">저점과 저점을 연결 — 이탈 시 추세 전환 가능성</text>
       </svg>
     ),
+
     sr: (
-      <svg width="80" height="64" viewBox="0 0 80 64" fill="none">
-        <line x1="4" y1="16" x2="76" y2="16" stroke={RED} strokeWidth="1.2" strokeDasharray="4 2"/>
-        <line x1="4" y1="48" x2="76" y2="48" stroke={GREEN} strokeWidth="1.2" strokeDasharray="4 2"/>
-        <path d="M4 40 L14 28 L22 44 L32 20 L42 40 L52 20 L62 44 L72 28" stroke={GRAY} strokeWidth="1" opacity="0.6"/>
-        <text x="58" y="13" fontSize="7" fill={RED}>저항</text>
-        <text x="58" y="58" fontSize="7" fill={GREEN}>지지</text>
-        {[22, 42, 62].map(x => (
-          <circle key={x} cx={x} cy={48} r="2.5" fill={GREEN} opacity="0.5"/>
-        ))}
-        {[32, 52].map(x => (
-          <circle key={x} cx={x} cy={16} r="2.5" fill={RED} opacity="0.5"/>
-        ))}
+      <svg width="100%" height="110" viewBox="0 0 380 110" fill="none">
+        <line x1="20" y1="25" x2="360" y2="25" stroke={RED}   strokeWidth="1.5" strokeDasharray="5 3"/>
+        <line x1="20" y1="85" x2="360" y2="85" stroke={GREEN} strokeWidth="1.5" strokeDasharray="5 3"/>
+        <path d="M20 80 L60 55 L100 82 L140 48 L180 80 L220 45 L260 82 L300 50 L340 78" stroke={GRAY} strokeWidth="1.2" opacity="0.55"/>
+        <text x="332" y="20"  fontSize="11" fill={RED}>저항</text>
+        <text x="332" y="100" fontSize="11" fill={GREEN}>지지</text>
+        {[60, 180, 300].map(x => <circle key={x} cx={x} cy={85} r="4" fill={GREEN} opacity="0.5"/>)}
+        {[140, 260].map(x      => <circle key={x} cx={x} cy={25} r="4" fill={RED}   opacity="0.5"/>)}
+        <text x="20" y="106" fontSize="10" fill={GRAY} opacity="0.8">역할 전환: 지지 이탈 → 저항 / 저항 돌파 → 지지</text>
       </svg>
     ),
+
     supply: (
-      <svg width="80" height="60" viewBox="0 0 80 60" fill="none">
-        <rect x="4" y="24" width="72" height="16" fill={RED} opacity="0.12" rx="2"/>
-        <line x1="4" y1="24" x2="76" y2="24" stroke={RED} strokeWidth="0.8" strokeDasharray="3 2"/>
-        <line x1="4" y1="40" x2="76" y2="40" stroke={RED} strokeWidth="0.8" strokeDasharray="3 2"/>
-        <path d="M4 52 L12 44 L20 48 L28 36 L34 42 L42 28 L48 34 L56 28 L64 36 L72 28" stroke={GRAY} strokeWidth="1" opacity="0.6"/>
-        <text x="6" y="22" fontSize="7" fill={RED}>매물대 구간</text>
+      <svg width="100%" height="110" viewBox="0 0 380 110" fill="none">
+        <rect x="20" y="38" width="340" height="28" fill={RED} opacity="0.1" rx="3"/>
+        <line x1="20" y1="38" x2="360" y2="38" stroke={RED} strokeWidth="1.2" strokeDasharray="4 2"/>
+        <line x1="20" y1="66" x2="360" y2="66" stroke={RED} strokeWidth="1.2" strokeDasharray="4 2"/>
+        <path d="M20 90 L60 70 L100 85 L140 55 L180 68 L220 45 L260 62 L300 50 L340 55" stroke={GRAY} strokeWidth="1.2" opacity="0.55"/>
+        <text x="25" y="32" fontSize="11" fill={RED} fontWeight="500">매물대 구간 (강한 지지/저항)</text>
+        <text x="20" y="105" fontSize="10" fill={GRAY} opacity="0.8">고거래량 + 횡보 구간 — 돌파 시 강한 상승, 이탈 시 강한 하락</text>
       </svg>
     ),
+
     volume: (
-      <svg width="80" height="60" viewBox="0 0 80 60" fill="none">
+      <svg width="100%" height="110" viewBox="0 0 380 110" fill="none">
         {[
-          { x: 6,  h: 20, c: GREEN },
-          { x: 18, h: 14, c: RED },
-          { x: 30, h: 18, c: GREEN },
-          { x: 42, h: 12, c: RED },
-          { x: 54, h: 38, c: GREEN },
-          { x: 66, h: 10, c: RED },
+          { x: 20,  h: 30, c: GREEN },
+          { x: 60,  h: 20, c: RED   },
+          { x: 100, h: 25, c: GREEN },
+          { x: 140, h: 15, c: RED   },
+          { x: 180, h: 18, c: GREEN },
+          { x: 220, h: 12, c: RED   },
+          { x: 260, h: 75, c: GREEN },
+          { x: 300, h: 16, c: RED   },
+          { x: 340, h: 14, c: GREEN },
         ].map(({ x, h, c }) => (
-          <rect key={x} x={x} y={56 - h} width="10" height={h} fill={c} opacity="0.5" rx="1"/>
+          <rect key={x} x={x} y={90 - h} width="28" height={h} fill={c} opacity="0.5" rx="2"/>
         ))}
-        <text x="48" y="12" fontSize="7" fill={GREEN}>↑ 거래량 폭발</text>
-        <line x1="57" y1="14" x2="59" y2="19" stroke={GREEN} strokeWidth="0.8"/>
+        <text x="252" y="10" fontSize="11" fill={GREEN} fontWeight="500">↑ 거래량 폭발</text>
+        <line x1="274" y1="12" x2="274" y2="16" stroke={GREEN} strokeWidth="1"/>
+        <text x="20" y="106" fontSize="10" fill={GRAY} opacity="0.8">패턴 신뢰도 보조 확인 — 단독 매매 판단으로 쓰지 않음</text>
       </svg>
     ),
   }
-  return svgs[type] || null
+
+  return (
+    <div className={`w-full rounded-xl p-4 mb-4 ${dark ? 'bg-[#0d0f14]' : 'bg-black/[0.04]'}`}>
+      {svgs[type] ?? null}
+    </div>
+  )
 }
 
 /* ── 색상 맵 ── */
@@ -449,146 +499,60 @@ const ACCENT = {
   green:  { light: '#3b6d11', dark: '#3ec97e' },
 }
 
-/* ── 이미지 갤러리 모달 ── */
-function GalleryModal({ images, onClose }) {
-  const [idx, setIdx] = useState(0)
-  const [lightbox, setLightbox] = useState(false)
-  const touchStartX = useRef(null)
-
-  const prev = () => setIdx(i => Math.max(0, i - 1))
-  const next = () => setIdx(i => Math.min(images.length - 1, i + 1))
-
-  const onTouchStart = e => { touchStartX.current = e.touches[0].clientX }
-  const onTouchEnd   = e => {
-    if (touchStartX.current === null) return
-    const dx = e.changedTouches[0].clientX - touchStartX.current
-    if (dx < -40) next()
-    if (dx >  40) prev()
-    touchStartX.current = null
-  }
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: 'rgba(0,0,0,0.7)' }} onClick={onClose}>
-      <div className="w-full max-w-lg rounded-2xl overflow-hidden bg-[#13161e] border border-white/10"
-        onClick={e => e.stopPropagation()}>
-
-        {/* 상단 */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/8">
-          <span className="text-xs text-[#7a7f94] font-mono">{idx + 1} / {images.length}</span>
-          <button onClick={onClose} className="w-7 h-7 rounded-lg flex items-center justify-center text-xs text-[#7a7f94] hover:bg-white/5">✕</button>
-        </div>
-
-        {/* 이미지 영역 */}
-        <div className="relative select-none"
-          onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-          <img
-            src={images[idx]}
-            alt={`chart-${idx + 1}`}
-            className="w-full object-contain max-h-72 cursor-zoom-in"
-            onClick={() => setLightbox(true)}
-          />
-          {/* 좌우 버튼 */}
-          {idx > 0 && (
-            <button onClick={prev}
-              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 text-white text-sm flex items-center justify-center hover:bg-black/60">
-              ‹
-            </button>
-          )}
-          {idx < images.length - 1 && (
-            <button onClick={next}
-              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 text-white text-sm flex items-center justify-center hover:bg-black/60">
-              ›
-            </button>
-          )}
-        </div>
-
-        {/* 인디케이터 */}
-        <div className="flex justify-center gap-1.5 py-3">
-          {images.map((_, i) => (
-            <button key={i} onClick={() => setIdx(i)}
-              className={`w-1.5 h-1.5 rounded-full transition-all ${i === idx ? 'bg-white' : 'bg-white/25'}`}/>
-          ))}
-        </div>
-      </div>
-
-      {/* 라이트박스 */}
-      {lightbox && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/90"
-          onClick={() => setLightbox(false)}>
-          <img src={images[idx]} alt="lightbox" className="max-w-full max-h-full object-contain cursor-zoom-out"/>
-        </div>
-      )}
-    </div>
-  )
-}
-
 /* ── 아코디언 아이템 ── */
-function AccordionItem({ item, accentColor, sectionIdx, itemIdx }) {
-  const [open, setOpen]       = useState(false)
-  const [gallery, setGallery] = useState(false)
+function AccordionItem({ item, accentColor }) {
+  const [open, setOpen] = useState(false)
   const { dark } = useTheme()
-
   const muted   = dark ? 'text-[#7a7f94]' : 'text-gray-500'
   const detailC = dark ? 'text-[#b0b4c4]' : 'text-gray-600'
-  const borderB = dark ? 'border-white/8' : 'border-black/8'
-
-  // ChartNote에서 저장된 이미지 URL 목록 (실제로는 ChartNote가 관리)
-  // 갤러리 버튼은 이미지가 있을 때만 노출 — 여기서는 항상 표시하되 ChartNote 연동
-  const noteSection = `concept_${item.id}`
+  const borderB = dark ? 'border-white/8'  : 'border-black/8'
 
   return (
     <div className={`border-b ${borderB} last:border-b-0`}>
-      {/* 트리거 */}
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center justify-between py-3.5 text-left group"
+        className="w-full flex items-center justify-between py-3.5 text-left"
       >
         <span className="text-sm font-medium">{item.title}</span>
-        <span className={`text-sm transition-transform duration-200 ${open ? 'rotate-45' : ''}`}
-          style={{ color: accentColor }}>+</span>
+        <span
+          className="text-base shrink-0 ml-2 transition-transform duration-200"
+          style={{ color: accentColor, display: 'inline-block', transform: open ? 'rotate(45deg)' : 'rotate(0deg)' }}
+        >+</span>
       </button>
 
-      {/* 본문 */}
       {open && (
         <div className="pb-5">
-          {/* SVG + 설명 */}
-          <div className="flex gap-4 mb-4">
-            {item.svgType && (
-              <div className="shrink-0">
-                <ConceptSVG type={item.svgType} />
-              </div>
-            )}
-            <div className="flex-1">
-              <p className={`text-xs mb-3 leading-relaxed ${muted}`}>{item.desc}</p>
-              <ul className="space-y-1.5">
-                {item.details.map((d, i) => (
-                  <li key={i} className={`text-xs flex gap-2 ${detailC}`}>
-                    <span className="opacity-30 shrink-0 mt-0.5">—</span>
-                    <span>{d}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          {/* SVG — 세로 배치, 전체 너비 */}
+          {item.svgType && <ConceptSVG type={item.svgType} dark={dark} />}
 
-          {/* ChartNote + 차트 예시 버튼 */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <ChartNote page="concepts" section={noteSection} label="예시 차트" single={true} />
-          </div>
+          {/* 설명 */}
+          <p className={`text-xs mb-3 leading-relaxed ${muted}`}>{item.desc}</p>
+
+          {/* 세부 항목 */}
+          <ul className="space-y-1.5 mb-4">
+            {item.details.map((d, i) => (
+              <li key={i} className={`text-xs flex gap-2 ${detailC}`}>
+                <span className="opacity-30 shrink-0 mt-0.5">—</span>
+                <span>{d}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* 더보기 */}
+          <ChartNote page="concepts" section={`concept_${item.id}`} label="더보기" single={true} />
 
           {/* 키워드 */}
           <div className="flex flex-wrap gap-1 mt-3">
             {item.keywords.map(k => (
-              <span key={k} className={`text-xs px-2 py-0.5 rounded-full border ${dark
-                ? 'bg-white/5 border-white/10 text-[#7a7f94]'
-                : 'bg-black/5 border-black/10 text-gray-500'}`}>{k}</span>
+              <span key={k} className={`text-xs px-2 py-0.5 rounded-full border ${
+                dark
+                  ? 'bg-white/5 border-white/10 text-[#7a7f94]'
+                  : 'bg-black/5 border-black/10 text-gray-500'
+              }`}>{k}</span>
             ))}
           </div>
         </div>
       )}
-
-      {gallery && <GalleryModal images={[]} onClose={() => setGallery(false)} />}
     </div>
   )
 }
@@ -599,19 +563,16 @@ const CATEGORY_ORDER = ['캔들 기초', '이동평균선', '보조지표', '피
 export default function Concepts() {
   const { dark } = useTheme()
   const { query, setQuery, filtered } = usePageSearch(CONCEPTS, ['title', 'desc', 'keywords', 'details'])
-
   const muted = dark ? 'text-[#7a7f94]' : 'text-gray-500'
-  const catC  = dark ? 'text-[#4f8ef7]' : 'text-[#185fa5]'
   const divC  = dark ? 'border-white/10' : 'border-black/10'
-
-  const colorForCategory = (cat) => {
-    const item = CONCEPTS.find(c => c.category === cat)
-    if (!item) return dark ? '#4f8ef7' : '#185fa5'
-    return ACCENT[item.color]?.[dark ? 'dark' : 'light'] ?? '#888'
-  }
 
   const accentForItem = (item) =>
     ACCENT[item.color]?.[dark ? 'dark' : 'light'] ?? '#888'
+
+  const accentForCategory = (cat) => {
+    const item = CONCEPTS.find(c => c.category === cat)
+    return item ? accentForItem(item) : '#888'
+  }
 
   return (
     <div>
@@ -623,17 +584,14 @@ export default function Concepts() {
       <PageSearch query={query} setQuery={setQuery} placeholder="용어 검색... (예: RSI, 피보나치, 골든크로스)" />
       {query && <p className={`text-xs mb-4 ${muted}`}>{filtered.length}개 결과</p>}
 
-      {/* 카테고리별 아코디언 */}
       {!query && CATEGORY_ORDER.map((cat, si) => {
         const items = CONCEPTS.filter(c => c.category === cat)
         if (!items.length) return null
-        const accent = colorForCategory(cat)
-
+        const accent = accentForCategory(cat)
         return (
           <section key={cat} className="mb-10">
-            {/* 섹션 헤더 */}
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-xs font-mono text-gray-400">
+              <span className="text-xs font-mono" style={{ color: `${accent}99` }}>
                 {String(si + 1).padStart(2, '0')}
               </span>
               <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: accent }}>
@@ -641,36 +599,21 @@ export default function Concepts() {
               </span>
               <div className={`flex-1 border-t ${divC}`} />
             </div>
-
-            {/* 아코디언 목록 */}
             <div>
-              {items.map((item, ii) => (
-                <AccordionItem
-                  key={item.id}
-                  item={item}
-                  accentColor={accentForItem(item)}
-                  sectionIdx={si}
-                  itemIdx={ii}
-                />
+              {items.map(item => (
+                <AccordionItem key={item.id} item={item} accentColor={accentForItem(item)} />
               ))}
             </div>
           </section>
         )
       })}
 
-      {/* 검색 결과 */}
       {query && (
         <div>
           {filtered.length === 0
             ? <p className={`text-sm ${muted}`}>검색 결과 없음</p>
-            : filtered.map((item, ii) => (
-              <AccordionItem
-                key={item.id}
-                item={item}
-                accentColor={accentForItem(item)}
-                sectionIdx={0}
-                itemIdx={ii}
-              />
+            : filtered.map(item => (
+              <AccordionItem key={item.id} item={item} accentColor={accentForItem(item)} />
             ))
           }
         </div>
