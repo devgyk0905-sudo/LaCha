@@ -16,20 +16,6 @@ const TEAL   = '#2abfb0'
 const CONCEPTS = [
   {
     category: '캔들 기초',
-    title: '시가 / 종가 / 고가 / 저가',
-    desc: '캔들 하나가 담고 있는 네 가지 가격 정보.',
-    keywords: ['시가', '종가', '고가', '저가', 'OHLC'],
-    details: [
-      '시가(Open): 해당 봉이 시작된 가격',
-      '종가(Close): 해당 봉이 마감된 가격',
-      '고가(High): 봉 기간 중 가장 높은 가격 — 위꼬리 끝',
-      '저가(Low): 봉 기간 중 가장 낮은 가격 — 아래꼬리 끝',
-      '몸통: 시가와 종가 사이의 구간',
-    ],
-    color: 'red', id: 'ohlc', svgType: 'ohlc',
-  },
-  {
-    category: '캔들 기초',
     title: '양봉 / 음봉',
     desc: '종가가 시가보다 높으면 양봉, 낮으면 음봉.',
     keywords: ['양봉', '음봉', '불리쉬', '베어리쉬'],
@@ -41,7 +27,7 @@ const CONCEPTS = [
     ],
     color: 'red', id: 'bullbear', svgType: 'bullbear',
   },
-  {
+ {
     category: '캔들 기초',
     title: '몸통 / 꼬리의 의미',
     desc: '몸통은 실제 매매 결과, 꼬리는 세력 간 힘겨루기의 흔적.',
@@ -54,6 +40,20 @@ const CONCEPTS = [
       '도지: 시가 ≈ 종가 — 몸통 거의 없음, 방향 탐색 중',
     ],
     color: 'red', id: 'body_tail', svgType: 'body_tail',
+  },
+  {
+    category: '캔들 기초',
+    title: '시가 / 종가 / 고가 / 저가',
+    desc: '캔들 하나가 담고 있는 네 가지 가격 정보.',
+    keywords: ['시가', '종가', '고가', '저가', 'OHLC'],
+    details: [
+      '시가(Open): 해당 봉이 시작된 가격',
+      '종가(Close): 해당 봉이 마감된 가격',
+      '고가(High): 봉 기간 중 가장 높은 가격 — 위꼬리 끝',
+      '저가(Low): 봉 기간 중 가장 낮은 가격 — 아래꼬리 끝',
+      '몸통: 시가와 종가 사이의 구간',
+    ],
+    color: 'red', id: 'ohlc', svgType: 'ohlc',
   },
   {
     category: '이동평균선',
