@@ -21,11 +21,10 @@ const REVERSAL = [
 ]
 
 const CONTINUATION = [
-  { id:10, cat:'추세 지속형', name:'백삼병', signal:'up', desc:'연속 3개 양봉 — 강한 상승 신호', shape:'연속 3개 양봉 / 각 저점 상승', signalText:'상승 추세 강화', note:'1번째 양봉 저점 훼손 시 무효 / 큰 양봉도 좋지만 아래 매수세(꼬리)가 붙은 캔들(아래꼬리)이 나와주면 신뢰도가 더 높아짐', keywords:['백삼병','연속양봉','쓰리화이트솔저'] },
-  { id:11, cat:'추세 지속형', name:'흑삼병', signal:'down', desc:'연속 3개 음봉 — 강한 하락 신호', shape:'연속 3개 음봉 / 각 고점 하락', signalText:'하락 추세 강화', note:'1번째 음봉 고점 훼손 시 무효 / 큰 음봉도 좋지만 위 매도세(꼬리)가 붙은 캔들(위꼬리)이 나와주면 신뢰도가 더 높아짐', keywords:['흑삼병','연속음봉','쓰리블랙크로우'] },
+  { id:10, cat:'추세 지속형', name:'백삼병', signal:'up', desc:'연속 3개 양봉 — 강한 상승 신호', shape:'연속 3개 양봉 / 각 저점 상승', signalText:'상승 추세 강화', note:'1번째 양봉 저점 훼손 시 무효 / 아래꼬리 동반 시 신뢰도 더 높음', keywords:['백삼병','연속양봉','쓰리화이트솔저'] },
+  { id:11, cat:'추세 지속형', name:'흑삼병', signal:'down', desc:'연속 3개 음봉 — 강한 하락 신호', shape:'연속 3개 음봉 / 각 고점 하락', signalText:'하락 추세 강화', note:'1번째 음봉 고점 훼손 시 무효 / 위꼬리 동반 시 신뢰도 더 높음', keywords:['흑삼병','연속음봉','쓰리블랙크로우'] },
 ]
 
-/* 다람쥐/로드트랙/FVG는 별도 그룹 */
 const SPECIAL = [
   { id:12, cat:'추세 전환형', name:'다람쥐 패턴', signal:'both', desc:'장악형 이후 도지 출현 — 상승/하락 반전 신호', keywords:['다람쥐','다람쥐꼬리','상승다람쥐','하락다람쥐'] },
   { id:13, cat:'추세 전환형', name:'로드트랙 패턴', signal:'both', desc:'추세 마지막 강한 반전 — 불리쉬/베어리쉬', keywords:['로드트랙','레일로드트랙','railroad track','불리쉬','베어리쉬'] },
@@ -102,7 +101,6 @@ function CandleSVG({ name, variant }) {
     </>,
   }
 
-  /* 다람쥐 */
   const squirrelUp = <>
     <rect x="4" y="16" width="18" height="52" fill={GREEN} rx="1"/>
     <rect x="26" y="12" width="18" height="60" fill={RED} rx="1"/>
@@ -124,7 +122,6 @@ function CandleSVG({ name, variant }) {
     <line x1="68" y1="71" x2="68" y2="76" stroke={RED} strokeWidth="1.5"/>
   </>
 
-  /* 로드트랙 */
   const roadUp = <>
     <line x1="14" y1="8" x2="14" y2="28" stroke={GRAY} strokeWidth="1.5" strokeLinecap="round"/>
     <polygon points="14,28 11,22 17,22" fill={GRAY}/>
@@ -150,7 +147,6 @@ function CandleSVG({ name, variant }) {
     <line x1="47" y1="44" x2="47" y2="48" stroke={RED} strokeWidth="1.5"/>
   </>
 
-  /* FVG */
   const fvgUp = <>
     <rect x="2" y="18" width="70" height="36" fill="rgba(62,201,126,0.15)" stroke={GREEN} strokeWidth="0.8" rx="1"/>
     <line x1="14" y1="40" x2="14" y2="46" stroke={RED} strokeWidth="1.5"/>
@@ -182,15 +178,15 @@ function CandleSVG({ name, variant }) {
     <polygon points="68,62 65,56 71,56" fill={RED}/>
   </>
 
-  const wide = ['모닝스타','이브닝스타','백삼병','흑삼병','상승장악형','하락장악형'].includes(name)
+  const wide  = ['모닝스타','이브닝스타','백삼병','흑삼병','상승장악형','하락장악형'].includes(name)
   const xwide = ['다람쥐 패턴','로드트랙 패턴','FVG'].includes(name)
   const w = xwide ? 80 : wide ? 76 : 64
   const h = xwide ? 80 : 70
 
   let content = shapes[name]
-  if (name === '다람쥐 패턴') content = variant === 'up' ? squirrelUp : squirrelDown
-  if (name === '로드트랙 패턴') content = variant === 'up' ? roadUp : roadDown
-  if (name === 'FVG') content = variant === 'down' ? fvgDown : fvgUp
+  if (name === '다람쥐 패턴')   content = variant === 'up' ? squirrelUp   : squirrelDown
+  if (name === '로드트랙 패턴') content = variant === 'up' ? roadUp       : roadDown
+  if (name === 'FVG')           content = variant === 'down' ? fvgDown    : fvgUp
 
   return (
     <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} xmlns="http://www.w3.org/2000/svg">
@@ -257,16 +253,16 @@ function Modal({ item, onClose }) {
 function SquirrelModal({ onClose }) {
   const { dark } = useTheme()
   const [tab, setTab] = useState('up')
-  const bgC   = dark ? 'bg-[#13161e] border-white/15' : 'bg-white border-black/15'
-  const muted = dark ? 'text-[#7a7f94]' : 'text-gray-500'
-  const rowBg = dark ? 'bg-[#0d0f14]'   : 'bg-gray-50'
-  const tabActive   = 'bg-green-500/10 text-green-400 border border-green-500/20'
-  const tabActiveD  = 'bg-red-500/10 text-red-400 border border-red-500/20'
+  const bgC        = dark ? 'bg-[#13161e] border-white/15' : 'bg-white border-black/15'
+  const muted      = dark ? 'text-[#7a7f94]' : 'text-gray-500'
+  const rowBg      = dark ? 'bg-[#0d0f14]'   : 'bg-gray-50'
+  const tabActive  = 'bg-green-500/10 text-green-400 border border-green-500/20'
+  const tabActiveD = 'bg-red-500/10 text-red-400 border border-red-500/20'
   const tabInactive = dark ? 'text-[#7a7f94] border border-white/10' : 'text-gray-400 border border-black/10'
 
   const data = {
-    up: { label:'상승다람쥐', signal:'up', desc:'음봉을 잡아먹는 양봉 + 도지 → 말아올리는 상승 패턴', shape:'①장대음봉 → ②장대양봉(음봉 감쌈) → ③도지 → ④상승', signalText:'도지 이후 강한 상승', note:'도지캔들 이후 말아올리는 형태 / 음양 무관' },
-    down: { label:'하락다람쥐', signal:'down', desc:'양봉을 잡아먹는 음봉 + 도지 → 꼬리처럼 빠지는 하락 패턴', shape:'①장대양봉 → ②장대음봉(양봉 감쌈) → ③도지 1~3개 → ④하락', signalText:'도지 이후 강한 하락', note:'도지캔들 1~3개 나온 뒤 꼬리처럼 길게 빠짐' },
+    up:   { desc:'음봉을 잡아먹는 양봉 + 도지 → 말아올리는 상승 패턴', shape:'①장대음봉 → ②장대양봉(음봉 감쌈) → ③도지 → ④상승', signalText:'도지 이후 강한 상승', note:'도지캔들 이후 말아올리는 형태 / 음양 무관' },
+    down: { desc:'양봉을 잡아먹는 음봉 + 도지 → 꼬리처럼 빠지는 하락 패턴', shape:'①장대양봉 → ②장대음봉(양봉 감쌈) → ③도지 1~3개 → ④하락', signalText:'도지 이후 강한 하락', note:'도지캔들 1~3개 나온 뒤 꼬리처럼 길게 빠짐' },
   }
   const cur = data[tab]
 
@@ -284,7 +280,7 @@ function SquirrelModal({ onClose }) {
           <button onClick={onClose} className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm ${muted} ${dark ? 'border-white/10 hover:bg-white/5' : 'border-black/10 hover:bg-black/5'}`}>✕</button>
         </div>
         <div className="flex gap-2 mb-4">
-          <button onClick={() => setTab('up')} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${tab === 'up' ? tabActive : tabInactive}`}>상승다람쥐</button>
+          <button onClick={() => setTab('up')}   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${tab === 'up'   ? tabActive  : tabInactive}`}>상승다람쥐</button>
           <button onClick={() => setTab('down')} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${tab === 'down' ? tabActiveD : tabInactive}`}>하락다람쥐</button>
         </div>
         <div className={`flex gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
@@ -309,7 +305,7 @@ function SquirrelModal({ onClose }) {
   )
 }
 
-/* ── 로드트랙 SVG (Figma Frame_17/18) ── */
+/* ── 로드트랙 SVG ── */
 function RoadtrackBullishSVG() {
   return (
     <svg width="110" height="92" viewBox="0 0 244 204" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -340,15 +336,15 @@ function RoadtrackBearishSVG() {
 function RoadtrackModal({ onClose }) {
   const { dark } = useTheme()
   const [tab, setTab] = useState('up')
-  const bgC   = dark ? 'bg-[#13161e] border-white/15' : 'bg-white border-black/15'
-  const muted = dark ? 'text-[#7a7f94]' : 'text-gray-500'
-  const rowBg = dark ? 'bg-[#0d0f14]'   : 'bg-gray-50'
+  const bgC        = dark ? 'bg-[#13161e] border-white/15' : 'bg-white border-black/15'
+  const muted      = dark ? 'text-[#7a7f94]' : 'text-gray-500'
+  const rowBg      = dark ? 'bg-[#0d0f14]'   : 'bg-gray-50'
   const tabActiveU  = 'bg-green-500/10 text-green-400 border border-green-500/20'
   const tabActiveD  = 'bg-red-500/10 text-red-400 border border-red-500/20'
   const tabInactive = dark ? 'text-[#7a7f94] border border-white/10' : 'text-gray-400 border border-black/10'
 
   const data = {
-    up: { desc:'하락 예견 중 큰 음봉으로 공매수 청산 유발 후 상승', shape:'①상승 캔들 패턴 2회 → ②큰 장대음봉(순간 급락) → ③상승 반전', signalText:'큰 음봉 출현 = 롱 청산 유발 → 진짜 상승의 시작', note:'음봉 거래량이 하락폭 대비 낮음이 핵심' },
+    up:   { desc:'하락 예견 중 큰 음봉으로 공매수 청산 유발 후 상승', shape:'①상승 캔들 패턴 2회 → ②큰 장대음봉(순간 급락) → ③상승 반전', signalText:'큰 음봉 출현 = 롱 청산 유발 → 진짜 상승의 시작', note:'음봉 거래량이 하락폭 대비 낮음이 핵심' },
     down: { desc:'하락 예견 중 큰 양봉으로 공매도 청산 유발 후 하락', shape:'①하락 캔들 패턴 2회 → ②큰 장대양봉(순간 급등) → ③하락 반전', signalText:'큰 양봉 출현 = 숏 청산 유발 → 진짜 하락의 시작', note:'양봉 거래량이 상승폭 대비 낮음이 핵심' },
   }
   const cur = data[tab]
@@ -367,7 +363,7 @@ function RoadtrackModal({ onClose }) {
           <button onClick={onClose} className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm ${muted} ${dark ? 'border-white/10 hover:bg-white/5' : 'border-black/10 hover:bg-black/5'}`}>✕</button>
         </div>
         <div className="flex gap-2 mb-4">
-          <button onClick={() => setTab('up')} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${tab === 'up' ? tabActiveU : tabInactive}`}>불리쉬 (상승)</button>
+          <button onClick={() => setTab('up')}   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${tab === 'up'   ? tabActiveU : tabInactive}`}>불리쉬 (상승)</button>
           <button onClick={() => setTab('down')} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${tab === 'down' ? tabActiveD : tabInactive}`}>베어리쉬 (하락)</button>
         </div>
         <div className={`flex gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
@@ -398,15 +394,15 @@ function RoadtrackModal({ onClose }) {
 function FVGModal({ onClose }) {
   const { dark } = useTheme()
   const [tab, setTab] = useState('up')
-  const bgC   = dark ? 'bg-[#13161e] border-white/15' : 'bg-white border-black/15'
-  const muted = dark ? 'text-[#7a7f94]' : 'text-gray-500'
-  const rowBg = dark ? 'bg-[#0d0f14]'   : 'bg-gray-50'
+  const bgC        = dark ? 'bg-[#13161e] border-white/15' : 'bg-white border-black/15'
+  const muted      = dark ? 'text-[#7a7f94]' : 'text-gray-500'
+  const rowBg      = dark ? 'bg-[#0d0f14]'   : 'bg-gray-50'
   const tabActiveU  = 'bg-green-500/10 text-green-400 border border-green-500/20'
   const tabActiveD  = 'bg-red-500/10 text-red-400 border border-red-500/20'
   const tabInactive = dark ? 'text-[#7a7f94] border border-white/10' : 'text-gray-400 border border-black/10'
 
   const data = {
-    up: { desc:'상승 방향으로 형성된 가격 공백 — 되돌림 시 지지 역할', shape:'①음봉 → ②큰 양봉(급등) → ③양봉 / 1번 고점과 3번 저점 사이 갭', signalText:'갭 구간으로 되돌릴 때 지지 — 매수 타점', note:'갭이 채워지지 않을수록 상승 강도 강함' },
+    up:   { desc:'상승 방향으로 형성된 가격 공백 — 되돌림 시 지지 역할', shape:'①음봉 → ②큰 양봉(급등) → ③양봉 / 1번 고점과 3번 저점 사이 갭', signalText:'갭 구간으로 되돌릴 때 지지 — 매수 타점', note:'갭이 채워지지 않을수록 상승 강도 강함' },
     down: { desc:'하락 방향으로 형성된 가격 공백 — 되돌림 시 저항 역할', shape:'①양봉 → ②큰 음봉(급락) → ③음봉 / 1번 저점과 3번 고점 사이 갭', signalText:'갭 구간으로 되돌릴 때 저항 — 매도 타점', note:'갭이 채워지지 않을수록 하락 강도 강함' },
   }
   const cur = data[tab]
@@ -425,7 +421,7 @@ function FVGModal({ onClose }) {
           <button onClick={onClose} className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm ${muted} ${dark ? 'border-white/10 hover:bg-white/5' : 'border-black/10 hover:bg-black/5'}`}>✕</button>
         </div>
         <div className="flex gap-2 mb-4">
-          <button onClick={() => setTab('up')} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${tab === 'up' ? tabActiveU : tabInactive}`}>불리쉬 FVG (상승)</button>
+          <button onClick={() => setTab('up')}   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${tab === 'up'   ? tabActiveU : tabInactive}`}>불리쉬 FVG (상승)</button>
           <button onClick={() => setTab('down')} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${tab === 'down' ? tabActiveD : tabInactive}`}>베어리쉬 FVG (하락)</button>
         </div>
         <div className={`flex gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
@@ -475,36 +471,48 @@ function FVGModal({ onClose }) {
   )
 }
 
+/* ── 섹션 헤더 공통 컴포넌트 ── */
+function SectionHeader({ label, index, dark }) {
+  const divC   = dark ? 'border-white/10' : 'border-black/10'
+  const numC   = dark ? 'text-[#4f8ef7]/60' : 'text-[#185fa5]/50'
+  const titleC = dark ? 'text-[#4f8ef7]'    : 'text-[#185fa5]'
+  return (
+    <div className="flex items-center gap-3 mb-4">
+      <span className={`text-xs font-mono ${numC}`}>{String(index + 1).padStart(2, '0')}</span>
+      <span className={`text-xs font-semibold uppercase tracking-widest ${titleC}`}>{label}</span>
+      <div className={`flex-1 border-t ${divC}`} />
+    </div>
+  )
+}
+
 /* ── 메인 ── */
 export default function CandlePatterns() {
   const { dark } = useTheme()
   const { query, setQuery, filtered } = usePageSearch(ALL_CANDLES, ['name','desc','keywords','signalText'])
   const [selected, setSelected] = useState(null)
   const muted  = dark ? 'text-[#7a7f94]' : 'text-gray-500'
-  const catC   = dark ? 'text-[#4f8ef7]' : 'text-[#185fa5]'
   const cardBg = dark ? 'bg-[#13161e] border-white/8 hover:border-white/20' : 'bg-white border-black/8 hover:border-black/20'
-
-  const CATS = ['단일 패턴', '추세 전환형', '추세 지속형']
+  const CATS   = ['단일 패턴', '추세 전환형', '추세 지속형']
 
   const renderCard = (item) => (
     <button key={item.id} onClick={() => setSelected(item)}
       className={`rounded-xl border p-4 flex flex-col items-center gap-2 transition-all cursor-pointer ${cardBg}`}>
       {item.name === 'FVG'
-         ? <svg width="94" height="100" viewBox="0 0 208 222" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="0.5" y="58.5" width="207" height="112" fill="#07831E" fillOpacity="0.1" stroke="#07831E"/>
-      <rect x="8.5" y="192.5" width="28" height="18" fill="#07831E" stroke="#07831E"/>
-      <line x1="21.5" y1="171" x2="21.5" y2="222" stroke="#07831E"/>
-      <rect x="70.5" y="13.5" width="28" height="18" fill="#07831E" stroke="#07831E"/>
-      <line x1="83.5" y1="0" x2="83.5" y2="58" stroke="#07831E"/>
-      <rect x="37.5" y="52.5" width="28" height="126" fill="#07831E" stroke="#07831E"/>
-      <line x1="51.5" y1="43" x2="51.5" y2="185" stroke="#07831E"/>
-      <path d="M134.354 58.6464C134.158 58.4512 133.842 58.4512 133.646 58.6464L130.464 61.8284C130.269 62.0237 130.269 62.3403 130.464 62.5355C130.66 62.7308 130.976 62.7308 131.172 62.5355L134 59.7071L136.828 62.5355C137.024 62.7308 137.34 62.7308 137.536 62.5355C137.731 62.3403 137.731 62.0237 137.536 61.8284L134.354 58.6464ZM133.646 171.354C133.842 171.549 134.158 171.549 134.354 171.354L137.536 168.172C137.731 167.976 137.731 167.66 137.536 167.464C137.34 167.269 137.024 167.269 136.828 167.464L134 170.293L131.172 167.464C130.976 167.269 130.66 167.269 130.464 167.464C130.269 167.66 130.269 167.976 130.464 168.172L133.646 171.354ZM134 59L133.5 59L133.5 171L134 171L134.5 171L134.5 59L134 59Z" fill="#3ec97e"/>
-      <path d="M142.057 128V119.273H147.29V120.21H143.114V123.159H146.898V124.097H143.114V128H142.057ZM149.458 119.273L152.049 126.619H152.151L154.742 119.273H155.85L152.645 128H151.554L148.35 119.273H149.458ZM162.765 122C162.671 121.713 162.548 121.456 162.394 121.229C162.244 120.999 162.063 120.803 161.853 120.641C161.646 120.479 161.41 120.355 161.146 120.27C160.881 120.185 160.592 120.142 160.276 120.142C159.759 120.142 159.289 120.276 158.866 120.543C158.442 120.81 158.106 121.203 157.856 121.723C157.606 122.243 157.481 122.881 157.481 123.636C157.481 124.392 157.607 125.03 157.86 125.55C158.113 126.07 158.455 126.463 158.887 126.73C159.319 126.997 159.805 127.131 160.344 127.131C160.844 127.131 161.285 127.024 161.665 126.811C162.049 126.595 162.347 126.291 162.56 125.899C162.776 125.504 162.884 125.04 162.884 124.506L163.208 124.574H160.583V123.636H163.907V124.574C163.907 125.293 163.754 125.918 163.447 126.449C163.143 126.98 162.722 127.392 162.185 127.685C161.651 127.974 161.038 128.119 160.344 128.119C159.572 128.119 158.893 127.938 158.308 127.574C157.725 127.21 157.271 126.693 156.944 126.023C156.62 125.352 156.458 124.557 156.458 123.636C156.458 122.946 156.55 122.325 156.735 121.774C156.923 121.22 157.187 120.749 157.528 120.359C157.869 119.97 158.272 119.672 158.738 119.464C159.204 119.257 159.717 119.153 160.276 119.153C160.737 119.153 161.165 119.223 161.563 119.362C161.964 119.499 162.32 119.693 162.633 119.946C162.948 120.196 163.211 120.496 163.421 120.845C163.631 121.192 163.776 121.577 163.856 122H162.765Z" fill="#3ec97e"/>
-    </svg>
-          : item.name === '로드트랙 패턴'
-          ? <RoadtrackBullishSVG />
-         : <CandleSVG name={item.name} variant="up" />
-}
+        ? <svg width="94" height="100" viewBox="0 0 208 222" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0.5" y="58.5" width="207" height="112" fill="#07831E" fillOpacity="0.1" stroke="#07831E"/>
+            <rect x="8.5" y="192.5" width="28" height="18" fill="#07831E" stroke="#07831E"/>
+            <line x1="21.5" y1="171" x2="21.5" y2="222" stroke="#07831E"/>
+            <rect x="70.5" y="13.5" width="28" height="18" fill="#07831E" stroke="#07831E"/>
+            <line x1="83.5" y1="0" x2="83.5" y2="58" stroke="#07831E"/>
+            <rect x="37.5" y="52.5" width="28" height="126" fill="#07831E" stroke="#07831E"/>
+            <line x1="51.5" y1="43" x2="51.5" y2="185" stroke="#07831E"/>
+            <path d="M134.354 58.6464C134.158 58.4512 133.842 58.4512 133.646 58.6464L130.464 61.8284C130.269 62.0237 130.269 62.3403 130.464 62.5355C130.66 62.7308 130.976 62.7308 131.172 62.5355L134 59.7071L136.828 62.5355C137.024 62.7308 137.34 62.7308 137.536 62.5355C137.731 62.3403 137.731 62.0237 137.536 61.8284L134.354 58.6464ZM133.646 171.354C133.842 171.549 134.158 171.549 134.354 171.354L137.536 168.172C137.731 167.976 137.731 167.66 137.536 167.464C137.34 167.269 137.024 167.269 136.828 167.464L134 170.293L131.172 167.464C130.976 167.269 130.66 167.269 130.464 167.464C130.269 167.66 130.269 167.976 130.464 168.172L133.646 171.354ZM134 59L133.5 59L133.5 171L134 171L134.5 171L134.5 59L134 59Z" fill="#3ec97e"/>
+            <path d="M142.057 128V119.273H147.29V120.21H143.114V123.159H146.898V124.097H143.114V128H142.057ZM149.458 119.273L152.049 126.619H152.151L154.742 119.273H155.85L152.645 128H151.554L148.35 119.273H149.458ZM162.765 122C162.671 121.713 162.548 121.456 162.394 121.229C162.244 120.999 162.063 120.803 161.853 120.641C161.646 120.479 161.41 120.355 161.146 120.27C160.881 120.185 160.592 120.142 160.276 120.142C159.759 120.142 159.289 120.276 158.866 120.543C158.442 120.81 158.106 121.203 157.856 121.723C157.606 122.243 157.481 122.881 157.481 123.636C157.481 124.392 157.607 125.03 157.86 125.55C158.113 126.07 158.455 126.463 158.887 126.73C159.319 126.997 159.805 127.131 160.344 127.131C160.844 127.131 161.285 127.024 161.665 126.811C162.049 126.595 162.347 126.291 162.56 125.899C162.776 125.504 162.884 125.04 162.884 124.506L163.208 124.574H160.583V123.636H163.907V124.574C163.907 125.293 163.754 125.918 163.447 126.449C163.143 126.98 162.722 127.392 162.185 127.685C161.651 127.974 161.038 128.119 160.344 128.119C159.572 128.119 158.893 127.938 158.308 127.574C157.725 127.21 157.271 126.693 156.944 126.023C156.62 125.352 156.458 124.557 156.458 123.636C156.458 122.946 156.55 122.325 156.735 121.774C156.923 121.22 157.187 120.749 157.528 120.359C157.869 119.97 158.272 119.672 158.738 119.464C159.204 119.257 159.717 119.153 160.276 119.153C160.737 119.153 161.165 119.223 161.563 119.362C161.964 119.499 162.32 119.693 162.633 119.946C162.948 120.196 163.211 120.496 163.421 120.845C163.631 121.192 163.776 121.577 163.856 122H162.765Z" fill="#3ec97e"/>
+          </svg>
+        : item.name === '로드트랙 패턴'
+        ? <RoadtrackBullishSVG />
+        : <CandleSVG name={item.name} variant="up" />
+      }
       <span className="text-sm font-medium text-center">{item.name}</span>
       <SignalBadge signal={item.signal} />
     </button>
@@ -520,11 +528,11 @@ export default function CandlePatterns() {
       <PageSearch query={query} setQuery={setQuery} placeholder="캔들 패턴 검색... (예: 모닝스타, 흑삼병, FVG)" />
       {query && <p className={`text-xs mb-4 ${muted}`}>{filtered.length}개 결과</p>}
 
-      {!query && CATS.map(cat => {
+      {!query && CATS.map((cat, si) => {
         const items = ALL_CANDLES.filter(c => c.cat === cat)
         return (
           <section key={cat} className="mb-10">
-            <h2 className={`text-xs font-mono font-semibold uppercase tracking-widest mb-3 ${catC}`}>{cat}</h2>
+            <SectionHeader label={cat} index={si} dark={dark} />
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
               {items.map(renderCard)}
             </div>
@@ -541,9 +549,9 @@ export default function CandlePatterns() {
         </div>
       )}
 
-      {selected?.name === '다람쥐 패턴' && <SquirrelModal onClose={() => setSelected(null)} />}
+      {selected?.name === '다람쥐 패턴'   && <SquirrelModal  onClose={() => setSelected(null)} />}
       {selected?.name === '로드트랙 패턴' && <RoadtrackModal onClose={() => setSelected(null)} />}
-      {selected?.name === 'FVG' && <FVGModal onClose={() => setSelected(null)} />}
+      {selected?.name === 'FVG'            && <FVGModal       onClose={() => setSelected(null)} />}
       {selected && !['다람쥐 패턴','로드트랙 패턴','FVG'].includes(selected.name) && (
         <Modal item={selected} onClose={() => setSelected(null)} />
       )}
