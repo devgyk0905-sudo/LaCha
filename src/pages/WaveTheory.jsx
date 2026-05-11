@@ -96,7 +96,7 @@ function StepSection() {
             <div className="flex flex-wrap gap-2 mb-3">
               {['WXY', 'WXYXZ', '이중플랫(ABC X ABC)', '3파연장 임펄스'].map(t => <Code key={t}>{t}</Code>)}
             </div>
-            <Alert type="blue">피보나치 <strong>확장</strong>으로 판별<br/>W시작(1) → W끝(2) → X끝(3) 클릭</Alert>
+            <Alert type="blue">피보나치 <strong>확장</strong>으로 판별<br/>시작점 0(1) → W(2) → X(3) 지점 연결</Alert>
           </div>
           <div>
             <p className="text-xs font-semibold mb-2 text-[#f0a040]">채널 안 지킬 때</p>
