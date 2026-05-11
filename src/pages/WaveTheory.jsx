@@ -12,8 +12,8 @@ const TABS = [
 
 const SUB_IMPULSE = [
   { id: 'imp_basic',    label: '임펄스' },
-  { id: 'imp_terminal', label: '터미널' },
   { id: 'imp_expand',   label: '확장' },
+  { id: 'imp_terminal', label: '터미널' },
 ]
 
 const SUB_CORRECT = [
@@ -94,7 +94,7 @@ function StepSection() {
           <div>
             <p className="text-xs font-semibold mb-2 text-[#4f8ef7]">채널 지킬 때</p>
             <div className="flex flex-wrap gap-2 mb-3">
-              {['WXY', 'WXYXZ', '이중플랫', '3파연장 임펄스'].map(t => <Code key={t}>{t}</Code>)}
+              {['WXY', 'WXYXZ', '이중플랫(ABC X ABC)', '3파연장 임펄스'].map(t => <Code key={t}>{t}</Code>)}
             </div>
             <Alert type="blue">피보나치 <strong>확장</strong>으로 판별<br/>W시작(1) → W끝(2) → X끝(3) 클릭</Alert>
           </div>
@@ -108,7 +108,7 @@ function StepSection() {
         </div>
       </Card>
       <Card>
-        <p className="font-semibold text-sm mb-3">STEP 2 — 채널 지킬 때: 피보나치 확장 수치</p>
+        <p className="font-semibold text-sm mb-3">STEP 2 — 채널 지킨다면: 추세 기반 피보나치 확장</p>
         <Table
           headers={['Y/Z 마무리 위치', '채널 중단 여부', '결론']}
           rows={[
@@ -118,16 +118,16 @@ function StepSection() {
             [<Code>1.618 초과</Code>, '—', <span className="text-red-400">카운팅 재검토</span>],
           ]}
         />
-        <Alert type="red"><strong>절대규칙</strong>: 하나의 파동만 확장 — Y 확장 시 Z는 <Code>0.618~1.0</Code> 이내</Alert>
+        <Alert type="red"><strong>절대규칙</strong>: Y와 Z 중 하나의 파동만 확장 — Y 확장 시 Z는 <Code>0.618~1.0</Code> 이내 종료</Alert>
       </Card>
       <Card>
-        <p className="font-semibold text-sm mb-3">STEP 2-2 — 채널 안 지킬 때: 되돌림 수치</p>
+        <p className="font-semibold text-sm mb-3">STEP 2-2 — 채널 안 지킨다면: 피모나치 되돌림</p>
         <Table
           headers={['확인 항목', '수치', '결론']}
           rows={[
             ['되돌림 후 추세 방향 재개', <Code>2파가 1파의 0.382~0.618</Code>, <span className="text-blue-400">12345 의심</span>],
             ['되돌림 후 반대 방향 재개', <Code>B파가 A파의 0.382~0.618</Code>, <span className="text-teal-400">ABC 의심</span>],
-            ['C파 길이', <Code>A파의 1.0~1.618배</Code>, <span className="text-teal-400">ABC 확정</span>],
+            ['C파 길이', <Code>A파의 1.0~1.618</Code>, <span className="text-teal-400">ABC 확정</span>],
             ['3규칙 모두 충족', '2파 미이탈 / 3파 최단 아님 / 4파 미겹침', <span className="text-blue-400">12345 확정</span>],
           ]}
         />
