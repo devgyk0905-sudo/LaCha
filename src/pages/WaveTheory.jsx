@@ -41,11 +41,11 @@ function Desc({ children }) {
 
 function WaveAlert({ type = 'blue', children }) {
   const colors = {
-    blue:  'border-[#4f8ef7] bg-[#4f8ef7]/5',
-    red:   'border-[#e05a6a] bg-[#e05a6a]/5',
-    amber: 'border-[#f0a040] bg-[#f0a040]/5',
-    green: 'border-[#3ec97e] bg-[#3ec97e]/5',
-    teal:  'border-[#2abfb0] bg-[#2abfb0]/5',
+    blue:  'border-[#4f8ef7] bg-[#4f8ef7]/10',
+    red:   'border-[#e05a6a] bg-[#e05a6a]/10',
+    amber: 'border-[#f0a040] bg-[#f0a040]/10',
+    green: 'border-[#3ec97e] bg-[#3ec97e]/10',
+    teal:  'border-[#2abfb0] bg-[#2abfb0]/10',
   }
   return (
     <div className={`border-l-2 px-4 py-3 text-xs leading-relaxed my-4 ${colors[type]}`}>
@@ -59,7 +59,7 @@ function WaveTable({ headers, rows }) {
   const thC   = dark ? 'text-[#7a7f94] border-white/10' : 'text-gray-400 border-black/10'
   const tdC   = dark ? 'border-white/8'  : 'border-black/8'
   return (
-    <div className="w-full overflow-x-auto mb-1">
+    <div className={`w-full overflow-x-auto mb-1 rounded-lg p-3 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
       <table className="w-full text-xs border-collapse">
         <thead>
           <tr>
@@ -199,7 +199,7 @@ function StepSection() {
         <div>
           <p className="text-xs font-semibold text-[#f0a040] mb-3">채널 안 지킬 때</p>
           <div className="flex flex-wrap gap-1.5 mb-3">
-            {['ABC', '12345'].map(t => <Code key={t}>{t}</Code>)}
+            {['ABC', '임펄스'].map(t => <Code key={t}>{t}</Code>)}
           </div>
           <WaveAlert type="amber">피보나치 <strong>되돌림</strong>으로 판별<br/>추세 방향이면 12345 / 반대면 ABC</WaveAlert>
         </div>

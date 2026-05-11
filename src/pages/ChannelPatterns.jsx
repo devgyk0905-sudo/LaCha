@@ -196,7 +196,11 @@ function Modal({ item, onClose }) {
             {[['설명', item.desc], ['구조', item.structure], ['신호', item.signalText], ['참고', item.note]].map(([label, val]) => (
               <div key={label} className="flex gap-2 text-xs">
                 <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>{val}</span>
+                <span className={label === '참고' ? muted : ''}>
+                  {label === '참고' && Array.isArray(val)
+                    ? val.map((v, i) => <span key={i} className="block">{v}</span>)
+                    : val}
+                </span>
               </div>
             ))}
           </div>

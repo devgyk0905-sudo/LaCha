@@ -21,8 +21,8 @@ const REVERSAL = [
 ]
 
 const CONTINUATION = [
-  { id:10, cat:'추세 지속형', name:'백삼병', signal:'up', desc:'연속 3개 양봉 — 강한 상승 신호', shape:'연속 3개 양봉 / 각 저점 상승', signalText:'상승 추세 강화', note:'1번째 양봉 저점 훼손 시 무효 / 아래꼬리 동반 시 신뢰도 더 높음', keywords:['백삼병','연속양봉','쓰리화이트솔저'] },
-  { id:11, cat:'추세 지속형', name:'흑삼병', signal:'down', desc:'연속 3개 음봉 — 강한 하락 신호', shape:'연속 3개 음봉 / 각 고점 하락', signalText:'하락 추세 강화', note:'1번째 음봉 고점 훼손 시 무효 / 위꼬리 동반 시 신뢰도 더 높음', keywords:['흑삼병','연속음봉','쓰리블랙크로우'] },
+  { id:10, cat:'추세 지속형', name:'백삼병', signal:'up', desc:'연속 3개 양봉 — 강한 상승 신호', shape:'연속 3개 양봉 / 각 저점 상승', signalText:'상승 추세 강화', note:'1번째 양봉 저점 훼손 시 무효' , '아래꼬리 동반 시 신뢰도 더 높음', keywords:['백삼병','연속양봉','쓰리화이트솔저'] },
+  { id:11, cat:'추세 지속형', name:'흑삼병', signal:'down', desc:'연속 3개 음봉 — 강한 하락 신호', shape:'연속 3개 음봉 / 각 고점 하락', signalText:'하락 추세 강화', note:'1번째 음봉 고점 훼손 시 무효' , '위꼬리 동반 시 신뢰도 더 높음', keywords:['흑삼병','연속음봉','쓰리블랙크로우'] },
 ]
 
 const SPECIAL = [
@@ -230,12 +230,16 @@ function Modal({ item, onClose }) {
         <div className={`flex gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
           <div className="shrink-0 flex items-center"><CandleSVG name={item.name} /></div>
           <div className="flex-1 space-y-2">
-            {[['설명', item.desc], ['구조', item.shape], ['신호', item.signalText], ['참고', item.note]].map(([label, val]) => (
-              <div key={label} className="flex gap-2 text-xs">
-                <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>{val}</span>
-              </div>
-            ))}
+        {[['설명', item.desc], ['구조', item.shape], ['신호', item.signalText], ['참고', item.note]].map(([label, val]) => (
+          <div key={label} className="flex gap-2 text-xs">
+            <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
+            <span className={label === '참고' ? muted : ''}>
+              {label === '참고' && Array.isArray(val)
+                ? val.map((v, i) => <span key={i} className="block">{v}</span>)
+                : val}
+            </span>
+          </div>
+        ))}
           </div>
         </div>
         <div className="flex flex-wrap gap-1.5 mb-4">
@@ -289,7 +293,11 @@ function SquirrelModal({ onClose }) {
             {[['설명', cur.desc], ['구조', cur.shape], ['신호', cur.signalText], ['참고', cur.note]].map(([label, val]) => (
               <div key={label} className="flex gap-2 text-xs">
                 <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>{val}</span>
+                <span className={label === '참고' ? muted : ''}>
+                  {label === '참고' && Array.isArray(val)
+                    ? val.map((v, i) => <span key={i} className="block">{v}</span>)
+                    : val}
+                </span>
               </div>
             ))}
           </div>
@@ -374,7 +382,11 @@ function RoadtrackModal({ onClose }) {
             {[['설명', cur.desc], ['구조', cur.shape], ['신호', cur.signalText], ['참고', cur.note]].map(([label, val]) => (
               <div key={label} className="flex gap-2 text-xs">
                 <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>{val}</span>
+                <span className={label === '참고' ? muted : ''}>
+                  {label === '참고' && Array.isArray(val)
+                    ? val.map((v, i) => <span key={i} className="block">{v}</span>)
+                    : val}
+                </span>
               </div>
             ))}
           </div>
@@ -455,7 +467,11 @@ function FVGModal({ onClose }) {
             {[['설명', cur.desc], ['구조', cur.shape], ['신호', cur.signalText], ['참고', cur.note]].map(([label, val]) => (
               <div key={label} className="flex gap-2 text-xs">
                 <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>{val}</span>
+                <span className={label === '참고' ? muted : ''}>
+                  {label === '참고' && Array.isArray(val)
+                    ? val.map((v, i) => <span key={i} className="block">{v}</span>)
+                    : val}
+                </span>
               </div>
             ))}
           </div>
