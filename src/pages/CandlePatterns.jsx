@@ -21,8 +21,8 @@ const REVERSAL = [
 ]
 
 const CONTINUATION = [
-  { id:10, cat:'추세 지속형', name:'백삼병', signal:'up', desc:'연속 3개 양봉 — 강한 상승 신호', shape:'연속 3개 양봉 / 각 저점 상승', signalText:'상승 추세 강화', note:'1번째 양봉 저점 훼손 시 무효' , '아래꼬리 동반 시 신뢰도 더 높음', keywords:['백삼병','연속양봉','쓰리화이트솔저'] },
-  { id:11, cat:'추세 지속형', name:'흑삼병', signal:'down', desc:'연속 3개 음봉 — 강한 하락 신호', shape:'연속 3개 음봉 / 각 고점 하락', signalText:'하락 추세 강화', note:'1번째 음봉 고점 훼손 시 무효' , '위꼬리 동반 시 신뢰도 더 높음', keywords:['흑삼병','연속음봉','쓰리블랙크로우'] },
+  { id:10, cat:'추세 지속형', name:'백삼병', signal:'up', desc:'연속 3개 양봉 — 강한 상승 신호', shape:'연속 3개 양봉 / 각 저점 상승', signalText:'상승 추세 강화', note:['1번째 양봉 저점 훼손 시 무효' , '아래꼬리 동반 시 신뢰도 더 높음'], keywords:['백삼병','연속양봉','쓰리화이트솔저'] },
+  { id:11, cat:'추세 지속형', name:'흑삼병', signal:'down', desc:'연속 3개 음봉 — 강한 하락 신호', shape:'연속 3개 음봉 / 각 고점 하락', signalText:'하락 추세 강화', note:['1번째 음봉 고점 훼손 시 무효' , '위꼬리 동반 시 신뢰도 더 높음'], keywords:['흑삼병','연속음봉','쓰리블랙크로우'] },
 ]
 
 const SPECIAL = [
