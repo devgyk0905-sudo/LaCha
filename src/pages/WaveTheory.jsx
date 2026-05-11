@@ -189,14 +189,14 @@ function StepSection() {
     <div>
       <SectionHead num={1} title="STEP 1 — 채널을 그린다" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-4">
-        <div>
+        <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
           <p className="text-xs font-semibold text-[#4f8ef7] mb-3">채널 지킬 때</p>
           <div className="flex flex-wrap gap-1.5 mb-3">
             {['WXY', 'WXYXZ', '이중플랫(ABC X ABC)', '3파연장 임펄스'].map(t => <Code key={t}>{t}</Code>)}
           </div>
           <WaveAlert type="blue">피보나치 <strong>확장</strong>으로 판별<br/>시작점 0(1) → W(2) → X(3) 지점 연결</WaveAlert>
         </div>
-        <div>
+        <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
           <p className="text-xs font-semibold text-[#f0a040] mb-3">채널 안 지킬 때</p>
           <div className="flex flex-wrap gap-1.5 mb-3">
             {['ABC', '임펄스'].map(t => <Code key={t}>{t}</Code>)}
@@ -255,6 +255,7 @@ function ImpulseBasic() {
           />
         </div>
         <div>
+          <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}></div>
           <p className="text-xs font-semibold mb-4">3가지 절대 규칙</p>
           <RuleList rules={[
             '2파 저점이 1파 저점 아래로 내려가면 안 됨',
@@ -372,7 +373,10 @@ function ImpulseExpand() {
       <SectionHead num={1} title="확장 임펄스" />
       <Desc>1, 3, 5파 중 하나가 비정상적으로 길게 연장되는 패턴</Desc>
 
+    <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
       <ImpulseExpandSVG />
+    </div>
+
 
       <div className="mt-6">
         <WaveTable
@@ -412,13 +416,15 @@ function CorrectWXY() {
 
       <WaveAlert type="blue">채널 지키네? → <strong>WXY</strong><br/>피보나치 확장 <Code>0.618~1.0</Code> + 채널 중단 → 진입 타점</WaveAlert>
 
-      <p className="text-xs font-semibold mb-3">WXY 찾는 순서</p>
+      <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
+        <p className="text-xs font-semibold mb-3">WXY 찾는 순서</p>
       <StepList steps={[
         '채널을 그린다 → 채널을 지키는가?',
         '피보나치 확장 (W시작 → W끝 → X끝)',
         '0.618~1.0 + 채널 중단 → WXY 종료',
         '이중플랫 배제: Y/Z 확장 개별 확인',
       ]} />
+       </div>
 
       <WaveAlert type="amber">실시간으로 맞추려 하지 말 것 — 조정 종료 신호 먼저 찾고, 사후에 레이블 붙이기</WaveAlert>
 
@@ -509,11 +515,13 @@ function CorrectABC() {
       <SectionHead num={3} title="ABC X ABC 이중플랫" />
       <Desc>채널 내에서 WXYXZ처럼 보이지만 다른 구조 — 절대규칙 위반 시 이중플랫으로 판별</Desc>
 
+    <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
       <p className="text-xs font-semibold mb-3">판별 순서</p>
       <StepList steps={[
         '1차 판별: 채널 중단에서 끝난 파동이 없음 → Y 또는 Z가 될 수 없음',
         '2차 판별: 소파동을 들여다보면 ABC + ABC 구조 확인 → 두 저점(B-B)을 연결하면 BB 추세선(채널 하단) 완성 → 두 ABC 사이를 X로 설정',
       ]} />
+    </div>
 
       <WaveAlert type="red">
         <strong>WXYXZ가 될 수 없는 이유</strong><br/>
