@@ -14,10 +14,10 @@ export const ThemeContext = createContext()
 export const useTheme = () => useContext(ThemeContext)
 
 const NAV = [
+  { path: '/',          label: '개념·용어' },
   { path: '/candle',    label: '캔들 패턴' },
   { path: '/channel',   label: '채널 패턴' },
   { path: '/wave',      label: '파동 이론' },
-  { path: '/',          label: '개념·용어' },
   { path: '/fibonacci', label: '피보나치 확장' },
   { path: '/harmonic',  label: '하모닉' },
 ]
