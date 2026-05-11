@@ -212,8 +212,8 @@ function ConceptSVG({ type, dark }) {
         <line x1="44" y1="90" x2="50" y2="90" stroke={GREEN} strokeWidth="1.2"/>
         <text x="4"  y="64" fontSize="11" fill={GREEN}>몸통</text>
         <text x="64" y="128" fontSize="12" fill={GREEN} fontWeight="500">양봉</text>
-        {/* vs */}
-        <text x="190" y="68" fontSize="13" fill={GRAY} opacity="0.4" textAnchor="middle">vs</text>
+        {/* 구분선 */}
+        <line x1="190" y1="10" x2="190" y2="120" stroke={GRAY} strokeWidth="0.8" strokeDasharray="4 3" opacity="0.25"/>
         {/* 음봉 */}
         <line x1="290" y1="10" x2="290" y2="30" stroke={RED} strokeWidth="2"/>
         <rect x="272" y="30" width="36" height="60" fill={RED} rx="2"/>
@@ -273,8 +273,8 @@ function ConceptSVG({ type, dark }) {
         <text x="149" y="100" fontSize="10" fill={text}>아래꼬리</text>
         <text x="149" y="112" fontSize="9"  fill={text} opacity="0.6">매수 지지 흔적</text>
         <text x="82"  y="128" fontSize="12" fill={GREEN} fontWeight="500">양봉</text>
-        {/* vs */}
-        <text x="190" y="68" fontSize="13" fill={GRAY} opacity="0.4" textAnchor="middle">vs</text>
+        {/* 구분선 */}
+        <line x1="190" y1="10" x2="190" y2="120" stroke={GRAY} strokeWidth="0.8" strokeDasharray="4 3" opacity="0.25"/>
         {/* 음봉 */}
         <line x1="280" y1="8"   x2="280" y2="28"  stroke={RED} strokeWidth="2"/>
         <rect x="262" y="28"  width="36" height="60" fill={RED} rx="2"/>
@@ -291,39 +291,12 @@ function ConceptSVG({ type, dark }) {
       </svg>
     ),
 
-    ma: (
-      <svg width="100%" height="110" viewBox="0 0 380 110" fill="none">
-        <path d="M20 80 L60 55 L100 65 L140 35 L180 50 L220 25 L260 40 L300 20 L340 32 L375 18" stroke={GRAY} strokeWidth="1" opacity="0.35"/>
-        <path d="M20 82 L60 60 L100 68 L140 42 L180 55 L220 32 L260 46 L300 28 L340 38 L375 24" stroke={BLUE} strokeWidth="2" strokeDasharray="6 3"/>
-        <path d="M20 90 L60 78 L100 74 L140 65 L180 62 L220 55 L260 52 L300 46 L340 44 L375 40" stroke={RED} strokeWidth="2"/>
-        <line x1="20"  y1="102" x2="44"  y2="102" stroke={BLUE} strokeWidth="2" strokeDasharray="6 3"/>
-        <text x="48"  y="106" fontSize="11" fill={BLUE}>단기 MA (20, 50)</text>
-        <line x1="200" y1="102" x2="224" y2="102" stroke={RED} strokeWidth="2"/>
-        <text x="228" y="106" fontSize="11" fill={RED}>장기 MA (100, 200, 365)</text>
-      </svg>
-    ),
+    ma:         null,
+    divergence: null,
+    trendline:  null,
+    sr:         null,
 
-    cross: (
-      <svg width="100%" height="120" viewBox="0 0 380 120" fill="none">
-        <text x="65"  y="14" fontSize="12" fill={GREEN} fontWeight="500" textAnchor="middle">골든크로스</text>
-        <path d="M10 80 L120 28" stroke={BLUE} strokeWidth="2" strokeDasharray="5 3"/>
-        <path d="M10 38 L120 72" stroke={RED}  strokeWidth="2"/>
-        <circle cx="67" cy="54" r="5" fill={GREEN} opacity="0.9"/>
-        <text x="65"  y="100" fontSize="10" fill={text} textAnchor="middle">단기↑ 장기 상향 돌파</text>
-        <text x="65"  y="113" fontSize="10" fill={GREEN} textAnchor="middle">→ 매수 신호</text>
-        <line x1="190" y1="8" x2="190" y2="115" stroke={GRAY} strokeWidth="0.8" strokeDasharray="4 3" opacity="0.3"/>
-        <text x="315" y="14" fontSize="12" fill={RED} fontWeight="500" textAnchor="middle">데드크로스</text>
-        <path d="M250 28 L370 80" stroke={BLUE} strokeWidth="2" strokeDasharray="5 3"/>
-        <path d="M250 72 L370 38" stroke={RED}  strokeWidth="2"/>
-        <circle cx="313" cy="54" r="5" fill={RED} opacity="0.9"/>
-        <text x="315" y="100" fontSize="10" fill={text} textAnchor="middle">단기↓ 장기 하향 돌파</text>
-        <text x="315" y="113" fontSize="10" fill={RED} textAnchor="middle">→ 매도 신호</text>
-        <line x1="140" y1="6" x2="158" y2="6" stroke={BLUE} strokeWidth="2" strokeDasharray="5 3"/>
-        <text x="162" y="10" fontSize="10" fill={BLUE}>단기</text>
-        <line x1="140" y1="18" x2="158" y2="18" stroke={RED} strokeWidth="2"/>
-        <text x="162" y="22" fontSize="10" fill={RED}>장기</text>
-      </svg>
-    ),
+    cross: null,
 
     rsi: (
       <svg width="100%" height="110" viewBox="0 0 380 110" fill="none">
@@ -342,39 +315,7 @@ function ConceptSVG({ type, dark }) {
       </svg>
     ),
 
-    divergence: (
-      <svg width="100%" height="130" viewBox="0 0 380 130" fill="none">
-        <text x="85"  y="12" fontSize="12" fill={GREEN} fontWeight="500" textAnchor="middle">Bull 다이버전스</text>
-        <text x="10"  y="26" fontSize="9"  fill={GRAY}>가격</text>
-        <path d="M20 35 L60 22 L100 34 L140 40" stroke={GRAY} strokeWidth="1.2" opacity="0.55"/>
-        <circle cx="20"  cy="35" r="3" fill={GRAY}/>
-        <circle cx="100" cy="34" r="3" fill={GRAY}/>
-        <line x1="20" y1="35" x2="100" y2="34" stroke={RED} strokeWidth="1.2" strokeDasharray="3 2" opacity="0.8"/>
-        <text x="50"  y="50" fontSize="9"  fill={RED} opacity="0.8">저점↓↓</text>
-        <text x="10"  y="68" fontSize="9"  fill={GRAY}>RSI</text>
-        <path d="M20 80 L60 70 L100 60 L140 50" stroke={TEAL} strokeWidth="1.2" opacity="0.55"/>
-        <circle cx="20"  cy="80" r="3" fill={TEAL}/>
-        <circle cx="100" cy="60" r="3" fill={TEAL}/>
-        <line x1="20" y1="80" x2="100" y2="60" stroke={GREEN} strokeWidth="1.2" strokeDasharray="3 2"/>
-        <text x="50"  y="94" fontSize="9"  fill={GREEN} opacity="0.9">저점↑↑</text>
-        <text x="85"  y="115" fontSize="10" fill={GREEN} textAnchor="middle" fontWeight="500">→ 상승 반전</text>
-        <line x1="190" y1="4" x2="190" y2="126" stroke={GRAY} strokeWidth="0.8" strokeDasharray="4 3" opacity="0.3"/>
-        <text x="295" y="12" fontSize="12" fill={RED} fontWeight="500" textAnchor="middle">Bear 다이버전스</text>
-        <text x="210" y="26" fontSize="9"  fill={GRAY}>가격</text>
-        <path d="M220 40 L260 28 L300 20 L340 12" stroke={GRAY} strokeWidth="1.2" opacity="0.55"/>
-        <circle cx="220" cy="40" r="3" fill={GRAY}/>
-        <circle cx="300" cy="20" r="3" fill={GRAY}/>
-        <line x1="220" y1="40" x2="300" y2="20" stroke={GREEN} strokeWidth="1.2" strokeDasharray="3 2" opacity="0.8"/>
-        <text x="250" y="50" fontSize="9"  fill={GREEN} opacity="0.8">고점↑↑</text>
-        <text x="210" y="68" fontSize="9"  fill={GRAY}>RSI</text>
-        <path d="M220 58 L260 60 L300 64 L340 68" stroke={TEAL} strokeWidth="1.2" opacity="0.55"/>
-        <circle cx="220" cy="58" r="3" fill={TEAL}/>
-        <circle cx="300" cy="64" r="3" fill={TEAL}/>
-        <line x1="220" y1="58" x2="300" y2="64" stroke={RED} strokeWidth="1.2" strokeDasharray="3 2"/>
-        <text x="250" y="80" fontSize="9"  fill={RED} opacity="0.9">고점↓↓</text>
-        <text x="295" y="115" fontSize="10" fill={RED} textAnchor="middle" fontWeight="500">→ 하락 반전</text>
-      </svg>
-    ),
+    divergence: null,
 
     fib_ret: (
       <svg width="100%" height="130" viewBox="0 0 380 130" fill="none">
@@ -424,30 +365,9 @@ function ConceptSVG({ type, dark }) {
       </svg>
     ),
 
-    trendline: (
-      <svg width="100%" height="110" viewBox="0 0 380 110" fill="none">
-        <path d="M20 95 L80 68 L120 78 L180 48 L230 60 L290 30 L350 42" stroke={GRAY} strokeWidth="1" opacity="0.45"/>
-        <line x1="20" y1="100" x2="350" y2="46" stroke={GREEN} strokeWidth="2" strokeLinecap="round"/>
-        <circle cx="80"  cy="68" r="3.5" fill={GREEN} opacity="0.7"/>
-        <circle cx="180" cy="48" r="3.5" fill={GREEN} opacity="0.7"/>
-        <circle cx="290" cy="30" r="3.5" fill={GREEN} opacity="0.7"/>
-        <text x="20" y="14" fontSize="11" fill={GREEN} fontWeight="500">상승 추세선 (지지)</text>
-        <text x="20" y="27" fontSize="10" fill={GRAY} opacity="0.8">저점과 저점을 연결 — 이탈 시 추세 전환 가능성</text>
-      </svg>
-    ),
+    trendline: null,
 
-    sr: (
-      <svg width="100%" height="110" viewBox="0 0 380 110" fill="none">
-        <line x1="20" y1="25" x2="360" y2="25" stroke={RED}   strokeWidth="1.5" strokeDasharray="5 3"/>
-        <line x1="20" y1="85" x2="360" y2="85" stroke={GREEN} strokeWidth="1.5" strokeDasharray="5 3"/>
-        <path d="M20 80 L60 55 L100 82 L140 48 L180 80 L220 45 L260 82 L300 50 L340 78" stroke={GRAY} strokeWidth="1.2" opacity="0.55"/>
-        <text x="332" y="20"  fontSize="11" fill={RED}>저항</text>
-        <text x="332" y="100" fontSize="11" fill={GREEN}>지지</text>
-        {[60, 180, 300].map(x => <circle key={x} cx={x} cy={85} r="4" fill={GREEN} opacity="0.5"/>)}
-        {[140, 260].map(x      => <circle key={x} cx={x} cy={25} r="4" fill={RED}   opacity="0.5"/>)}
-        <text x="20" y="106" fontSize="10" fill={GRAY} opacity="0.8">역할 전환: 지지 이탈 → 저항 / 저항 돌파 → 지지</text>
-      </svg>
-    ),
+    sr: null,
 
     supply: (
       <svg width="100%" height="110" viewBox="0 0 380 110" fill="none">
@@ -482,9 +402,11 @@ function ConceptSVG({ type, dark }) {
     ),
   }
 
+  const svg = svgs[type] ?? null
+  if (!svg) return null
   return (
     <div className={`w-full rounded-xl p-4 mb-4 ${dark ? 'bg-[#0d0f14]' : 'bg-black/[0.04]'}`}>
-      {svgs[type] ?? null}
+      {svg}
     </div>
   )
 }
@@ -526,12 +448,12 @@ function AccordionItem({ item, accentColor }) {
           {item.svgType && <ConceptSVG type={item.svgType} dark={dark} />}
 
           {/* 설명 */}
-          <p className={`text-xs mb-3 leading-relaxed ${muted}`}>{item.desc}</p>
+          <p className={`text-xs mb-3 leading-relaxed text-center ${muted}`}>{item.desc}</p>
 
           {/* 세부 항목 */}
           <ul className="space-y-1.5 mb-4">
             {item.details.map((d, i) => (
-              <li key={i} className={`text-xs flex gap-2 ${detailC}`}>
+              <li key={i} className={`text-xs flex gap-2 justify-center ${detailC}`}>
                 <span className="opacity-30 shrink-0 mt-0.5">—</span>
                 <span>{d}</span>
               </li>
