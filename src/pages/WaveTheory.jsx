@@ -257,15 +257,16 @@ function ImpulseBasic() {
           />
         </div>
         <div>
-          <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}></div>
-          <p className="text-xs font-semibold mb-4">3가지 절대 규칙</p>
-          <RuleList rules={[
-            '2파 저점이 1파 저점 아래로 내려가면 안 됨',
-            '1,3,5파 중 3파가 가장 짧으면 안 됨',
-            '4파가 1파 영역과 겹치면 안 됨',
-          ]} />
-        </div>
+          <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
+            <p className="text-xs font-semibold mb-4">3가지 절대 규칙</p>
+            <RuleList rules={[
+              '2파 저점이 1파 저점 아래로 내려가면 안 됨',
+              '1,3,5파 중 3파가 가장 짧으면 안 됨',
+              '4파가 1파 영역과 겹치면 안 됨',
+            ]} />
+          </div>
           <WaveAlert type="amber">하나라도 위반 시 → 12345 아님</WaveAlert>
+        </div>
       </div>
 
       <ChartNote page="wave" section="imp_basic" label="추가 이미지" />
