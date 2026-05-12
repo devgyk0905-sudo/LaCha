@@ -190,6 +190,7 @@ const CONCEPTS = [
 /* ── SVG 개념도 ── */
 function ConceptSVG({ type, dark }) {
   const text = dark ? '#b0b4c4' : '#5a5852'
+  const c    = dark ? '#e8eaf0' : '#1a1e2a'
 
   const svgs = {
 
