@@ -264,8 +264,8 @@ function ImpulseBasic() {
             '1,3,5파 중 3파가 가장 짧으면 안 됨',
             '4파가 1파 영역과 겹치면 안 됨',
           ]} />
-          <WaveAlert type="amber">하나라도 위반 시 → 12345 아님</WaveAlert>
         </div>
+          <WaveAlert type="amber">하나라도 위반 시 → 12345 아님</WaveAlert>
       </div>
 
       <ChartNote page="wave" section="imp_basic" label="추가 이미지" />
