@@ -10,6 +10,8 @@ const GRAY  = '#888780'
 const SW    = 1.0
 
 function ChannelSVG({ name }) {
+  const { dark } = useTheme()
+  const c = dark ? '#e8eaf0' : '#1a1e2a'
   const svgs = {
     '상승 채널': (
       <svg width="80" height="80" viewBox="-5 -5 295 305" fill="none">
@@ -99,15 +101,15 @@ function ChannelSVG({ name }) {
       </svg>
     ),
     '더블탑': (
-      <svg width="80" height="70" viewBox="0 0 80 70" fill="none">
-        <polyline points="4,58 16,22 28,58 40,22 52,58" fill="none" stroke={RED} strokeWidth={SW}/>
-        <line x1="4" y1="22" x2="52" y2="22" stroke={RED} strokeWidth={SW} strokeDasharray="4 3" opacity="0.7"/>
+      <svg width="100%" height="80" viewBox="0 0 510 266" fill="none" preserveAspectRatio="xMidYMid meet">
+        <path d="M447 264.331L353 4.83081L245 187.831L153.5 4.83081L47 264.331" stroke="#D80505" strokeWidth="4"/>
+        <line y1="206.831" x2="510" y2="206.831" stroke={c} strokeWidth="4" strokeDasharray="8 8"/>
       </svg>
     ),
     '더블바텀': (
-      <svg width="80" height="70" viewBox="0 0 80 70" fill="none">
-        <polyline points="4,12 16,48 28,12 40,48 52,12" fill="none" stroke={GREEN} strokeWidth={SW}/>
-        <line x1="4" y1="48" x2="52" y2="48" stroke={GREEN} strokeWidth={SW} strokeDasharray="4 3" opacity="0.7"/>
+      <svg width="100%" height="80" viewBox="0 0 510 266" fill="none" preserveAspectRatio="xMidYMid meet">
+        <path d="M47 0.759277L141 260.259L249 77.2593L340.5 260.259L447 0.759277" stroke="#07831E" strokeWidth="4"/>
+        <line y1="58.2593" x2="510" y2="58.2593" stroke={c} strokeWidth="4" strokeDasharray="8 8"/>
       </svg>
     ),
     '아담과 이브': (
@@ -196,11 +198,7 @@ function Modal({ item, onClose }) {
             {[['설명', item.desc], ['구조', item.structure], ['신호', item.signalText], ['참고', item.note]].map(([label, val]) => (
               <div key={label} className="flex gap-2 text-xs">
                 <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>
-                  {label === '참고' && Array.isArray(val)
-                    ? val.map((v, i) => <span key={i} className="block">{v}</span>)
-                    : val}
-                </span>
+                <span className={label === '참고' ? muted : ''}>{val}</span>
               </div>
             ))}
           </div>
