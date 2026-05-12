@@ -185,6 +185,7 @@ export default function WaveTheory() {
 
 /* ── 판별 순서 ── */
 function StepSection() {
+  const { dark } = useTheme()
   return (
     <div>
       <SectionHead num={1} title="STEP 1 — 채널을 그린다" />
@@ -235,6 +236,7 @@ function StepSection() {
 
 /* ── 임펄스 기본 ── */
 function ImpulseBasic() {
+  const { dark } = useTheme()
   return (
     <div>
       <SectionHead num={1} title="임펄스 12345" />
@@ -399,6 +401,7 @@ function ImpulseExpand() {
 
 /* ── WXY / WXYXZ ── */
 function CorrectWXY() {
+  const { dark } = useTheme()
   return (
     <div>
       {/* WXY */}
