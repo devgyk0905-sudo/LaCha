@@ -41,11 +41,11 @@ function Desc({ children }) {
 
 function WaveAlert({ type = 'blue', children }) {
   const colors = {
-    blue:  'border-[#4f8ef7] bg-[#4f8ef7]/10',
-    red:   'border-[#e05a6a] bg-[#e05a6a]/10',
-    amber: 'border-[#f0a040] bg-[#f0a040]/10',
-    green: 'border-[#3ec97e] bg-[#3ec97e]/10',
-    teal:  'border-[#2abfb0] bg-[#2abfb0]/10',
+    blue:  'border-[#4f8ef7] bg-[#4f8ef7]/5',
+    red:   'border-[#e05a6a] bg-[#e05a6a]/5',
+    amber: 'border-[#f0a040] bg-[#f0a040]/5',
+    green: 'border-[#3ec97e] bg-[#3ec97e]/5',
+    teal:  'border-[#2abfb0] bg-[#2abfb0]/5',
   }
   return (
     <div className={`border-l-2 px-4 py-3 text-xs leading-relaxed my-4 ${colors[type]}`}>
@@ -59,7 +59,7 @@ function WaveTable({ headers, rows }) {
   const thC   = dark ? 'text-[#7a7f94] border-white/10' : 'text-gray-400 border-black/10'
   const tdC   = dark ? 'border-white/8'  : 'border-black/8'
   return (
-    <div className={`w-full overflow-x-auto mb-1 rounded-lg p-3 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
+    <div className="w-full overflow-x-auto mb-1">
       <table className="w-full text-xs border-collapse">
         <thead>
           <tr>
@@ -185,22 +185,21 @@ export default function WaveTheory() {
 
 /* ── 판별 순서 ── */
 function StepSection() {
-  const { dark } = useTheme()
   return (
     <div>
       <SectionHead num={1} title="STEP 1 — 채널을 그린다" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-4">
-        <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
+        <div>
           <p className="text-xs font-semibold text-[#4f8ef7] mb-3">채널 지킬 때</p>
           <div className="flex flex-wrap gap-1.5 mb-3">
             {['WXY', 'WXYXZ', '이중플랫(ABC X ABC)', '3파연장 임펄스'].map(t => <Code key={t}>{t}</Code>)}
           </div>
           <WaveAlert type="blue">피보나치 <strong>확장</strong>으로 판별<br/>시작점 0(1) → W(2) → X(3) 지점 연결</WaveAlert>
         </div>
-        <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
+        <div>
           <p className="text-xs font-semibold text-[#f0a040] mb-3">채널 안 지킬 때</p>
           <div className="flex flex-wrap gap-1.5 mb-3">
-            {['ABC', '임펄스'].map(t => <Code key={t}>{t}</Code>)}
+            {['ABC', '12345'].map(t => <Code key={t}>{t}</Code>)}
           </div>
           <WaveAlert type="amber">피보나치 <strong>되돌림</strong>으로 판별<br/>추세 방향이면 12345 / 반대면 ABC</WaveAlert>
         </div>
@@ -236,7 +235,6 @@ function StepSection() {
 
 /* ── 임펄스 기본 ── */
 function ImpulseBasic() {
-  const { dark } = useTheme()
   return (
     <div>
       <SectionHead num={1} title="임펄스 12345" />
@@ -257,14 +255,12 @@ function ImpulseBasic() {
           />
         </div>
         <div>
-          <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
-            <p className="text-xs font-semibold mb-4">3가지 절대 규칙</p>
-            <RuleList rules={[
-              '2파 저점이 1파 저점 아래로 내려가면 안 됨',
-              '1,3,5파 중 3파가 가장 짧으면 안 됨',
-              '4파가 1파 영역과 겹치면 안 됨',
-            ]} />
-          </div>
+          <p className="text-xs font-semibold mb-4">3가지 절대 규칙</p>
+          <RuleList rules={[
+            '2파 저점이 1파 저점 아래로 내려가면 안 됨',
+            '1,3,5파 중 3파가 가장 짧으면 안 됨',
+            '4파가 1파 영역과 겹치면 안 됨',
+          ]} />
           <WaveAlert type="amber">하나라도 위반 시 → 12345 아님</WaveAlert>
         </div>
       </div>
@@ -376,10 +372,9 @@ function ImpulseExpand() {
       <SectionHead num={1} title="확장 임펄스" />
       <Desc>1, 3, 5파 중 하나가 비정상적으로 길게 연장되는 패턴</Desc>
 
-    <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
-      <ImpulseExpandSVG />
-    </div>
-
+      <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
+        <ImpulseExpandSVG />
+      </div>
 
       <div className="mt-6">
         <WaveTable
@@ -395,14 +390,155 @@ function ImpulseExpand() {
       <WaveAlert type="amber"><strong>절대규칙</strong>: 1,3,5파 중 하나만 확장 — 두 개 이상 확장되면 카운팅 재검토</WaveAlert>
       <p className={`text-xs leading-relaxed ${muted}`}>3파는 추세의 핵심 구간으로 거래량과 모멘텀이 집중됨. 시장 참여자들이 추세를 인식하고 집중 매수/매도하는 구간이기 때문에 가장 흔하게 연장됨.</p>
 
+      <Divider />
+
+      {/* 02 — 1파 연장 */}
+      <SectionHead num={2} title="임펄스 1파 연장" />
+      <Desc>추후 추가 예정</Desc>
+
+      <Divider />
+
+      {/* 03 — 3파 연장 */}
+      <SectionHead num={3} title="임펄스 3파 연장" />
+      <Desc>3파가 연장될 때 내부에서 나타나는 준비 구간 — 1212 세팅</Desc>
+
+      <p className="text-xs font-semibold mb-3">1212 세팅</p>
+      <p className={`text-xs leading-relaxed mb-4 ${muted}`}>
+        1파 → 2파 → 3파의 3-1 → 3-2 순서로 진행되며, 이 네 파동이 완성된 시점을 1212 세팅이라 부름.
+        3-2파가 종료되는 순간이 1212 완성이자 매수 타점. 이후 3-3 → 3-4 → 3-5로 이어지는
+        가장 강하고 빠른 상승 구간이 시작됨.
+      </p>
+
+      <WaveTable
+        headers={['구간', '내용']}
+        rows={[
+          [<Code>1212 세팅</Code>, '1파 → 2파 → 3-1파 → 3-2파 완성 구간'],
+          ['매수 타점', '3-2파 종료 시점 — 1212 완성'],
+          ['이후 전개', '3-3(가장 강함) → 3-4 → 3-5 → 4파 → 5파'],
+          ['구조 유효 조건', '1파 고점과 3-1파 고점을 연결한 채널 안에서 진행'],
+          ['구조 무효 조건', '3-2파가 1파 고점을 넘으면 무효'],
+        ]}
+      />
+
+      <WaveAlert type="green">
+        <strong>3-2파 종료 = 1212 완성 = 진입 타점</strong><br/>
+        이후 3-3파는 전체 파동 중 가장 강하고 빠른 구간 — 수익 극대화 구간
+      </WaveAlert>
+
+      <div className={`rounded-lg p-3 mt-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
+        <Elliott3rdWaveSVG dark={dark} />
+      </div>
+
+      <Divider />
+
+      {/* 04 — 5파 연장 */}
+      <SectionHead num={4} title="임펄스 5파 연장" />
+      <Desc>추후 추가 예정</Desc>
+
       <ChartNote page="wave" section="imp_expand" label="추가 이미지" />
     </div>
   )
 }
 
+/* ── 3파연장 1212 SVG ── */
+function Elliott3rdWaveSVG({ dark }) {
+  const c  = dark ? '#e8eaf0' : '#1a1e2a'
+  const c2 = dark ? '#1a1e2a' : '#ffffff'
+  return (
+    <svg viewBox="0 0 760 440" xmlns="http://www.w3.org/2000/svg" width="100%">
+      <defs>
+        <mask id="imagine-text-gaps-btbanu" maskUnits="userSpaceOnUse">
+          <rect x="0" y="0" width="760" height="440" fill={c2}/>
+          <rect x="16" y="8.51" width="161.67" height="23.62" fill={c} rx="2"/>
+          <rect x="16" y="28.64" width="224.42" height="18.46" fill={c} rx="2"/>
+          <rect x="44" y="62.64" width="22.99" height="18.46" fill={c} rx="2"/>
+          <rect x="128" y="62.64" width="22.99" height="18.46" fill={c} rx="2"/>
+          <rect x="187" y="62.64" width="113.78" height="18.46" fill={c} rx="2"/>
+          <rect x="524.97" y="62.64" width="24.02" height="18.46" fill={c} rx="2"/>
+          <rect x="595" y="62.64" width="22.99" height="18.46" fill={c} rx="2"/>
+          <rect x="116" y="80.67" width="87.99" height="17.42" fill={c} rx="2"/>
+          <rect x="26" y="360.61" width="28.44" height="19.49" fill={c} rx="2"/>
+          <rect x="108" y="177.58" width="20.39" height="20.52" fill={c} rx="2"/>
+          <rect x="144" y="272.58" width="20.39" height="20.52" fill={c} rx="2"/>
+          <rect x="218" y="163.61" width="29.55" height="19.49" fill={c} rx="2"/>
+          <rect x="236" y="233.61" width="29.55" height="19.49" fill={c} rx="2"/>
+          <rect x="348" y="83.61" width="44.30" height="19.49" fill={c} rx="2"/>
+          <rect x="374" y="133.61" width="29.55" height="19.49" fill={c} rx="2"/>
+          <rect x="508" y="68.61" width="29.55" height="19.49" fill={c} rx="2"/>
+          <rect x="543" y="202.58" width="20.39" height="20.52" fill={c} rx="2"/>
+          <rect x="691" y="97.58" width="20.39" height="20.52" fill={c} rx="2"/>
+          <rect x="231" y="292.67" width="46.55" height="17.42" fill={c} rx="2"/>
+          <rect x="224" y="303.67" width="73.25" height="17.42" fill={c} rx="2"/>
+          <rect x="46" y="387.67" width="22.29" height="17.42" fill={c} rx="2"/>
+          <rect x="126" y="387.67" width="22.29" height="17.42" fill={c} rx="2"/>
+          <rect x="314.97" y="387.67" width="40.87" height="17.42" fill={c} rx="2"/>
+          <rect x="527.97" y="387.67" width="23.32" height="17.42" fill={c} rx="2"/>
+          <rect x="639.97" y="387.67" width="23.32" height="17.42" fill={c} rx="2"/>
+          <rect x="44" y="410.64" width="35.69" height="18.46" fill={c} rx="2"/>
+          <rect x="114" y="410.64" width="35.69" height="18.46" fill={c} rx="2"/>
+          <rect x="184" y="410.64" width="43.47" height="18.46" fill={c} rx="2"/>
+        </mask>
+      </defs>
+      <text x="20" y="26" fontSize="13" fontWeight="500" fill={c} fontFamily="sans-serif">3파 연장 임펄스 — 전체 구조</text>
+      <text x="20" y="42" fontSize="10" fill="#888780" fontFamily="sans-serif">1212 세팅 이후 3-3, 3-4, 3-5 거쳐 4파·5파로 마무리</text>
+      <rect x="38" y="60" width="80" height="310" rx="4" fill="#EEEDFE" opacity="0.4"/>
+      <text x="48" y="76" fontSize="10" fontWeight="500" fill="#3C3489" fontFamily="sans-serif">1파</text>
+      <rect x="122" y="60" width="55" height="310" rx="4" fill="#FAECE7" opacity="0.4"/>
+      <text x="132" y="76" fontSize="10" fontWeight="500" fill="#993C1D" fontFamily="sans-serif">2파</text>
+      <rect x="181" y="60" width="340" height="310" rx="4" fill="#E1F5EE" opacity="0.3"/>
+      <text x="191" y="76" fontSize="10" fontWeight="500" fill="#0F6E56" fontFamily="sans-serif">3파 (연장) — 내부 12345</text>
+      <rect x="525" y="60" width="60" height="310" rx="4" fill="#FAECE7" opacity="0.4"/>
+      <text x="530" y="76" fontSize="10" fontWeight="500" fill="#993C1D" fontFamily="sans-serif">4파</text>
+      <rect x="589" y="60" width="145" height="310" rx="4" fill="#EEEDFE" opacity="0.3"/>
+      <text x="599" y="76" fontSize="10" fontWeight="500" fill="#3C3489" fontFamily="sans-serif">5파</text>
+      <rect x="38" y="82" width="280" height="14" rx="3" fill="#534AB7" opacity="0.12"/>
+      <text x="120" y="93" fontSize="9" fontWeight="500" fill="#534AB7" fontFamily="sans-serif">← 1212 세팅 구간 →</text>
+      <polyline points="50,360 110,200 165,270 220,185 265,230 350,105 400,155 510,90 545,200 700,120" fill="none" stroke="#3C3489" strokeWidth="2.5" strokeLinejoin="round" mask="url(#imagine-text-gaps-btbanu)"/>
+      <circle cx="50" cy="360" r="5" fill="#3C3489"/>
+      <circle cx="110" cy="200" r="5" fill="#3C3489"/>
+      <circle cx="165" cy="270" r="5" fill="#993C1D"/>
+      <circle cx="220" cy="185" r="5" fill="#0F6E56"/>
+      <circle cx="265" cy="230" r="5" fill="#993C1D"/>
+      <circle cx="350" cy="105" r="6" fill="#0F6E56"/>
+      <circle cx="400" cy="155" r="5" fill="#993C1D"/>
+      <circle cx="510" cy="90" r="6" fill="#0F6E56"/>
+      <circle cx="545" cy="200" r="5" fill="#993C1D"/>
+      <circle cx="700" cy="120" r="5" fill="#3C3489"/>
+      <text x="30" y="375" fontSize="11" fill="#3C3489" fontFamily="sans-serif">시작</text>
+      <text x="112" y="193" fontSize="12" fontWeight="500" fill="#3C3489" fontFamily="sans-serif">①</text>
+      <text x="148" y="288" fontSize="12" fontWeight="500" fill="#993C1D" fontFamily="sans-serif">②</text>
+      <text x="222" y="178" fontSize="11" fontWeight="500" fill="#0F6E56" fontFamily="sans-serif">3-①</text>
+      <text x="240" y="248" fontSize="11" fontWeight="500" fill="#993C1D" fontFamily="sans-serif">3-②</text>
+      <text x="352" y="98" fontSize="11" fontWeight="500" fill="#0F6E56" fontFamily="sans-serif">3-③🚀</text>
+      <text x="378" y="148" fontSize="11" fontWeight="500" fill="#993C1D" fontFamily="sans-serif">3-④</text>
+      <text x="512" y="83" fontSize="11" fontWeight="500" fill="#0F6E56" fontFamily="sans-serif">3-⑤</text>
+      <text x="547" y="218" fontSize="12" fontWeight="500" fill="#993C1D" fontFamily="sans-serif">④</text>
+      <text x="695" y="113" fontSize="12" fontWeight="500" fill="#3C3489" fontFamily="sans-serif">⑤</text>
+      <line x1="265" y1="245" x2="265" y2="290" stroke="#534AB7" strokeWidth="1" strokeDasharray="3,2" mask="url(#imagine-text-gaps-btbanu)"/>
+      <text x="235" y="305" fontSize="9" fill="#534AB7" fontFamily="sans-serif">1212 완성</text>
+      <text x="228" y="316" fontSize="9" fill="#534AB7" fontFamily="sans-serif">→ 3-③ 폭발 직전</text>
+      <line x1="38" y1="388" x2="118" y2="388" stroke="#3C3489" strokeWidth="1" mask="url(#imagine-text-gaps-btbanu)"/>
+      <text x="50" y="400" fontSize="9" fill="#3C3489" fontFamily="sans-serif">1파</text>
+      <line x1="122" y1="388" x2="177" y2="388" stroke="#993C1D" strokeWidth="1" mask="url(#imagine-text-gaps-btbanu)"/>
+      <text x="130" y="400" fontSize="9" fill="#993C1D" fontFamily="sans-serif">2파</text>
+      <line x1="181" y1="388" x2="521" y2="388" stroke="#0F6E56" strokeWidth="1" mask="url(#imagine-text-gaps-btbanu)"/>
+      <text x="320" y="400" fontSize="9" fill="#0F6E56" fontFamily="sans-serif">3파 전체</text>
+      <line x1="525" y1="388" x2="585" y2="388" stroke="#993C1D" strokeWidth="1" mask="url(#imagine-text-gaps-btbanu)"/>
+      <text x="533" y="400" fontSize="9" fill="#993C1D" fontFamily="sans-serif">4파</text>
+      <line x1="589" y1="388" x2="734" y2="388" stroke="#3C3489" strokeWidth="1" mask="url(#imagine-text-gaps-btbanu)"/>
+      <text x="645" y="400" fontSize="9" fill="#3C3489" fontFamily="sans-serif">5파</text>
+      <circle cx="40" cy="420" r="4" fill="#3C3489"/>
+      <text x="48" y="424" fontSize="10" fill="#3C3489" fontFamily="sans-serif">상승파</text>
+      <circle cx="110" cy="420" r="4" fill="#993C1D"/>
+      <text x="118" y="424" fontSize="10" fill="#993C1D" fontFamily="sans-serif">조정파</text>
+      <circle cx="180" cy="420" r="4" fill="#0F6E56"/>
+      <text x="188" y="424" fontSize="10" fill="#0F6E56" fontFamily="sans-serif">3파 내부</text>
+    </svg>
+  )
+}
+
 /* ── WXY / WXYXZ ── */
 function CorrectWXY() {
-  const { dark } = useTheme()
   return (
     <div>
       {/* WXY */}
@@ -420,15 +556,13 @@ function CorrectWXY() {
 
       <WaveAlert type="blue">채널 지키네? → <strong>WXY</strong><br/>피보나치 확장 <Code>0.618~1.0</Code> + 채널 중단 → 진입 타점</WaveAlert>
 
-      <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
-        <p className="text-xs font-semibold mb-3">WXY 찾는 순서</p>
+      <p className="text-xs font-semibold mb-3">WXY 찾는 순서</p>
       <StepList steps={[
         '채널을 그린다 → 채널을 지키는가?',
         '피보나치 확장 (W시작 → W끝 → X끝)',
         '0.618~1.0 + 채널 중단 → WXY 종료',
         '이중플랫 배제: Y/Z 확장 개별 확인',
       ]} />
-       </div>
 
       <WaveAlert type="amber">실시간으로 맞추려 하지 말 것 — 조정 종료 신호 먼저 찾고, 사후에 레이블 붙이기</WaveAlert>
 
@@ -483,7 +617,7 @@ function CorrectABC() {
         headers={['파동', '내부 구성', '피보나치 기준', '규칙']}
         rows={[
           [<Code>A파</Code>, '3파동 또는 5파동', '—', '조정 시작'],
-          [<Code>B파</Code>, <><span className="text-red-400">가장 더럽고 길다</span><br/>3파동 (ABC or WXY or abc x abc(이중플랫))</>, <><Code>기본: 0.382~0.5</Code><br/><Code>불규칙: 1.09~1.272</Code></>, 'A 시작점 기준'],
+          [<Code>B파</Code>, <><span className="text-red-400">가장 더럽고 길다</span><br/>3파동 (ABC or WXY)</>, <><Code>기본: 0.382~0.5</Code><br/><Code>불규칙: 1.09~1.272</Code></>, 'A 시작점 기준'],
           [<Code>C파</Code>, <><strong>무조건 5파동</strong><br/>임펄스/터미널/WXYXZ</>, <><Code>1:1</Code> / <Code>1:1.236</Code><br/><Code>1:1.382</Code> / <Code>1:1.618</Code></>, 'A파 저점 이탈'],
         ]}
       />
@@ -519,13 +653,11 @@ function CorrectABC() {
       <SectionHead num={3} title="ABC X ABC 이중플랫" />
       <Desc>채널 내에서 WXYXZ처럼 보이지만 다른 구조 — 절대규칙 위반 시 이중플랫으로 판별</Desc>
 
-    <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
       <p className="text-xs font-semibold mb-3">판별 순서</p>
       <StepList steps={[
         '1차 판별: 채널 중단에서 끝난 파동이 없음 → Y 또는 Z가 될 수 없음',
         '2차 판별: 소파동을 들여다보면 ABC + ABC 구조 확인 → 두 저점(B-B)을 연결하면 BB 추세선(채널 하단) 완성 → 두 ABC 사이를 X로 설정',
       ]} />
-    </div>
 
       <WaveAlert type="red">
         <strong>WXYXZ가 될 수 없는 이유</strong><br/>
