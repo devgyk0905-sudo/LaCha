@@ -238,8 +238,9 @@ function CandleSVG({ name, variant }) {
   if (name === '로드트랙 패턴') content = variant === 'up' ? roadUp       : roadDown
   if (name === 'FVG')           content = variant === 'down' ? fvgDown    : fvgUp
 
+  const isContext = ['해머','행잉맨','슈팅스타','인버티드 해머'].includes(name)
   return (
-    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} xmlns="http://www.w3.org/2000/svg">
+  <svg width={w} height={h} viewBox={isContext ? `-6 0 ${w} ${h}` : `0 0 ${w} ${h}`} xmlns="http://www.w3.org/2000/svg">
       {content || <line x1="32" y1="10" x2="32" y2="60" stroke={GRAY} strokeWidth="1.5"/>}
     </svg>
   )
@@ -372,8 +373,8 @@ function Modal({ item, onClose }) {
           </div>
           <button onClick={onClose} className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm ${muted} ${dark ? 'border-white/10 hover:bg-white/5' : 'border-black/10 hover:bg-black/5'}`}>✕</button>
         </div>
-        <div className={`flex gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
-          <div className="shrink-0 flex items-center">
+        <div className={`flex flex-col sm:flex-row gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
+          <div className="flex justify-center sm:justify-start sm:shrink-0 sm:items-center">
             {['해머','행잉맨','슈팅스타','인버티드 해머'].includes(item.name)
               ? <ContextSVG name={item.name} />
               : <CandleSVG name={item.name} />
@@ -516,8 +517,8 @@ function RoadtrackModal({ onClose }) {
           <button onClick={() => setTab('up')}   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${tab === 'up'   ? tabActiveU : tabInactive}`}>불리쉬 (상승)</button>
           <button onClick={() => setTab('down')} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${tab === 'down' ? tabActiveD : tabInactive}`}>베어리쉬 (하락)</button>
         </div>
-        <div className={`flex gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
-          <div className="shrink-0 flex items-center">
+        <div className={`flex flex-col sm:flex-row gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
+          <div className="flex justify-center sm:justify-start sm:shrink-0 sm:items-center">
             {tab === 'up' ? <RoadtrackBullishSVG /> : <RoadtrackBearishSVG />}
           </div>
           <div className="flex-1 space-y-2">
@@ -574,8 +575,8 @@ function FVGModal({ onClose }) {
           <button onClick={() => setTab('up')}   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${tab === 'up'   ? tabActiveU : tabInactive}`}>불리쉬 FVG (상승)</button>
           <button onClick={() => setTab('down')} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${tab === 'down' ? tabActiveD : tabInactive}`}>베어리쉬 FVG (하락)</button>
         </div>
-        <div className={`flex gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
-          <div className="shrink-0 flex items-center">
+        <div className={`flex flex-col sm:flex-row gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
+          <div className="flex justify-center sm:justify-start sm:shrink-0 sm:items-center">
             {tab === 'up' ? (
               <svg width="94" height="100" viewBox="0 0 208 222" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="0.5" y="58.5" width="207" height="112" fill="#07831E" fillOpacity="0.1" stroke="#07831E"/>
