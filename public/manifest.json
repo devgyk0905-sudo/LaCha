@@ -1,0 +1,17 @@
+{
+  "name": "Lady&Chart — 레이디와 차트",
+  "short_name": "Lady&Chart",
+  "description": "기술적 차트 분석 학습",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f3ee",
+  "theme_color": "#1c1b18",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
