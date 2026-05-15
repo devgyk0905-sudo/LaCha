@@ -104,67 +104,50 @@ function CandleSVG({ name, variant }) {
       <line x1="57" y1="58" x2="57" y2="64" stroke={RED} strokeWidth="1.5"/>
     </>,
 
-    /* 맥락 포함 패턴 */
+    /* 카드 그리드용 3캔들 */
     '해머': <>
-      {/* 하락 음봉 2개 */}
       <line x1="10" y1="4" x2="10" y2="8" stroke={RED} strokeWidth="1.5"/>
       <rect x="4" y="8" width="12" height="22" fill={RED} rx="1"/>
       <line x1="10" y1="30" x2="10" y2="34" stroke={RED} strokeWidth="1.5"/>
-      <line x1="30" y1="12" x2="30" y2="18" stroke={RED} strokeWidth="1.5"/>
-      <rect x="24" y="18" width="12" height="22" fill={RED} rx="1"/>
-      <line x1="30" y1="40" x2="30" y2="45" stroke={RED} strokeWidth="1.5"/>
-      {/* 해머 캔들 */}
-      <line x1="52" y1="26" x2="52" y2="32" stroke={GREEN} strokeWidth="1.5"/>
-      <rect x="46" y="32" width="12" height="10" fill={GREEN} rx="1"/>
-      <line x1="52" y1="42" x2="52" y2="62" stroke={GREEN} strokeWidth="1.5"/>
+      <line x1="30" y1="14" x2="30" y2="20" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="24" y="20" width="12" height="8" fill={GREEN} rx="1"/>
+      <line x1="30" y1="28" x2="30" y2="55" stroke={GREEN} strokeWidth="1.5"/>
+      <line x1="52" y1="4" x2="52" y2="10" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="46" y="10" width="12" height="22" fill={GREEN} rx="1"/>
+      <line x1="52" y1="32" x2="52" y2="38" stroke={GREEN} strokeWidth="1.5"/>
     </>,
-
     '행잉맨': <>
-      {/* 상승 양봉 3개 */}
-      <line x1="8" y1="38" x2="8" y2="44" stroke={GREEN} strokeWidth="1.5"/>
-      <rect x="2" y="26" width="12" height="18" fill={GREEN} rx="1"/>
-      <line x1="8" y1="44" x2="8" y2="48" stroke={GREEN} strokeWidth="1.5"/>
-      <line x1="26" y1="30" x2="26" y2="36" stroke={GREEN} strokeWidth="1.5"/>
-      <rect x="20" y="18" width="12" height="18" fill={GREEN} rx="1"/>
-      <line x1="26" y1="36" x2="26" y2="40" stroke={GREEN} strokeWidth="1.5"/>
-      <line x1="44" y1="22" x2="44" y2="28" stroke={GREEN} strokeWidth="1.5"/>
-      <rect x="38" y="10" width="12" height="18" fill={GREEN} rx="1"/>
-      <line x1="44" y1="28" x2="44" y2="32" stroke={GREEN} strokeWidth="1.5"/>
-      {/* 행잉맨 캔들 */}
-      <line x1="60" y1="6" x2="60" y2="12" stroke={RED} strokeWidth="1.5"/>
-      <rect x="54" y="12" width="12" height="10" fill={RED} rx="1"/>
-      <line x1="60" y1="22" x2="60" y2="42" stroke={RED} strokeWidth="1.5"/>
+      <line x1="10" y1="14" x2="10" y2="20" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="4" y="20" width="12" height="20" fill={GREEN} rx="1"/>
+      <line x1="10" y1="40" x2="10" y2="46" stroke={GREEN} strokeWidth="1.5"/>
+      <line x1="30" y1="6" x2="30" y2="12" stroke={RED} strokeWidth="1.5"/>
+      <rect x="24" y="12" width="12" height="8" fill={RED} rx="1"/>
+      <line x1="30" y1="20" x2="30" y2="52" stroke={RED} strokeWidth="1.5"/>
+      <line x1="52" y1="16" x2="52" y2="22" stroke={RED} strokeWidth="1.5"/>
+      <rect x="46" y="22" width="12" height="20" fill={RED} rx="1"/>
+      <line x1="52" y1="42" x2="52" y2="48" stroke={RED} strokeWidth="1.5"/>
     </>,
-
     '슈팅스타': <>
-      {/* 상승 양봉 3개 */}
-      <line x1="8" y1="42" x2="8" y2="48" stroke={GREEN} strokeWidth="1.5"/>
-      <rect x="2" y="30" width="12" height="18" fill={GREEN} rx="1"/>
-      <line x1="8" y1="48" x2="8" y2="52" stroke={GREEN} strokeWidth="1.5"/>
-      <line x1="26" y1="34" x2="26" y2="40" stroke={GREEN} strokeWidth="1.5"/>
-      <rect x="20" y="22" width="12" height="18" fill={GREEN} rx="1"/>
-      <line x1="26" y1="40" x2="26" y2="44" stroke={GREEN} strokeWidth="1.5"/>
-      <line x1="44" y1="26" x2="44" y2="32" stroke={GREEN} strokeWidth="1.5"/>
-      <rect x="38" y="14" width="12" height="18" fill={GREEN} rx="1"/>
-      <line x1="44" y1="32" x2="44" y2="36" stroke={GREEN} strokeWidth="1.5"/>
-      {/* 슈팅스타 캔들 */}
-      <line x1="60" y1="4" x2="60" y2="26" stroke={RED} strokeWidth="1.5"/>
-      <rect x="54" y="26" width="12" height="10" fill={RED} rx="1"/>
-      <line x1="60" y1="36" x2="60" y2="40" stroke={RED} strokeWidth="1.5"/>
+      <line x1="10" y1="28" x2="10" y2="34" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="4" y="34" width="12" height="20" fill={GREEN} rx="1"/>
+      <line x1="10" y1="54" x2="10" y2="60" stroke={GREEN} strokeWidth="1.5"/>
+      <line x1="30" y1="6" x2="30" y2="30" stroke={RED} strokeWidth="1.5"/>
+      <rect x="24" y="30" width="12" height="8" fill={RED} rx="1"/>
+      <line x1="30" y1="38" x2="30" y2="42" stroke={RED} strokeWidth="1.5"/>
+      <line x1="52" y1="28" x2="52" y2="34" stroke={RED} strokeWidth="1.5"/>
+      <rect x="46" y="34" width="12" height="20" fill={RED} rx="1"/>
+      <line x1="52" y1="54" x2="52" y2="60" stroke={RED} strokeWidth="1.5"/>
     </>,
-
     '인버티드 해머': <>
-      {/* 하락 음봉 2개 */}
-      <line x1="10" y1="4" x2="10" y2="8" stroke={RED} strokeWidth="1.5"/>
-      <rect x="4" y="8" width="12" height="22" fill={RED} rx="1"/>
-      <line x1="10" y1="30" x2="10" y2="34" stroke={RED} strokeWidth="1.5"/>
-      <line x1="30" y1="12" x2="30" y2="18" stroke={RED} strokeWidth="1.5"/>
-      <rect x="24" y="18" width="12" height="22" fill={RED} rx="1"/>
-      <line x1="30" y1="40" x2="30" y2="45" stroke={RED} strokeWidth="1.5"/>
-      {/* 인버티드 해머 캔들 */}
-      <line x1="52" y1="26" x2="52" y2="48" stroke={GREEN} strokeWidth="1.5"/>
-      <rect x="46" y="48" width="12" height="10" fill={GREEN} rx="1"/>
-      <line x1="52" y1="58" x2="52" y2="62" stroke={GREEN} strokeWidth="1.5"/>
+      <line x1="10" y1="10" x2="10" y2="16" stroke={RED} strokeWidth="1.5"/>
+      <rect x="4" y="16" width="12" height="20" fill={RED} rx="1"/>
+      <line x1="10" y1="36" x2="10" y2="42" stroke={RED} strokeWidth="1.5"/>
+      <line x1="30" y1="8" x2="30" y2="32" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="24" y="32" width="12" height="8" fill={GREEN} rx="1"/>
+      <line x1="30" y1="40" x2="30" y2="46" stroke={GREEN} strokeWidth="1.5"/>
+      <line x1="52" y1="10" x2="52" y2="16" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="46" y="16" width="12" height="20" fill={GREEN} rx="1"/>
+      <line x1="52" y1="36" x2="52" y2="42" stroke={GREEN} strokeWidth="1.5"/>
     </>,
   }
 
@@ -274,6 +257,101 @@ function SignalBadge({ signal }) {
   return <span className="text-xs px-2 py-0.5 rounded-full bg-white/5 text-[#7a7f94] border border-white/10">중립</span>
 }
 
+/* ── 모달용 전체 맥락 SVG ── */
+function ContextSVG({ name }) {
+  const svgs = {
+    '해머': (
+      <svg width="100%" height="100" viewBox="0 0 280 140" fill="none">
+        {/* 하락 음봉 2개 */}
+        <line x1="30" y1="20" x2="30" y2="30" stroke={RED} strokeWidth="2"/>
+        <rect x="20" y="30" width="20" height="42" fill={RED} rx="1"/>
+        <line x1="30" y1="72" x2="30" y2="82" stroke={RED} strokeWidth="2"/>
+        <line x1="70" y1="32" x2="70" y2="42" stroke={RED} strokeWidth="2"/>
+        <rect x="60" y="42" width="20" height="40" fill={RED} rx="1"/>
+        <line x1="70" y1="82" x2="70" y2="92" stroke={RED} strokeWidth="2"/>
+        {/* 해머 캔들 */}
+        <line x1="120" y1="52" x2="120" y2="62" stroke={GREEN} strokeWidth="2"/>
+        <rect x="110" y="62" width="20" height="14" fill={GREEN} rx="1"/>
+        <line x1="120" y1="76" x2="120" y2="118" stroke={GREEN} strokeWidth="2"/>
+        {/* 이후 상승 양봉 2개 */}
+        <line x1="170" y1="30" x2="170" y2="40" stroke={GREEN} strokeWidth="2"/>
+        <rect x="160" y="40" width="20" height="40" fill={GREEN} rx="1"/>
+        <line x1="170" y1="80" x2="170" y2="90" stroke={GREEN} strokeWidth="2"/>
+        <line x1="220" y1="14" x2="220" y2="24" stroke={GREEN} strokeWidth="2"/>
+        <rect x="210" y="24" width="20" height="40" fill={GREEN} rx="1"/>
+        <line x1="220" y1="64" x2="220" y2="74" stroke={GREEN} strokeWidth="2"/>
+      </svg>
+    ),
+    '행잉맨': (
+      <svg width="100%" height="100" viewBox="0 0 280 140" fill="none">
+        {/* 상승 양봉 3개 */}
+        <line x1="30" y1="82" x2="30" y2="92" stroke={GREEN} strokeWidth="2"/>
+        <rect x="20" y="62" width="20" height="28" fill={GREEN} rx="1"/>
+        <line x1="30" y1="90" x2="30" y2="100" stroke={GREEN} strokeWidth="2"/>
+        <line x1="80" y1="68" x2="80" y2="78" stroke={GREEN} strokeWidth="2"/>
+        <rect x="70" y="48" width="20" height="28" fill={GREEN} rx="1"/>
+        <line x1="80" y1="76" x2="80" y2="86" stroke={GREEN} strokeWidth="2"/>
+        <line x1="130" y1="56" x2="130" y2="66" stroke={GREEN} strokeWidth="2"/>
+        <rect x="120" y="36" width="20" height="28" fill={GREEN} rx="1"/>
+        <line x1="130" y1="64" x2="130" y2="72" stroke={GREEN} strokeWidth="2"/>
+        {/* 행잉맨 캔들 */}
+        <line x1="180" y1="22" x2="180" y2="32" stroke={RED} strokeWidth="2"/>
+        <rect x="170" y="32" width="20" height="14" fill={RED} rx="1"/>
+        <line x1="180" y1="46" x2="180" y2="88" stroke={RED} strokeWidth="2"/>
+        {/* 이후 하락 음봉 */}
+        <line x1="230" y1="40" x2="230" y2="50" stroke={RED} strokeWidth="2"/>
+        <rect x="220" y="50" width="20" height="40" fill={RED} rx="1"/>
+        <line x1="230" y1="90" x2="230" y2="100" stroke={RED} strokeWidth="2"/>
+      </svg>
+    ),
+    '슈팅스타': (
+      <svg width="100%" height="100" viewBox="0 0 280 140" fill="none">
+        {/* 상승 양봉 3개 */}
+        <line x1="30" y1="82" x2="30" y2="92" stroke={GREEN} strokeWidth="2"/>
+        <rect x="20" y="62" width="20" height="28" fill={GREEN} rx="1"/>
+        <line x1="30" y1="90" x2="30" y2="100" stroke={GREEN} strokeWidth="2"/>
+        <line x1="80" y1="68" x2="80" y2="78" stroke={GREEN} strokeWidth="2"/>
+        <rect x="70" y="48" width="20" height="28" fill={GREEN} rx="1"/>
+        <line x1="80" y1="76" x2="80" y2="86" stroke={GREEN} strokeWidth="2"/>
+        <line x1="130" y1="56" x2="130" y2="66" stroke={GREEN} strokeWidth="2"/>
+        <rect x="120" y="36" width="20" height="28" fill={GREEN} rx="1"/>
+        <line x1="130" y1="64" x2="130" y2="72" stroke={GREEN} strokeWidth="2"/>
+        {/* 슈팅스타 캔들 */}
+        <line x1="180" y1="14" x2="180" y2="54" stroke={RED} strokeWidth="2"/>
+        <rect x="170" y="54" width="20" height="14" fill={RED} rx="1"/>
+        <line x1="180" y1="68" x2="180" y2="74" stroke={RED} strokeWidth="2"/>
+        {/* 이후 하락 음봉 */}
+        <line x1="230" y1="66" x2="230" y2="76" stroke={RED} strokeWidth="2"/>
+        <rect x="220" y="76" width="20" height="40" fill={RED} rx="1"/>
+        <line x1="230" y1="116" x2="230" y2="126" stroke={RED} strokeWidth="2"/>
+      </svg>
+    ),
+    '인버티드 해머': (
+      <svg width="100%" height="100" viewBox="0 0 280 140" fill="none">
+        {/* 하락 음봉 2개 */}
+        <line x1="30" y1="20" x2="30" y2="30" stroke={RED} strokeWidth="2"/>
+        <rect x="20" y="30" width="20" height="42" fill={RED} rx="1"/>
+        <line x1="30" y1="72" x2="30" y2="82" stroke={RED} strokeWidth="2"/>
+        <line x1="80" y1="32" x2="80" y2="42" stroke={RED} strokeWidth="2"/>
+        <rect x="70" y="42" width="20" height="40" fill={RED} rx="1"/>
+        <line x1="80" y1="82" x2="80" y2="92" stroke={RED} strokeWidth="2"/>
+        {/* 인버티드 해머 캔들 */}
+        <line x1="130" y1="40" x2="130" y2="80" stroke={GREEN} strokeWidth="2"/>
+        <rect x="120" y="80" width="20" height="14" fill={GREEN} rx="1"/>
+        <line x1="130" y1="94" x2="130" y2="100" stroke={GREEN} strokeWidth="2"/>
+        {/* 이후 상승 양봉 2개 */}
+        <line x1="180" y1="30" x2="180" y2="40" stroke={GREEN} strokeWidth="2"/>
+        <rect x="170" y="40" width="20" height="40" fill={GREEN} rx="1"/>
+        <line x1="180" y1="80" x2="180" y2="90" stroke={GREEN} strokeWidth="2"/>
+        <line x1="230" y1="14" x2="230" y2="24" stroke={GREEN} strokeWidth="2"/>
+        <rect x="220" y="24" width="20" height="40" fill={GREEN} rx="1"/>
+        <line x1="230" y1="64" x2="230" y2="74" stroke={GREEN} strokeWidth="2"/>
+      </svg>
+    ),
+  }
+  return svgs[name] ?? null
+}
+
 /* ── 일반 모달 ── */
 function Modal({ item, onClose }) {
   const { dark } = useTheme()
@@ -295,7 +373,12 @@ function Modal({ item, onClose }) {
           <button onClick={onClose} className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm ${muted} ${dark ? 'border-white/10 hover:bg-white/5' : 'border-black/10 hover:bg-black/5'}`}>✕</button>
         </div>
         <div className={`flex gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
-          <div className="shrink-0 flex items-center"><CandleSVG name={item.name} /></div>
+          <div className="shrink-0 flex items-center">
+            {['해머','행잉맨','슈팅스타','인버티드 해머'].includes(item.name)
+              ? <ContextSVG name={item.name} />
+              : <CandleSVG name={item.name} />
+            }
+          </div>
           <div className="flex-1 space-y-2">
             {[['설명', item.desc], ['구조', item.shape], ['신호', item.signalText], ['참고', item.note]].map(([label, val]) => (
               <div key={label} className="flex gap-2 text-xs">
