@@ -199,7 +199,7 @@ function StepSection() {
         <div>
           <p className="text-xs font-semibold text-[#f0a040] mb-3">채널 안 지킬 때</p>
           <div className="flex flex-wrap gap-1.5 mb-3">
-            {['ABC', '12345'].map(t => <Code key={t}>{t}</Code>)}
+            {['ABC', '임펄스'].map(t => <Code key={t}>{t}</Code>)}
           </div>
           <WaveAlert type="amber">피보나치 <strong>되돌림</strong>으로 판별<br/>추세 방향이면 12345 / 반대면 ABC</WaveAlert>
         </div>
