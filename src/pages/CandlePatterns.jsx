@@ -14,15 +14,19 @@ const SINGLE = [
 ]
 
 const REVERSAL = [
-  { id:6,  cat:'추세 전환형', name:'상승장악형', signal:'up', desc:'음봉을 감싸는 장대양봉 — 상승 반전 신호', shape:'①장대음봉 → ②장대양봉이 완전히 감쌈', signalText:'하락 후 강한 반등 신호', note:'두 캔들 방향이 반대여야 함 / 거래량 동반 시 신뢰도 높음', keywords:['상승장악형','불리쉬인겔핑','engulfing','장악형'] },
-  { id:7,  cat:'추세 전환형', name:'하락장악형', signal:'down', desc:'양봉을 감싸는 장대음봉 — 하락 반전 신호', shape:'①장대양봉 → ②장대음봉이 완전히 감쌈', signalText:'상승 후 강한 하락 신호', note:'두 캔들 방향이 반대여야 함 / 거래량 동반 시 신뢰도 높음', keywords:['하락장악형','베어리쉬인겔핑','engulfing','장악형'] },
-  { id:8,  cat:'추세 전환형', name:'모닝스타', signal:'up', desc:'하락 추세 바닥에서 나오는 상승 반전 패턴', shape:'①장대음봉 → ②십자도지(갭) → ③장대양봉', signalText:'바닥 반전 — 강한 상승 신호', note:'도지캔들 1개까지 허용. 다음봉 상승장악형 컨펌 시 신뢰도 상승', keywords:['모닝스타','바닥반전','상승전환'] },
-  { id:9,  cat:'추세 전환형', name:'이브닝스타', signal:'down', desc:'상승 추세 고점에서 나오는 하락 반전 패턴', shape:'①장대양봉 → ②십자도지 → ③장대음봉', signalText:'고점 반전 — 하락 신호', note:'위꼬리를 만들며 저항이 강함. 다음봉 하락장악형 컨펌 시 신뢰도 상승', keywords:['이브닝스타','고점반전','하락전환'] },
+  { id:6,  cat:'추세 전환형', name:'상승장악형',   signal:'up',      desc:'음봉을 감싸는 장대양봉 — 상승 반전 신호',                    shape:'①장대음봉 → ②장대양봉이 완전히 감쌈',             signalText:'하락 후 강한 반등 신호',          note:'두 캔들 방향이 반대여야 함 / 거래량 동반 시 신뢰도 높음',                               keywords:['상승장악형','불리쉬인겔핑','engulfing','장악형'] },
+  { id:7,  cat:'추세 전환형', name:'하락장악형',   signal:'down',    desc:'양봉을 감싸는 장대음봉 — 하락 반전 신호',                    shape:'①장대양봉 → ②장대음봉이 완전히 감쌈',             signalText:'상승 후 강한 하락 신호',          note:'두 캔들 방향이 반대여야 함 / 거래량 동반 시 신뢰도 높음',                               keywords:['하락장악형','베어리쉬인겔핑','engulfing','장악형'] },
+  { id:8,  cat:'추세 전환형', name:'모닝스타',     signal:'up',      desc:'하락 추세 바닥에서 나오는 상승 반전 패턴',                    shape:'①장대음봉 → ②십자도지(갭) → ③장대양봉',          signalText:'바닥 반전 — 강한 상승 신호',      note:'도지캔들 1개까지 허용. 다음봉 상승장악형 컨펌 시 신뢰도 상승',                          keywords:['모닝스타','바닥반전','상승전환'] },
+  { id:9,  cat:'추세 전환형', name:'이브닝스타',   signal:'down',    desc:'상승 추세 고점에서 나오는 하락 반전 패턴',                    shape:'①장대양봉 → ②십자도지 → ③장대음봉',              signalText:'고점 반전 — 하락 신호',           note:'위꼬리를 만들며 저항이 강함. 다음봉 하락장악형 컨펌 시 신뢰도 상승',                    keywords:['이브닝스타','고점반전','하락전환'] },
+  { id:15, cat:'추세 전환형', name:'해머',         signal:'up',      desc:'하락 추세 바닥에서 망치형 캔들 출현 — 상승 반전 신호',        shape:'하락 추세 중 아래꼬리 긴 캔들(망치형) 출현',       signalText:'하락 추세 바닥 → 강한 상승 전환', note:['망치형(Hammer) 캔들이 하락 추세 끝에 출현할 때 유효', '음봉 해머는 신뢰도 낮음 / 거래량 동반 시 신뢰도 높음'], keywords:['해머','hammer','망치형','상승전환','하락추세'] },
+  { id:16, cat:'추세 전환형', name:'행잉맨',       signal:'down',    desc:'상승 추세 고점에서 망치형 캔들 출현 — 하락 반전 신호',        shape:'상승 추세 중 아래꼬리 긴 캔들(망치형) 출현',       signalText:'상승 추세 고점 → 강한 하락 전환', note:['망치형(Hammer)과 모양은 동일 — 출현 위치가 다름', '교수형 패턴 / 다음봉 음봉 컨펌 시 신뢰도 상승'],           keywords:['행잉맨','hanging man','교수형','하락전환','상승추세'] },
+  { id:17, cat:'추세 전환형', name:'슈팅스타',     signal:'down',    desc:'상승 추세 고점에서 역망치형 캔들 출현 — 하락 반전 신호',      shape:'상승 추세 중 위꼬리 긴 캔들(역망치형) 출현',       signalText:'상승 추세 고점 → 강한 하락 전환', note:['역망치형(Inverted Hammer)이 상승 추세 끝에 출현할 때 유효', '음봉일수록 신뢰도 높음 / 다음봉 음봉 컨펌 시 신뢰도 상승'], keywords:['슈팅스타','shooting star','유성형','하락전환','상승추세'] },
+  { id:18, cat:'추세 전환형', name:'인버티드 해머', signal:'up',     desc:'하락 추세 바닥에서 역망치형 캔들 출현 — 상승 반전 신호',      shape:'하락 추세 중 위꼬리 긴 캔들(역망치형) 출현',       signalText:'하락 추세 바닥 → 상승 전환 신호', note:['역망치형(Inverted Hammer)이 하락 추세 끝에 출현할 때 유효', '슈팅스타와 모양은 동일 — 출현 위치가 다름 / 다음봉 양봉 컨펌 필수'], keywords:['인버티드해머','inverted hammer','역망치형','상승전환','하락추세'] },
 ]
 
 const CONTINUATION = [
-  { id:10, cat:'추세 지속형', name:'백삼병', signal:'up', desc:'연속 3개 양봉 — 강한 상승 신호', shape:'연속 3개 양봉 / 각 저점 상승', signalText:'상승 추세 강화', note:['1번째 양봉 저점 훼손 시 무효' , '아래꼬리 동반 시 신뢰도 더 높음'], keywords:['백삼병','연속양봉','쓰리화이트솔저'] },
-  { id:11, cat:'추세 지속형', name:'흑삼병', signal:'down', desc:'연속 3개 음봉 — 강한 하락 신호', shape:'연속 3개 음봉 / 각 고점 하락', signalText:'하락 추세 강화', note:['1번째 음봉 고점 훼손 시 무효' , '위꼬리 동반 시 신뢰도 더 높음'], keywords:['흑삼병','연속음봉','쓰리블랙크로우'] },
+  { id:10, cat:'추세 지속형', name:'백삼병', signal:'up', desc:'연속 3개 양봉 — 강한 상승 신호', shape:'연속 3개 양봉 / 각 저점 상승', signalText:'상승 추세 강화', note:'1번째 양봉 저점 훼손 시 무효 / 아래꼬리 동반 시 신뢰도 더 높음', keywords:['백삼병','연속양봉','쓰리화이트솔저'] },
+  { id:11, cat:'추세 지속형', name:'흑삼병', signal:'down', desc:'연속 3개 음봉 — 강한 하락 신호', shape:'연속 3개 음봉 / 각 고점 하락', signalText:'하락 추세 강화', note:'1번째 음봉 고점 훼손 시 무효 / 위꼬리 동반 시 신뢰도 더 높음', keywords:['흑삼병','연속음봉','쓰리블랙크로우'] },
 ]
 
 const SPECIAL = [
@@ -98,6 +102,69 @@ function CandleSVG({ name, variant }) {
       <line x1="33" y1="44" x2="33" y2="50" stroke={RED} strokeWidth="1.5"/>
       <rect x="50" y="36" width="14" height="22" fill={RED} rx="1"/>
       <line x1="57" y1="58" x2="57" y2="64" stroke={RED} strokeWidth="1.5"/>
+    </>,
+
+    /* 맥락 포함 패턴 */
+    '해머': <>
+      {/* 하락 음봉 2개 */}
+      <line x1="10" y1="4" x2="10" y2="8" stroke={RED} strokeWidth="1.5"/>
+      <rect x="4" y="8" width="12" height="22" fill={RED} rx="1"/>
+      <line x1="10" y1="30" x2="10" y2="34" stroke={RED} strokeWidth="1.5"/>
+      <line x1="30" y1="12" x2="30" y2="18" stroke={RED} strokeWidth="1.5"/>
+      <rect x="24" y="18" width="12" height="22" fill={RED} rx="1"/>
+      <line x1="30" y1="40" x2="30" y2="45" stroke={RED} strokeWidth="1.5"/>
+      {/* 해머 캔들 */}
+      <line x1="52" y1="26" x2="52" y2="32" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="46" y="32" width="12" height="10" fill={GREEN} rx="1"/>
+      <line x1="52" y1="42" x2="52" y2="62" stroke={GREEN} strokeWidth="1.5"/>
+    </>,
+
+    '행잉맨': <>
+      {/* 상승 양봉 3개 */}
+      <line x1="8" y1="38" x2="8" y2="44" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="2" y="26" width="12" height="18" fill={GREEN} rx="1"/>
+      <line x1="8" y1="44" x2="8" y2="48" stroke={GREEN} strokeWidth="1.5"/>
+      <line x1="26" y1="30" x2="26" y2="36" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="20" y="18" width="12" height="18" fill={GREEN} rx="1"/>
+      <line x1="26" y1="36" x2="26" y2="40" stroke={GREEN} strokeWidth="1.5"/>
+      <line x1="44" y1="22" x2="44" y2="28" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="38" y="10" width="12" height="18" fill={GREEN} rx="1"/>
+      <line x1="44" y1="28" x2="44" y2="32" stroke={GREEN} strokeWidth="1.5"/>
+      {/* 행잉맨 캔들 */}
+      <line x1="60" y1="6" x2="60" y2="12" stroke={RED} strokeWidth="1.5"/>
+      <rect x="54" y="12" width="12" height="10" fill={RED} rx="1"/>
+      <line x1="60" y1="22" x2="60" y2="42" stroke={RED} strokeWidth="1.5"/>
+    </>,
+
+    '슈팅스타': <>
+      {/* 상승 양봉 3개 */}
+      <line x1="8" y1="42" x2="8" y2="48" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="2" y="30" width="12" height="18" fill={GREEN} rx="1"/>
+      <line x1="8" y1="48" x2="8" y2="52" stroke={GREEN} strokeWidth="1.5"/>
+      <line x1="26" y1="34" x2="26" y2="40" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="20" y="22" width="12" height="18" fill={GREEN} rx="1"/>
+      <line x1="26" y1="40" x2="26" y2="44" stroke={GREEN} strokeWidth="1.5"/>
+      <line x1="44" y1="26" x2="44" y2="32" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="38" y="14" width="12" height="18" fill={GREEN} rx="1"/>
+      <line x1="44" y1="32" x2="44" y2="36" stroke={GREEN} strokeWidth="1.5"/>
+      {/* 슈팅스타 캔들 */}
+      <line x1="60" y1="4" x2="60" y2="26" stroke={RED} strokeWidth="1.5"/>
+      <rect x="54" y="26" width="12" height="10" fill={RED} rx="1"/>
+      <line x1="60" y1="36" x2="60" y2="40" stroke={RED} strokeWidth="1.5"/>
+    </>,
+
+    '인버티드 해머': <>
+      {/* 하락 음봉 2개 */}
+      <line x1="10" y1="4" x2="10" y2="8" stroke={RED} strokeWidth="1.5"/>
+      <rect x="4" y="8" width="12" height="22" fill={RED} rx="1"/>
+      <line x1="10" y1="30" x2="10" y2="34" stroke={RED} strokeWidth="1.5"/>
+      <line x1="30" y1="12" x2="30" y2="18" stroke={RED} strokeWidth="1.5"/>
+      <rect x="24" y="18" width="12" height="22" fill={RED} rx="1"/>
+      <line x1="30" y1="40" x2="30" y2="45" stroke={RED} strokeWidth="1.5"/>
+      {/* 인버티드 해머 캔들 */}
+      <line x1="52" y1="26" x2="52" y2="48" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="46" y="48" width="12" height="10" fill={GREEN} rx="1"/>
+      <line x1="52" y1="58" x2="52" y2="62" stroke={GREEN} strokeWidth="1.5"/>
     </>,
   }
 
@@ -178,7 +245,7 @@ function CandleSVG({ name, variant }) {
     <polygon points="68,62 65,56 71,56" fill={RED}/>
   </>
 
-  const wide  = ['모닝스타','이브닝스타','백삼병','흑삼병','상승장악형','하락장악형'].includes(name)
+  const wide  = ['모닝스타','이브닝스타','백삼병','흑삼병','상승장악형','하락장악형','해머','행잉맨','슈팅스타','인버티드 해머'].includes(name)
   const xwide = ['다람쥐 패턴','로드트랙 패턴','FVG'].includes(name)
   const w = xwide ? 80 : wide ? 76 : 64
   const h = xwide ? 80 : 70
@@ -230,16 +297,12 @@ function Modal({ item, onClose }) {
         <div className={`flex gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
           <div className="shrink-0 flex items-center"><CandleSVG name={item.name} /></div>
           <div className="flex-1 space-y-2">
-        {[['설명', item.desc], ['구조', item.shape], ['신호', item.signalText], ['참고', item.note]].map(([label, val]) => (
-          <div key={label} className="flex gap-2 text-xs">
-            <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-            <span className={label === '참고' ? muted : ''}>
-              {label === '참고' && Array.isArray(val)
-                ? val.map((v, i) => <span key={i} className="block">{v}</span>)
-                : val}
-            </span>
-          </div>
-        ))}
+            {[['설명', item.desc], ['구조', item.shape], ['신호', item.signalText], ['참고', item.note]].map(([label, val]) => (
+              <div key={label} className="flex gap-2 text-xs">
+                <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
+                <span className={label === '참고' ? muted : ''}>{val}</span>
+              </div>
+            ))}
           </div>
         </div>
         <div className="flex flex-wrap gap-1.5 mb-4">
@@ -293,11 +356,7 @@ function SquirrelModal({ onClose }) {
             {[['설명', cur.desc], ['구조', cur.shape], ['신호', cur.signalText], ['참고', cur.note]].map(([label, val]) => (
               <div key={label} className="flex gap-2 text-xs">
                 <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>
-                  {label === '참고' && Array.isArray(val)
-                    ? val.map((v, i) => <span key={i} className="block">{v}</span>)
-                    : val}
-                </span>
+                <span className={label === '참고' ? muted : ''}>{val}</span>
               </div>
             ))}
           </div>
@@ -382,11 +441,7 @@ function RoadtrackModal({ onClose }) {
             {[['설명', cur.desc], ['구조', cur.shape], ['신호', cur.signalText], ['참고', cur.note]].map(([label, val]) => (
               <div key={label} className="flex gap-2 text-xs">
                 <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>
-                  {label === '참고' && Array.isArray(val)
-                    ? val.map((v, i) => <span key={i} className="block">{v}</span>)
-                    : val}
-                </span>
+                <span className={label === '참고' ? muted : ''}>{val}</span>
               </div>
             ))}
           </div>
@@ -467,11 +522,7 @@ function FVGModal({ onClose }) {
             {[['설명', cur.desc], ['구조', cur.shape], ['신호', cur.signalText], ['참고', cur.note]].map(([label, val]) => (
               <div key={label} className="flex gap-2 text-xs">
                 <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>
-                  {label === '참고' && Array.isArray(val)
-                    ? val.map((v, i) => <span key={i} className="block">{v}</span>)
-                    : val}
-                </span>
+                <span className={label === '참고' ? muted : ''}>{val}</span>
               </div>
             ))}
           </div>
