@@ -384,7 +384,11 @@ function Modal({ item, onClose }) {
             {[['설명', item.desc], ['구조', item.shape], ['신호', item.signalText], ['참고', item.note]].map(([label, val]) => (
               <div key={label} className="flex gap-2 text-xs">
                 <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>{val}</span>
+                <span className={label === '참고' ? muted : ''}>
+                  {label === '참고' && Array.isArray(val)
+                    ? val.map((v, i) => <p key={i} className="mb-1">{v}</p>)
+                    : val}
+                </span>
               </div>
             ))}
           </div>
@@ -440,7 +444,11 @@ function SquirrelModal({ onClose }) {
             {[['설명', cur.desc], ['구조', cur.shape], ['신호', cur.signalText], ['참고', cur.note]].map(([label, val]) => (
               <div key={label} className="flex gap-2 text-xs">
                 <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>{val}</span>
+                <span className={label === '참고' ? muted : ''}>
+                  {label === '참고' && Array.isArray(val)
+                    ? val.map((v, i) => <p key={i} className="mb-1">{v}</p>)
+                    : val}
+                </span>
               </div>
             ))}
           </div>
@@ -525,7 +533,11 @@ function RoadtrackModal({ onClose }) {
             {[['설명', cur.desc], ['구조', cur.shape], ['신호', cur.signalText], ['참고', cur.note]].map(([label, val]) => (
               <div key={label} className="flex gap-2 text-xs">
                 <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>{val}</span>
+                <span className={label === '참고' ? muted : ''}>
+                  {label === '참고' && Array.isArray(val)
+                    ? val.map((v, i) => <p key={i} className="mb-1">{v}</p>)
+                    : val}
+                </span>
               </div>
             ))}
           </div>
@@ -606,7 +618,11 @@ function FVGModal({ onClose }) {
             {[['설명', cur.desc], ['구조', cur.shape], ['신호', cur.signalText], ['참고', cur.note]].map(([label, val]) => (
               <div key={label} className="flex gap-2 text-xs">
                 <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>{val}</span>
+                <span className={label === '참고' ? muted : ''}>
+                  {label === '참고' && Array.isArray(val)
+                    ? val.map((v, i) => <p key={i} className="mb-1">{v}</p>)
+                    : val}
+                </span>
               </div>
             ))}
           </div>

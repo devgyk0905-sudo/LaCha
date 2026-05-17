@@ -198,7 +198,11 @@ function Modal({ item, onClose }) {
             {[['설명', item.desc], ['구조', item.structure], ['신호', item.signalText], ['참고', item.note]].map(([label, val]) => (
               <div key={label} className="flex gap-2 text-xs">
                 <span className={`${muted} min-w-[28px] shrink-0`}>{label}</span>
-                <span className={label === '참고' ? muted : ''}>{val}</span>
+                <span className={label === '참고' ? muted : ''}>
+                  {label === '참고' && Array.isArray(val)
+                    ? val.map((v, i) => <p key={i} className="mb-1">{v}</p>)
+                    : val}
+                </span>
               </div>
             ))}
           </div>
@@ -260,7 +264,14 @@ function WedgeModal({ item, onClose }) {
               <div className="flex-1 space-y-2">
                 <div className="flex gap-2 text-xs"><span className={`${muted} min-w-[28px] shrink-0`}>설명</span><span>{v.desc}</span></div>
                 <div className="flex gap-2 text-xs"><span className={`${muted} min-w-[28px] shrink-0`}>신호</span><span>{v.signal}</span></div>
-                <div className="flex gap-2 text-xs"><span className={`${muted} min-w-[28px] shrink-0`}>참고</span><span className={muted}>거래량과 무관 — 삼각수렴과 혼동 주의</span></div>
+                <div className="flex gap-2 text-xs">
+                  <span className={`${muted} min-w-[28px] shrink-0`}>참고</span>
+                  <span className={muted}>
+                    {Array.isArray(v.note)
+                      ? v.note.map((n, i) => <p key={i} className="mb-1">{n}</p>)
+                      : v.note ?? '거래량과 무관 — 삼각수렴과 혼동 주의'}
+                  </span>
+                </div>
               </div>
             </div>
             {i === 0 && <div className={`border-t ${divC} my-4`} />}
