@@ -199,7 +199,7 @@ function StepSection() {
         <div>
           <p className="text-xs font-semibold text-[#f0a040] mb-3">채널 안 지킬 때</p>
           <div className="flex flex-wrap gap-1.5 mb-3">
-            {['ABC', '임펄스'].map(t => <Code key={t}>{t}</Code>)}
+            {['ABC', '12345'].map(t => <Code key={t}>{t}</Code>)}
           </div>
           <WaveAlert type="amber">피보나치 <strong>되돌림</strong>으로 판별<br/>추세 방향이면 12345 / 반대면 ABC</WaveAlert>
         </div>
@@ -649,8 +649,39 @@ function CorrectABC() {
 
       <Divider />
 
-      {/* ABC X ABC 이중플랫 */}
-      <SectionHead num={3} title="ABC X ABC 이중플랫" />
+      {/* 플랫 유형 피보나치 판별 */}
+      <SectionHead num={3} title="플랫 유형 피보나치 판별법" />
+      <Desc>눈으로 먼저 보고, 피보나치로 수치 확인 — 피보나치 수치가 최종 기준</Desc>
+
+      <p className="text-xs font-semibold mb-3">그리는 법 (2단계)</p>
+      <StepList steps={[
+        '시작점 → A 방향으로 피보나치 되돌림 → B파 수치 확인',
+        'A → 시작점 방향으로 피보나치 되돌림 → C파 수치 확인',
+      ]} />
+
+      <WaveTable
+        headers={['유형', 'B파', 'C파', '비고']}
+        rows={[
+          ['기본 플랫', <Code>1 미만 (0.382~0.5)</Code>, <Code>1:1 이상</Code>, '가장 일반적'],
+          ['확장 플랫', <Code>1.09~1.272 (1 초과)</Code>, <Code>1:1 이상</Code>, 'B가 A 되돌림 1 초과'],
+          ['러닝 플랫', <Code>1 초과</Code>, <span className="text-amber-400">1:1 미달</span>, 'C파 약함 — 미달형'],
+        ]}
+      />
+
+      <WaveAlert type="amber">
+        <strong>핵심 판별 포인트</strong><br/>
+        B파가 A 되돌림 <Code>1을 초과</Code>했는가? → YES면 확장 또는 러닝<br/>
+        C파가 <Code>1:1</Code>에 미달했는가? → YES면 러닝 플랫 (눈으로 저점 근처처럼 보여도 피보 수치가 기준)
+      </WaveAlert>
+
+      <WaveAlert type="blue">
+        <strong>B가 A 시작점 스윕 시</strong><br/>
+        C가 A 저점을 <Code>1:1</Code> 이상 이탈 → 확장 플랫 (단, 힘이 약해지는 구조)<br/>
+        C가 A 저점을 <Code>1:1</Code> 미달 → 러닝 플랫
+      </WaveAlert>
+
+      <Divider />
+      <SectionHead num={4} title="ABC X ABC 이중플랫" />
       <Desc>채널 내에서 WXYXZ처럼 보이지만 다른 구조 — 절대규칙 위반 시 이중플랫으로 판별</Desc>
 
       <p className="text-xs font-semibold mb-3">판별 순서</p>
