@@ -113,18 +113,21 @@ function ChannelSVG({ name }) {
       </svg>
     ),
     '아담과 이브': (
-      <svg width="80" height="80" viewBox="0 0 120 116" fill="none">
+      <svg width="80" height="50" viewBox="0 0 210 122" fill="none">
         <path d="M2.87897 6.52336L2.40208 5.64439L0.644149 6.59816L1.12103 7.47713L2 7.00024L2.87897 6.52336ZM27.5 54.0002L26.621 54.4771L27.5588 56.2056L28.4031 54.4296L27.5 54.0002ZM42 23.5002L42.9281 23.1279L42.0776 21.0079L41.0969 23.0709L42 23.5002ZM115.903 0.570311C115.665 0.0716745 115.069 -0.140062 114.57 0.0973836L106.444 3.96679C105.946 4.20423 105.734 4.80094 105.971 5.29958C106.209 5.79822 106.806 6.00995 107.304 5.77251L114.527 2.33304L117.967 9.55592C118.204 10.0546 118.801 10.2663 119.299 10.0288C119.798 9.7914 120.01 9.19469 119.772 8.69605L115.903 0.570311ZM2 7.00024L1.12103 7.47713L26.621 54.4771L27.5 54.0002L28.379 53.5234L2.87897 6.52336L2 7.00024ZM27.5 54.0002L28.4031 54.4296L42.9031 23.9296L42 23.5002L41.0969 23.0709L26.5969 53.5709L27.5 54.0002ZM42 23.5002L41.0719 23.8726C43.973 31.1043 48.0952 38.8046 53.156 44.922C58.2013 51.0207 64.2882 55.675 71.1369 56.5423C78.0544 57.4184 85.4427 54.3993 92.9687 45.8256C100.479 37.2694 108.225 23.0845 115.942 1.33465L115 1.00024L114.058 0.665834C106.375 22.316 98.7332 36.227 91.4657 44.5062C84.2135 52.7679 77.4331 55.3238 71.3881 54.5582C65.2743 53.7839 59.605 49.5798 54.6971 43.6472C49.8048 37.7334 45.777 30.2296 42.9281 23.1279L42 23.5002Z" fill="#3EC97E"/>
         <line x1="2" y1="22.5002" x2="117" y2="22.5002" stroke={c} strokeDasharray="2 2"/>
-        <path d="M2.87897 109.164L2.40208 110.043L0.644149 109.09L1.12103 108.211L2 108.688L2.87897 109.164ZM27.5 61.6875L26.621 61.2106L27.5588 59.4822L28.4031 61.2581L27.5 61.6875ZM42 92.1875L42.9281 92.5598L42.0776 94.6798L41.0969 92.6169L42 92.1875ZM115.903 115.117C115.665 115.616 115.069 115.828 114.57 115.59L106.444 111.721C105.946 111.484 105.734 110.887 105.971 110.388C106.209 109.89 106.806 109.678 107.304 109.915L114.527 113.355L117.967 106.132C118.204 105.633 118.801 105.421 119.299 105.659C119.798 105.896 120.01 106.493 119.772 106.992L115.903 115.117ZM2 108.688L1.12103 108.211L26.621 61.2106L27.5 61.6875L28.379 62.1644L2.87897 109.164L2 108.688ZM27.5 61.6875L28.4031 61.2581L42.9031 91.7581L42 92.1875L41.0969 92.6169L26.5969 62.1169L27.5 61.6875ZM42 92.1875L41.0719 91.8152C43.973 84.5835 48.0952 76.8832 53.156 70.7657C58.2013 64.6671 64.2882 60.0128 71.1369 59.1454C78.0544 58.2693 85.4427 61.2885 92.9687 69.8622C100.479 78.4184 108.225 92.6032 115.942 114.353L115 114.687L114.058 115.022C106.375 93.3718 98.7332 79.4608 91.4657 71.1816C84.2135 62.9199 77.4331 60.364 71.3881 61.1296C65.2743 61.9039 59.605 66.1079 54.6971 72.0406C49.8048 77.9543 45.777 85.4582 42.9281 92.5598L42 92.1875Z" fill="#E05A6A"/>
-        <line y1="93.5002" x2="115" y2="93.5002" stroke={c} strokeDasharray="2 2"/>
+        <line x1="133.449" y1="1.22064" x2="78.4488" y2="113.221" stroke={GRAY}/>
+        <path d="M92.879 115.164L92.4021 116.043L90.6441 115.09L91.121 114.211L92 114.688L92.879 115.164ZM117.5 67.6875L116.621 67.2106L117.559 65.4822L118.403 67.2581L117.5 67.6875ZM132 98.1875L132.928 98.5598L132.078 100.68L131.097 98.6169L132 98.1875ZM205.903 121.117C205.665 121.616 205.069 121.828 204.57 121.59L196.444 117.721C195.946 117.484 195.734 116.887 195.971 116.388C196.209 115.89 196.806 115.678 197.304 115.915L204.527 119.355L207.967 112.132C208.204 111.633 208.801 111.421 209.299 111.659C209.798 111.896 210.01 112.493 209.772 112.992L205.903 121.117ZM92 114.688L91.121 114.211L116.621 67.2106L117.5 67.6875L118.379 68.1644L92.879 115.164L92 114.688ZM117.5 67.6875L118.403 67.2581L132.903 97.7581L132 98.1875L131.097 98.6169L116.597 68.1169L117.5 67.6875ZM132 98.1875L131.072 97.8152C133.973 90.5835 138.095 82.8832 143.156 76.7657C148.201 70.6671 154.288 66.0128 161.137 65.1454C168.054 64.2693 175.443 67.2885 182.969 75.8622C190.479 84.4184 198.225 98.6032 205.942 120.353L205 120.687L204.058 121.022C196.375 99.3718 188.733 85.4608 181.466 77.1816C174.214 68.9199 167.433 66.364 161.388 67.1296C155.274 67.9039 149.605 72.1079 144.697 78.0406C139.805 83.9543 135.777 91.4582 132.928 98.5598L132 98.1875Z" fill="#E05A6A"/>
+        <line x1="90" y1="99.5002" x2="205" y2="99.5002" stroke={c} strokeDasharray="2 2"/>
       </svg>
     ),
     '컵앤핸들': (
-      <svg width="80" height="70" viewBox="0 0 80 70" fill="none">
-        <line x1="4" y1="12" x2="76" y2="12" stroke={GRAY} strokeWidth={SW} strokeDasharray="3 2"/>
-        <path d="M4 12 Q26 56 48 12" fill="none" stroke={GREEN} strokeWidth={SW}/>
-        <polyline points="48,12 56,24 64,16" fill="none" stroke={GREEN} strokeWidth={SW}/>
+      <svg width="105" height="40" viewBox="0 0 440 168" fill="none">
+        <line y1="30.0002" x2="204" y2="30.0002" stroke={c} strokeDasharray="2 2"/>
+        <line x1="220" y1="137" x2="424" y2="137" stroke={c} strokeDasharray="2 2"/>
+        <path d="M6 87.5002L39.0398 30.9348C41.1737 49.7899 53.3296 87.5002 84.8826 87.5002C116.436 87.5002 129.142 49.7899 131.551 30.9348L156.331 56.786L180.698 15.0657L187.306 30.9348L203 1.50024" stroke="#3EC97E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M226 80.5002L259.04 137.066C261.174 118.211 273.33 80.5002 304.883 80.5002C336.436 80.5002 349.142 118.211 351.551 137.066L376.331 111.215L400.698 152.935L407.306 137.066L423 166.5" stroke="#E05A6A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+        <line x1="230.449" y1="16.7206" x2="175.449" y2="128.721" stroke={GRAY}/>
       </svg>
     ),
     '불 플래그': (
@@ -176,7 +179,7 @@ const CHANNELS = [
   { id:11, cat:'반전형', name:'더블탑',             signal:'down',    desc:'상승 추세 후 두 고점이 같은 레벨 — 하락 반전',               structure:'고점1 → 조정 → 고점2(유사 레벨) → 넥라인 이탈',                  signalText:'넥라인 이탈 시 강한 하락',                       note:'두 번째 고점이 첫 번째보다 살짝 낮을수록 신뢰도 높음',  keywords:['더블탑','이중천장','M형'] },
   { id:12, cat:'반전형', name:'더블바텀',           signal:'up',      desc:'하락 추세 후 두 저점이 같은 레벨 — 상승 반전',               structure:'저점1 → 반등 → 저점2(유사 레벨) → 넥라인 돌파',                  signalText:'넥라인 돌파 시 강한 상승',                       note:'두 번째 저점이 첫 번째보다 살짝 높을수록 신뢰도 높음',  keywords:['더블바텀','이중바닥','쌍바닥','W형'] },
   { id:13, cat:'반전형', name:'아담과 이브',        signal:'both',    desc:'더블바텀/더블탑 변형 — 첫 저점(고점) 뾰족(아담), 두 번째 저점(고점) 둥글고 완만(이브)', structure:'아담(뾰족) → 반등/조정 → 이브(둥글) → 넥라인 돌파/이탈',  signalText:'넥라인 돌파 → 상승 / 넥라인 이탈 → 하락',       note:'이브가 아담보다 살짝 높은(낮은) 경우 신뢰도 높음',     keywords:['아담이브','아담과이브','adam eve','더블바텀','더블탑'] },
-  { id:14, cat:'지속형', name:'컵앤핸들',           signal:'up',      desc:'U자형 컵 + 소폭 눌림(핸들) 후 상승 — 강세 지속 패턴',        structure:'U자형 하락-회복(컵) → 소폭 조정(핸들) → 저항 돌파',              signalText:'핸들 구간 이후 저항 돌파 시 강한 상승',          note:'컵이 깊을수록, 핸들이 얕을수록 신뢰도 높음',            keywords:['컵앤핸들','cup and handle','컵핸들'] },
+  { id:14, cat:'지속형', name:'컵앤핸들',           signal:'both',    desc:'컵(U자/역U자) + 핸들 후 돌파/이탈 — 상승/하락 지속 패턴',    structure:'컵(U자형) → 핸들(소폭 조정) → 돌파 / 컵(역U자형) → 핸들 → 이탈', signalText:'핸들 이후 돌파/이탈 시 추세 가속',              note:'컵이 깊을수록, 핸들이 얕을수록 신뢰도 높음',            keywords:['컵앤핸들','cup and handle','컵핸들','불리쉬','베어리쉬'] },
   { id:15, cat:'지속형', name:'불 플래그',          signal:'up',      desc:'강한 상승(깃대) 후 소폭 하락 조정(깃발) — 상승 지속',        structure:'장대양봉 급등(폴) → 평행 하락 채널(플래그) → 돌파',               signalText:'플래그 상단 돌파 시 강한 상승 재개',             note:'폴이 길고 강할수록 신뢰도 높음',                        keywords:['불플래그','bull flag','상승플래그','깃발패턴'] },
   { id:16, cat:'지속형', name:'베어 플래그',        signal:'down',    desc:'강한 하락(깃대) 후 소폭 반등 조정(깃발) — 하락 지속',        structure:'장대음봉 급락(폴) → 평행 상승 채널(플래그) → 이탈',               signalText:'플래그 하단 이탈 시 강한 하락 재개',             note:'폴이 길고 강할수록 신뢰도 높음',                        keywords:['베어플래그','bear flag','하락플래그','깃발패턴'] },
 ]
@@ -411,6 +414,79 @@ function AdamEveModal({ onClose }) {
   )
 }
 
+/* ── 컵앤핸들 모달 ── */
+function CupHandleModal({ onClose }) {
+  const { dark } = useTheme()
+  const bgC   = dark ? 'bg-[#13161e] border-white/15' : 'bg-white border-black/15'
+  const muted = dark ? 'text-[#7a7f94]' : 'text-gray-500'
+  const rowBg = dark ? 'bg-[#0d0f14]'   : 'bg-gray-50'
+  const divC  = dark ? 'border-white/8'  : 'border-black/8'
+  const c     = dark ? '#e8eaf0' : '#1a1e2a'
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{background:'rgba(0,0,0,0.6)'}} onClick={onClose}>
+      <div className={`w-full max-w-lg rounded-2xl border p-6 ${bgC} max-h-[90vh] overflow-y-auto`} onClick={e => e.stopPropagation()}>
+        <div className="flex items-start justify-between mb-4">
+          <div>
+            <h2 className="text-lg font-semibold">컵앤핸들</h2>
+            <div className="flex items-center gap-2 mt-1">
+              <span className={`text-xs ${muted}`}>지속형</span>
+              <div className="flex gap-1">
+                <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/20">상승</span>
+                <span className="text-xs px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">하락</span>
+              </div>
+            </div>
+          </div>
+          <button onClick={onClose} className={`w-8 h-8 rounded-lg border flex items-center justify-center text-sm ${muted} ${dark ? 'border-white/10 hover:bg-white/5' : 'border-black/10 hover:bg-black/5'}`}>✕</button>
+        </div>
+
+        {/* 불리쉬 */}
+        <p className="text-xs font-semibold mb-3 text-green-400">불리쉬 컵앤핸들 (상승 지속)</p>
+        <div className={`flex flex-col sm:flex-row gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
+          <div className="flex justify-center sm:justify-start sm:shrink-0 sm:items-center">
+            <svg width="200" height="48" viewBox="0 0 230 54" fill="none">
+              <path d="M46 1.00024L53 24.8921L59.0667 15.757L65.6 40.5858L71.4333 30.5138L78.6667 50.1894L85.2 40.5858L100.833 53.0002L107.367 42.6939L116 48.3156L126.5 27.7029L134.9 30.5138L138.867 11.0723L144 13.8831" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <line y1="0.500244" x2="230" y2="0.500244" stroke={c} strokeDasharray="2 2"/>
+              <path d="M6 30C6 30 40 0.5 80 0.5C120 0.5 154 30 154 30" stroke="#3EC97E" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+              <polyline points="154,30 165,40 175,34 185,0.5" stroke="#3EC97E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <div className="flex-1 space-y-2">
+            <div className="flex gap-2 text-xs"><span className={`${muted} min-w-[28px] shrink-0`}>설명</span><span>U자형 컵 + 소폭 하락 조정(핸들) → 저항 상방 돌파</span></div>
+            <div className="flex gap-2 text-xs"><span className={`${muted} min-w-[28px] shrink-0`}>신호</span><span>핸들 구간 이후 저항 돌파 시 강한 상승 재개</span></div>
+            <div className="flex gap-2 text-xs"><span className={`${muted} min-w-[28px] shrink-0`}>참고</span><span className={muted}>컵이 깊을수록, 핸들이 얕을수록 신뢰도 높음</span></div>
+          </div>
+        </div>
+
+        {/* 베어리쉬 */}
+        <div className={`border-t ${divC} my-4`} />
+        <p className="text-xs font-semibold mb-3 text-red-400">베어리쉬 컵앤핸들 (하락 지속)</p>
+        <div className={`flex flex-col sm:flex-row gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
+          <div className="flex justify-center sm:justify-start sm:shrink-0 sm:items-center">
+            <svg width="200" height="72" viewBox="0 0 231 81" fill="none">
+              <path d="M46 53.5001L53 30.0677L59.0667 39.0271L65.6 14.6758L71.4333 24.5542L78.6667 5.25688L85.2 14.6758L100.833 2.50012L107.367 12.6082L116 7.09472L126.5 27.3109L134.9 24.5542L138.867 43.6217L144 40.865" stroke={c} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <line y1="53.0001" x2="230" y2="53.0001" stroke={c} strokeDasharray="2 2"/>
+              <path d="M7 1.50012L44.2327 52.8037C46.6373 35.7025 60.3358 1.50012 95.8931 1.50012C131.45 1.50012 145.769 35.7025 148.484 52.8037L176.409 29.3573L203.868 67.1966L211.314 52.8037L229 79.5001" stroke="#E05A6A" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <div className="flex-1 space-y-2">
+            <div className="flex gap-2 text-xs"><span className={`${muted} min-w-[28px] shrink-0`}>설명</span><span>역U자형 컵 + 소폭 반등 조정(핸들) → 지지 하방 이탈</span></div>
+            <div className="flex gap-2 text-xs"><span className={`${muted} min-w-[28px] shrink-0`}>신호</span><span>핸들 구간 이후 지지 이탈 시 강한 하락 재개</span></div>
+            <div className="flex gap-2 text-xs"><span className={`${muted} min-w-[28px] shrink-0`}>참고</span><span className={muted}>컵이 깊을수록, 핸들이 얕을수록 신뢰도 높음</span></div>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-1.5 mb-4">
+          {['컵앤핸들','cup and handle','컵핸들','불리쉬','베어리쉬'].map(k => (
+            <span key={k} className={`text-xs px-2 py-0.5 rounded-full border ${dark ? 'bg-white/5 border-white/10 text-[#7a7f94]' : 'bg-black/5 border-black/10 text-gray-500'}`}>{k}</span>
+          ))}
+        </div>
+        <ChartNote page="channel" section="channel_14" />
+      </div>
+    </div>
+  )
+}
+
 /* ── 쐐기형 모달 ── */
 function WedgeModal({ item, onClose }) {
   const { dark } = useTheme()
@@ -537,7 +613,8 @@ export default function ChannelPatterns() {
       {selected && ['하락 쐐기','상승 쐐기'].includes(selected.name) && <WedgeModal item={selected} onClose={() => setSelected(null)} />}
       {selected?.name === '확산형 삼각형' && <BroadeningModal onClose={() => setSelected(null)} />}
       {selected?.name === '아담과 이브' && <AdamEveModal onClose={() => setSelected(null)} />}
-      {selected && !['하락 쐐기','상승 쐐기','확산형 삼각형','아담과 이브'].includes(selected.name) && <Modal item={selected} onClose={() => setSelected(null)} />}
+      {selected?.name === '컵앤핸들' && <CupHandleModal onClose={() => setSelected(null)} />}
+      {selected && !['하락 쐐기','상승 쐐기','확산형 삼각형','아담과 이브','컵앤핸들'].includes(selected.name) && <Modal item={selected} onClose={() => setSelected(null)} />}
     </div>
   )
 }
