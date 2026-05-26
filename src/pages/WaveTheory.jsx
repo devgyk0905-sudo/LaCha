@@ -354,8 +354,35 @@ function ImpulseBasic() {
 
       <Divider />
 
+      <SectionHead num="03-1" title="3파 연장 — 1212 세팅" />
+      <Desc>3파가 연장될 때 내부에서 나타나는 준비 구간</Desc>
+      <p className={`text-xs leading-relaxed mb-4 ${muted}`}>
+        1파 → 2파 → 3파의 3-1 → 3-2 순서로 진행되며, 이 네 파동이 완성된 시점을 1212 세팅이라 부름.
+        3-2파가 종료되는 순간이 1212 완성이자 매수 타점. 이후 3-3 → 3-4 → 3-5로 이어지는
+        가장 강하고 빠른 상승 구간이 시작됨.
+      </p>
+      <WaveTable
+        headers={['구간', '내용']}
+        rows={[
+          [<Code>1212 세팅</Code>, '1파 → 2파 → 3-1파 → 3-2파 완성 구간'],
+          ['매수 타점', '3-2파 종료 시점 — 1212 완성'],
+          ['이후 전개', '3-3(가장 강함) → 3-4 → 3-5 → 4파 → 5파'],
+          ['구조 유효 조건', '1파 고점과 3-1파 고점을 연결한 채널 안에서 진행'],
+          ['구조 무효 조건', '3-2파가 1파 고점을 넘으면 무효'],
+        ]}
+      />
+      <WaveAlert type="green">
+        <strong>3-2파 종료 = 1212 완성 = 진입 타점</strong><br/>
+        이후 3-3파는 전체 파동 중 가장 강하고 빠른 구간 — 수익 극대화 구간
+      </WaveAlert>
+      <div className={`rounded-lg p-3 mt-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
+        <Elliott3rdWaveSVG dark={dark} />
+      </div>
+
+      <Divider />
+
       <SectionHead num={4} title="파동 예상 규칙" />
-      <Desc>임펄스를 그릴 때 제일 먼저 참고해야 하는 것 — 파동을 예상할 수 있게 해주는 규칙</Desc>
+      <Desc>파동을 예상할 수 있게 해주는 규칙 — 임펄스를 그릴 때 제일 먼저 참고해야 하는 것</Desc>
       <StepList steps={[
         '3파가 1.618까지 확장되었는가?',
         '2파가 1파를 0.382~0.618 사이에서 되돌렸는가?',
@@ -416,34 +443,7 @@ function ImpulseBasic() {
 
       <Divider />
 
-      <SectionHead num={8} title="3파 연장 — 1212 세팅" />
-      <Desc>3파가 연장될 때 내부에서 나타나는 준비 구간</Desc>
-      <p className={`text-xs leading-relaxed mb-4 ${muted}`}>
-        1파 → 2파 → 3파의 3-1 → 3-2 순서로 진행되며, 이 네 파동이 완성된 시점을 1212 세팅이라 부름.
-        3-2파가 종료되는 순간이 1212 완성이자 매수 타점. 이후 3-3 → 3-4 → 3-5로 이어지는
-        가장 강하고 빠른 상승 구간이 시작됨.
-      </p>
-      <WaveTable
-        headers={['구간', '내용']}
-        rows={[
-          [<Code>1212 세팅</Code>, '1파 → 2파 → 3-1파 → 3-2파 완성 구간'],
-          ['매수 타점', '3-2파 종료 시점 — 1212 완성'],
-          ['이후 전개', '3-3(가장 강함) → 3-4 → 3-5 → 4파 → 5파'],
-          ['구조 유효 조건', '1파 고점과 3-1파 고점을 연결한 채널 안에서 진행'],
-          ['구조 무효 조건', '3-2파가 1파 고점을 넘으면 무효'],
-        ]}
-      />
-      <WaveAlert type="green">
-        <strong>3-2파 종료 = 1212 완성 = 진입 타점</strong><br/>
-        이후 3-3파는 전체 파동 중 가장 강하고 빠른 구간 — 수익 극대화 구간
-      </WaveAlert>
-      <div className={`rounded-lg p-3 mt-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
-        <Elliott3rdWaveSVG dark={dark} />
-      </div>
-
-      <Divider />
-
-      <SectionHead num={9} title="트레이딩 예시" />
+      <SectionHead num={8} title="트레이딩 예시" />
       <Desc>파동은 절대적이지 않으나 손절가 잡는 데 매우 유용한 기법</Desc>
       <StepList steps={[
         '2파가 1파를 100% 되돌리면 → 삼각수렴 배제, B파/X파 가능성 높음',
