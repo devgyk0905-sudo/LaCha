@@ -12,7 +12,6 @@ const TABS = [
 
 const SUB_IMPULSE = [
   { id: 'imp_basic',    label: '임펄스' },
-  { id: 'imp_expand',   label: '확장' },
   { id: 'imp_terminal', label: '터미널' },
 ]
 
@@ -173,7 +172,6 @@ export default function WaveTheory() {
       <div className="page-enter">
         {active === 'step'    && <StepSection />}
         {active === 'impulse' && subImp === 'imp_basic'    && <ImpulseBasic />}
-        {active === 'impulse' && subImp === 'imp_expand'   && <ImpulseExpand />}
         {active === 'impulse' && subImp === 'imp_terminal' && <ImpulseTerminal />}
         {active === 'correct' && subCor === 'cor_wxy'      && <CorrectWXY />}
         {active === 'correct' && subCor === 'cor_abc'      && <CorrectABC />}
@@ -236,36 +234,12 @@ function StepSection() {
 /* ── 임펄스 기본 ── */
 function ImpulseBasic() {
   const { dark } = useTheme()
+  const muted = dark ? 'text-[#7a7f94]' : 'text-gray-500'
   const c = dark ? '#e8eaf0' : '#1a1e2a'
   return (
     <div>
       <SectionHead num={1} title="임펄스 12345" />
       <Desc>추세 방향으로 강하고 빠르게 움직이는 기본 충격파동</Desc>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-2">
-        <div>
-          <p className="text-xs font-semibold mb-4">파동 구성</p>
-          <WaveTable
-            headers={['파동', '방향', '조건']}
-            rows={[
-              [<Code>1파</Code>, <span className="text-green-400">추세</span>, '0 지점(시작점)에서 출발'],
-              [<Code>2파</Code>, <span className="text-red-400">조정</span>, <>1파의 시작점(0 지점) 이탈 불가 / <Code>0.382~0.618</Code></>],
-              [<Code>3파</Code>, <span className="text-green-400">추세</span>, '1,3,5파 중 가장 짧으면 안 됨'],
-              [<Code>4파</Code>, <span className="text-red-400">조정</span>, '1파 영역 겹침 불가'],
-              [<Code>5파</Code>, <span className="text-green-400">추세</span>, '거래량 감소하며 마무리'],
-            ]}
-          />
-        </div>
-        <div>
-          <p className="text-xs font-semibold mb-4">3가지 절대 규칙</p>
-          <RuleList rules={[
-            '2파가 1파의 시작점(0 지점)을 이탈하면 안 됨',
-            '1,3,5파 중 3파가 가장 짧으면 안 됨',
-            '4파가 1파 영역과 겹치면 안 됨',
-          ]} />
-          <WaveAlert type="amber">하나라도 위반 시 → 12345 아님</WaveAlert>
-        </div>
-      </div>
 
       {/* 임펄스 SVG */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
@@ -308,10 +282,183 @@ function ImpulseBasic() {
         </div>
       </div>
 
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6 mb-2">
+        <div>
+          <p className="text-xs font-semibold mb-4">파동 구성</p>
+          <WaveTable
+            headers={['파동', '방향', '조건', '참고']}
+            rows={[
+              [<Code>1파</Code>, <span className="text-green-400">추세</span>, '0 지점(시작점)에서 출발', '—'],
+              [<Code>2파</Code>, <span className="text-red-400">조정</span>, <>1파 시작점(0 지점) 이탈 불가 / <Code>1파의 0.382~0.618</Code></>, '1파를 99% 되돌릴 수 없음 / 파동 교대 법칙 적용 (2파/4파)'],
+              [<Code>3파</Code>, <span className="text-green-400">추세</span>, <>1·3·5파 중 가장 짧으면 안 됨 / <Code>1파의 1.618</Code></>, '거래량 가장 많고 상승 가장 큼'],
+              [<Code>4파</Code>, <span className="text-red-400">조정</span>, <>1파 영역 겹침 불가 / <Code>3파의 0.236~0.328</Code></>, '3파를 전부 되돌리지 못함 / 파동 교대 법칙 적용 (2파/4파)'],
+              [<Code>5파</Code>, <span className="text-green-400">추세</span>, <>반드시 3파 고점 돌파 (단, 절단 가능) / <Code>1파의 0.618~1</Code></>, '거래량 낮음 / 다이아고날(터미널) 가능'],
+            ]}
+          />
+          <WaveAlert type="blue">→ <strong>파동 교대 법칙</strong>: 2파와 4파는 서로 다른 조정이 출현한다 (가격조정 / 기간조정)</WaveAlert>
+        </div>
+        <div>
+          <p className="text-xs font-semibold mb-4">3가지 절대 규칙</p>
+          <RuleList rules={[
+            '2파가 1파의 시작점(0 지점)을 이탈하면 안 됨 — 1파를 99% 되돌릴 수 없음',
+            '3파는 가장 짧을 수 없음',
+            '4파는 1파를 침범해서는 안 됨 — 터미널 임펄스만 예외',
+          ]} />
+          <WaveAlert type="amber">하나라도 위반 시 → 임펄스(12345)가 될 수 없음</WaveAlert>
+        </div>
+      </div>
+
+      <Divider />
+
+      <SectionHead num={2} title="임펄스의 피보나치" />
+      <Desc>각 파동의 피보나치 되돌림/확장 기준점과 목표 수치</Desc>
+      <WaveTable
+        headers={['파동', '방법', '피보 지점', '목표 수치']}
+        rows={[
+          [<Code>2파</Code>, '되돌림', '0 → 1', <Code>1파의 0.382~0.618</Code>],
+          [<Code>3파</Code>, '되돌림', '1 → 0', <Code>1파의 1.618</Code>],
+          [<Code>4파</Code>, '되돌림', '2 → 3', <Code>3파의 0.236~0.328</Code>],
+          [<Code>5파</Code>, '확장', '0 → 1 → 4', <Code>1파의 0.618~1</Code>],
+        ]}
+      />
+
+      <Divider />
+
+      <SectionHead num={3} title="확장 임펄스" />
+      <Desc>1·3·5파 중 하나가 비정상적으로 길게 연장되는 패턴</Desc>
+
+      <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
+        <ImpulseExpandSVG />
+      </div>
+
+      <div className="mt-6">
+        <WaveTable
+          headers={['유형', '특징', '비고']}
+          rows={[
+            ['1파 확장', '1파가 가장 길게 연장', '비교적 드묾'],
+            ['3파 확장', <span className="text-green-400">3파가 가장 길게 연장 — 가장 흔함</span>, '강한 추세 구간'],
+            ['5파 확장', '5파가 가장 길게 연장', '거래량 감소 확인 중요'],
+          ]}
+        />
+      </div>
+
+      <WaveAlert type="amber"><strong>절대규칙</strong>: 1·3·5파 중 하나만 확장 — 두 개 이상 확장되면 카운팅 재검토</WaveAlert>
+      <p className={`text-xs leading-relaxed ${muted}`}>추세선으로 연장 유형 판단: 추세선이 모이면 1파 연장 / 퍼지면 5파 연장 / 평행하고 위로 확장되면 3파 연장 가능성</p>
+
+      <WaveAlert type="blue">
+        <strong>WXYXZ vs 임펄스 구분</strong><br/>
+        WXYXZ는 채널을 준수 / 임펄스 1파·5파 연장은 채널 미준수<br/>
+        3파가 1파의 1.618을 넘어버리면 WXY 확장 불가(Y확장은 1~1.618까지) → 임펄스 확정
+      </WaveAlert>
+
+      <Divider />
+
+      <SectionHead num={4} title="파동 예상 규칙" />
+      <Desc>임펄스를 그릴 때 제일 먼저 참고해야 하는 것 — 파동을 예상할 수 있게 해주는 규칙</Desc>
+      <StepList steps={[
+        '3파가 1.618까지 확장되었는가?',
+        '2파가 1파를 0.382~0.618 사이에서 되돌렸는가?',
+        '4파가 1파를 침범하지 않았는가?',
+        '대파동 4파가 소파동 3-4파를 침범했는가?',
+        '2파와 4파의 조정이 각각 다른 조정인가? (기간조정 / 가격조정)',
+      ]} />
+
+      <Divider />
+
+      <SectionHead num={5} title="임펄스의 소파동" />
+      <Desc>각 파동의 내부 구성과 가능한 조합</Desc>
+      <WaveTable
+        headers={['파동', '내부 구성', '가능한 형태']}
+        rows={[
+          [<Code>1파</Code>, '5파동', '12345 임펄스'],
+          [<Code>2파</Code>, '3 또는 5파동', 'ABC / WXY / WXYXZ / ABCDE'],
+          [<Code>3파</Code>, '5파동', '12345 임펄스'],
+          [<Code>4파</Code>, '3 또는 5파동', 'ABC / WXY / WXYXZ / ABCDE'],
+          [<Code>5파</Code>, '5파동', '12345 임펄스 / 터미널'],
+        ]}
+      />
+      <WaveAlert type="blue">
+        가능한 소파동 조합: <Code>53535</Code> / <Code>53555</Code> / <Code>55535</Code> / <Code>55555</Code><br/>
+        <strong>파동 교대 법칙</strong>: 2파 가격조정(깊게) → 4파 기간조정(얕고 길게) / 또는 반대
+      </WaveAlert>
+
+      <Divider />
+
+      <SectionHead num={6} title="임펄스가 나오는 위치" />
+      <Desc>임펄스는 다양한 파동 구조 안에서 반복 출현한다</Desc>
+      <WaveTable
+        headers={['위치', '설명']}
+        rows={[
+          ['임펄스 내 소파동', '1파·3파·5파 각각의 내부'],
+          ['ABC의 C파', '조정 마지막 파동'],
+          ['WXY의 Y파', '복합 조정 마지막 파동'],
+        ]}
+      />
+      <WaveAlert type="green">
+        → B파 의심 구간에서 롱/숏 트라이하는 이유: 다음 C/Y가 임펄스로 가장 강하게 나올 수밖에 없기 때문<br/>
+        → 임펄스 구간은 조정파동보다 강력한 추세로 움직임
+      </WaveAlert>
+
+      <Divider />
+
+      <SectionHead num={7} title="5파 절단 (Truncation)" />
+      <Desc>5파가 3파 고점을 돌파하지 못하고 끝나는 현상</Desc>
+      <WaveTable
+        headers={['항목', '내용']}
+        rows={[
+          ['절단 기준', '5파가 3파 고점을 돌파해야 정상 — 돌파 못하면 절단'],
+          ['절단 판단법', '5파의 소파동 5-1파와 5-3파 피보나치 확장으로 5-5파 목표 위치 유추'],
+          ['유추 방법', '5-1파와 5-3파가 피보나치 확장되면 5-5파 위치 계산 → 3파 고점 미달 시 절단 가능성'],
+          ['절단 길이', '정해져 있지 않음'],
+        ]}
+      />
+
+      <Divider />
+
+      <SectionHead num={8} title="3파 연장 — 1212 세팅" />
+      <Desc>3파가 연장될 때 내부에서 나타나는 준비 구간</Desc>
+      <p className={`text-xs leading-relaxed mb-4 ${muted}`}>
+        1파 → 2파 → 3파의 3-1 → 3-2 순서로 진행되며, 이 네 파동이 완성된 시점을 1212 세팅이라 부름.
+        3-2파가 종료되는 순간이 1212 완성이자 매수 타점. 이후 3-3 → 3-4 → 3-5로 이어지는
+        가장 강하고 빠른 상승 구간이 시작됨.
+      </p>
+      <WaveTable
+        headers={['구간', '내용']}
+        rows={[
+          [<Code>1212 세팅</Code>, '1파 → 2파 → 3-1파 → 3-2파 완성 구간'],
+          ['매수 타점', '3-2파 종료 시점 — 1212 완성'],
+          ['이후 전개', '3-3(가장 강함) → 3-4 → 3-5 → 4파 → 5파'],
+          ['구조 유효 조건', '1파 고점과 3-1파 고점을 연결한 채널 안에서 진행'],
+          ['구조 무효 조건', '3-2파가 1파 고점을 넘으면 무효'],
+        ]}
+      />
+      <WaveAlert type="green">
+        <strong>3-2파 종료 = 1212 완성 = 진입 타점</strong><br/>
+        이후 3-3파는 전체 파동 중 가장 강하고 빠른 구간 — 수익 극대화 구간
+      </WaveAlert>
+      <div className={`rounded-lg p-3 mt-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
+        <Elliott3rdWaveSVG dark={dark} />
+      </div>
+
+      <Divider />
+
+      <SectionHead num={9} title="트레이딩 예시" />
+      <Desc>파동은 절대적이지 않으나 손절가 잡는 데 매우 유용한 기법</Desc>
+      <StepList steps={[
+        '2파가 1파를 100% 되돌리면 → 삼각수렴 배제, B파/X파 가능성 높음',
+        '1파 위치를 A파로 재설정 → A파 피보나치 1.382까지 여유를 두고 매수',
+        'B파가 0.5 구간에서 나오면 A파-B파도 1파→2파처럼 보임',
+        'C파 분출 시 → C파 1.618 피보나치 구간에서 1차 매도',
+        '4파 예상구간 (0.382~0.5)에서 추가 매수',
+        '1파 고점 침범 순간 → 임펄스 아님 확정, 익절로 포지션 종료',
+      ]} />
+
       <ChartNote page="wave" section="imp_basic" label="추가 이미지" />
     </div>
   )
 }
+
 
 /* ── 터미널 ── */
 function ImpulseTerminal() {
@@ -406,82 +553,6 @@ function ImpulseExpandSVG() {
   )
 }
 
-/* ── 확장 임펄스 ── */
-function ImpulseExpand() {
-  const { dark } = useTheme()
-  const muted = dark ? 'text-[#7a7f94]' : 'text-gray-500'
-  return (
-    <div>
-      <SectionHead num={1} title="확장 임펄스" />
-      <Desc>1, 3, 5파 중 하나가 비정상적으로 길게 연장되는 패턴</Desc>
-
-      <div className={`rounded-lg p-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
-        <ImpulseExpandSVG />
-      </div>
-
-      <div className="mt-6">
-        <WaveTable
-          headers={['유형', '특징', '비고']}
-          rows={[
-            ['1파 확장', '1파가 가장 길게 연장', '비교적 드묾'],
-            ['3파 확장', <span className="text-green-400">3파가 가장 길게 연장 — 가장 흔함</span>, '강한 추세 구간'],
-            ['5파 확장', '5파가 가장 길게 연장', '거래량 감소 확인 중요'],
-          ]}
-        />
-      </div>
-
-      <WaveAlert type="amber"><strong>절대규칙</strong>: 1,3,5파 중 하나만 확장 — 두 개 이상 확장되면 카운팅 재검토</WaveAlert>
-      <p className={`text-xs leading-relaxed ${muted}`}>3파는 추세의 핵심 구간으로 거래량과 모멘텀이 집중됨. 시장 참여자들이 추세를 인식하고 집중 매수/매도하는 구간이기 때문에 가장 흔하게 연장됨.</p>
-
-      <Divider />
-
-      {/* 02 — 1파 연장 */}
-      <SectionHead num={2} title="임펄스 1파 연장" />
-      <Desc>추후 추가 예정</Desc>
-
-      <Divider />
-
-      {/* 03 — 3파 연장 */}
-      <SectionHead num={3} title="임펄스 3파 연장" />
-      <Desc>3파가 연장될 때 내부에서 나타나는 준비 구간 — 1212 세팅</Desc>
-
-      <p className="text-xs font-semibold mb-3">1212 세팅</p>
-      <p className={`text-xs leading-relaxed mb-4 ${muted}`}>
-        1파 → 2파 → 3파의 3-1 → 3-2 순서로 진행되며, 이 네 파동이 완성된 시점을 1212 세팅이라 부름.
-        3-2파가 종료되는 순간이 1212 완성이자 매수 타점. 이후 3-3 → 3-4 → 3-5로 이어지는
-        가장 강하고 빠른 상승 구간이 시작됨.
-      </p>
-
-      <WaveTable
-        headers={['구간', '내용']}
-        rows={[
-          [<Code>1212 세팅</Code>, '1파 → 2파 → 3-1파 → 3-2파 완성 구간'],
-          ['매수 타점', '3-2파 종료 시점 — 1212 완성'],
-          ['이후 전개', '3-3(가장 강함) → 3-4 → 3-5 → 4파 → 5파'],
-          ['구조 유효 조건', '1파 고점과 3-1파 고점을 연결한 채널 안에서 진행'],
-          ['구조 무효 조건', '3-2파가 1파 고점을 넘으면 무효'],
-        ]}
-      />
-
-      <WaveAlert type="green">
-        <strong>3-2파 종료 = 1212 완성 = 진입 타점</strong><br/>
-        이후 3-3파는 전체 파동 중 가장 강하고 빠른 구간 — 수익 극대화 구간
-      </WaveAlert>
-
-      <div className={`rounded-lg p-3 mt-4 ${dark ? 'bg-white/5' : 'bg-white/70'}`}>
-        <Elliott3rdWaveSVG dark={dark} />
-      </div>
-
-      <Divider />
-
-      {/* 04 — 5파 연장 */}
-      <SectionHead num={4} title="임펄스 5파 연장" />
-      <Desc>추후 추가 예정</Desc>
-
-      <ChartNote page="wave" section="imp_expand" label="추가 이미지" />
-    </div>
-  )
-}
 
 /* ── 3파연장 1212 SVG ── */
 function Elliott3rdWaveSVG({ dark }) {
