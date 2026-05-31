@@ -291,7 +291,7 @@ function ImpulseBasic() {
             rows={[
               [<Code>1파</Code>, <span className="text-green-400">추세</span>, '0 지점(시작점)에서 출발', '—'],
               [<Code>2파</Code>, <span className="text-red-400">조정</span>, <>1파 시작점(0 지점) 이탈 불가 / <Code>1파의 0.382~0.618</Code></>, '1파를 99% 되돌릴 수 없음 / 파동 교대 법칙 적용 (2파/4파)'],
-              [<Code>3파</Code>, <span className="text-green-400">추세</span>, <>1·3·5파 중 가장 짧으면 안 됨 / <Code>1파의 1.618</Code></>, '거래량 가장 많고 상승 가장 큼'],
+              [<Code>3파</Code>, <span className="text-green-400">추세</span>, <>1·3·5파 중 가장 짧으면 안 됨 / <Code>1파의 1.618 ~</Code></>, '거래량 가장 많고 상승 가장 큼'],
               [<Code>4파</Code>, <span className="text-red-400">조정</span>, <>1파 영역 겹침 불가 / <Code>3파의 0.236~0.328</Code></>, '3파를 전부 되돌리지 못함 / 파동 교대 법칙 적용 (2파/4파)'],
               [<Code>5파</Code>, <span className="text-green-400">추세</span>, <>반드시 3파 고점 돌파 (단, 절단 가능) / <Code>1파의 0.618~1</Code></>, '거래량 낮음 / 다이아고날(터미널) 가능'],
             ]}
@@ -317,7 +317,7 @@ function ImpulseBasic() {
         headers={['파동', '방법', '피보 지점', '목표 수치']}
         rows={[
           [<Code>2파</Code>, '되돌림', '0 → 1', <Code>1파의 0.382~0.618</Code>],
-          [<Code>3파</Code>, '되돌림', '1 → 0', <Code>1파의 1.618</Code>],
+          [<Code>3파</Code>, '되돌림', '1 → 0', <Code>1파의 1.618 ~</Code>],
           [<Code>4파</Code>, '되돌림', '2 → 3', <Code>3파의 0.236~0.328</Code>],
           [<Code>5파</Code>, '확장', '0 → 1 → 4', <Code>1파의 0.618~1</Code>],
         ]}
