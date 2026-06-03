@@ -291,8 +291,8 @@ function ImpulseBasic() {
             rows={[
               [<Code>1파</Code>, <span className="text-green-400">추세</span>, '0 지점(시작점)에서 출발', '—'],
               [<Code>2파</Code>, <span className="text-red-400">조정</span>, <>1파 시작점(0 지점) 이탈 불가 / <Code>1파의 0.382~0.618</Code></>, '1파를 99% 되돌릴 수 없음 / 파동 교대 법칙 적용 (2파/4파)'],
-              [<Code>3파</Code>, <span className="text-green-400">추세</span>, <>1·3·5파 중 가장 짧으면 안 됨 / <Code>1파의 1.618 ~</Code></>, '거래량 가장 많고 상승 가장 큼'],
-              [<Code>4파</Code>, <span className="text-red-400">조정</span>, <>1파 영역 겹침 불가 / <Code>3파의 0.236~0.382/Code></>, '3파를 전부 되돌리지 못함 / 파동 교대 법칙 적용 (2파/4파)'],
+              [<Code>3파</Code>, <span className="text-green-400">추세</span>, <>1·3·5파 중 가장 짧으면 안 됨 / <Code>1파의 1.618</Code></>, '거래량 가장 많고 상승 가장 큼'],
+              [<Code>4파</Code>, <span className="text-red-400">조정</span>, <>1파 영역 겹침 불가 / <Code>3파의 0.236~0.328</Code></>, '3파를 전부 되돌리지 못함 / 파동 교대 법칙 적용 (2파/4파)'],
               [<Code>5파</Code>, <span className="text-green-400">추세</span>, <>반드시 3파 고점 돌파 (단, 절단 가능) / <Code>1파의 0.618~1</Code></>, '거래량 낮음 / 다이아고날(터미널) 가능'],
             ]}
           />
@@ -317,8 +317,8 @@ function ImpulseBasic() {
         headers={['파동', '방법', '피보 지점', '목표 수치']}
         rows={[
           [<Code>2파</Code>, '되돌림', '0 → 1', <Code>1파의 0.382~0.618</Code>],
-          [<Code>3파</Code>, '되돌림', '1 → 0', <Code>1파의 1.618 이상</Code>],
-          [<Code>4파</Code>, '되돌림', '2 → 3', <Code>3파의 0.236~0.382</Code>],
+          [<Code>3파</Code>, '되돌림', '1 → 0', <Code>1파의 1.618</Code>],
+          [<Code>4파</Code>, '되돌림', '2 → 3', <Code>3파의 0.236~0.328</Code>],
           [<Code>5파</Code>, '확장', '0 → 1 → 4', <Code>1파의 0.618~1</Code>],
         ]}
       />
@@ -349,7 +349,7 @@ function ImpulseBasic() {
       <WaveAlert type="blue">
         <strong>WXYXZ vs 임펄스 구분</strong><br/>
         WXYXZ는 채널을 준수 / 임펄스 1파·5파 연장은 채널 미준수<br/>
-        3파가 1파의 1.618을 넘어버리면 WXY 확장 불가(Y확장은 1 ~ 1.618까지) → 임펄스 확정
+        3파가 1파의 1.618을 넘어버리면 WXY 확장 불가(Y확장은 1~1.618까지) → 임펄스 확정
       </WaveAlert>
 
       <Divider />
@@ -382,10 +382,10 @@ function ImpulseBasic() {
       <Divider />
 
       <SectionHead num={4} title="파동 예상 규칙" />
-      <Desc>파동을 예상할 수 있게 해주는 규칙 — 임펄스를 그릴 때 제일 먼저 참고해야 하는 것</Desc>
+      <Desc>임펄스를 그릴 때 제일 먼저 참고해야 하는 것 — 파동을 예상할 수 있게 해주는 규칙</Desc>
       <StepList steps={[
         '3파가 1.618까지 확장되었는가?',
-        '2파가 1파를 0.382 ~ 0.618 사이에서 되돌렸는가?',
+        '2파가 1파를 0.382~0.618 사이에서 되돌렸는가?',
         '4파가 1파를 침범하지 않았는가?',
         '대파동 4파가 소파동 3-4파를 침범했는가?',
         '2파와 4파의 조정이 각각 다른 조정인가? (기간조정 / 가격조정)',
@@ -450,7 +450,7 @@ function ImpulseBasic() {
         '1파 위치를 A파로 재설정 → A파 피보나치 1.382까지 여유를 두고 매수',
         'B파가 0.5 구간에서 나오면 A파-B파도 1파→2파처럼 보임',
         'C파 분출 시 → C파 1.618 피보나치 구간에서 1차 매도',
-        '4파 예상구간 (0.382 ~ 0.5)에서 추가 매수',
+        '4파 예상구간 (0.382~0.5)에서 추가 매수',
         '1파 고점 침범 순간 → 임펄스 아님 확정, 익절로 포지션 종료',
       ]} />
 
@@ -664,7 +664,7 @@ function CorrectWXY() {
         rows={[
           [<Code>W파</Code>, '3파동 (ABC or WXY)', '기준', '조정 첫 번째'],
           [<Code>X파</Code>, '어떤 파동도 가능', '—', '연결 반등'],
-          [<Code>Y파</Code>, '5파동 (임펄스/터미널/삼각수렴)', <Code>W:Y = 1:0.618 ~ 1.0</Code>, '채널 중단 종료'],
+          [<Code>Y파</Code>, '5파동 (임펄스/터미널/삼각수렴)', <Code>W:Y = 1:0.618~1.0</Code>, '채널 중단 종료'],
         ]}
       />
 
@@ -875,15 +875,6 @@ function CorrectABC() {
         <strong>WXYXZ가 될 수 없는 이유</strong><br/>
         WXY 절대규칙 "한 파동에서 연장은 하나만" — Y가 1.382로 연장, Z도 1 초과로 연장 → 연장 2개 → WXYXZ 불가 → ABC X ABC로 확정
       </WaveAlert>
-
-      <p className="text-xs font-semibold mb-3">C파 목표</p>
-      <WaveTable
-        headers={['레벨', '비고']}
-        rows={[
-          [<Code>1.382</Code>, '1차 목표'],
-          [<Code>1.272</Code>, '2차 목표'],
-        ]}
-      />
 
       <WaveAlert type="blue">
         <strong>플랜A / 플랜B 항상 병행</strong><br/>
