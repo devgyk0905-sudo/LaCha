@@ -7,8 +7,6 @@ import ChartNote from '../components/ChartNote'
 /* ── 데이터 ── */
 const SINGLE = [
   { id:1,  cat:'단일 패턴', name:'도지', signal:'neutral', desc:'시가 ≈ 종가 — 방향 탐색 중', shape:'위아래꼬리 / 몸통 거의 없음', signalText:'방향성 불확실 — 다음 캔들이 중요', note:'고점/저점에서 나오면 반전 가능성', keywords:['도지','방향탐색','중립'] },
-  { id:2,  cat:'단일 패턴', name:'망치형', signal:'up', desc:'아래꼬리 긴 캔들 — 하단 매수세 유입', shape:'아래꼬리 길고 몸통 작음 (위꼬리 없음)', signalText:'하락 추세 바닥에서 반등 신호', note:'음봉 망치형은 신뢰도 낮음', keywords:['망치','해머','하단지지','아래꼬리'] },
-  { id:3,  cat:'단일 패턴', name:'역망치형', signal:'down', desc:'위꼬리 긴 캔들 — 상단 저항 신호', shape:'위꼬리 길고 몸통 작음 (아래꼬리 없음)', signalText:'상승 추세 고점에서 하락 신호', note:'슈팅스타: 고점에서 나오는 역망치 음봉', keywords:['역망치','슈팅스타','상단저항','위꼬리'] },
   { id:4,  cat:'단일 패턴', name:'장대양봉', signal:'up', desc:'몸통 크고 꼬리 짧은 양봉', shape:'몸통 큼 / 꼬리 짧음', signalText:'강한 매수세', note:'거래량 동반 시 신뢰도 높음', keywords:['장대양봉','강한매수'] },
   { id:5,  cat:'단일 패턴', name:'장대음봉', signal:'down', desc:'몸통 크고 꼬리 짧은 음봉', shape:'몸통 큼 / 꼬리 짧음', signalText:'강한 매도세', note:'거래량 동반 시 신뢰도 높음', keywords:['장대음봉','강한매도'] },
   { id:15, cat:'단일 패턴', name:'망치형(해머)',           signal:'up',   desc:'하락 추세 바닥에서 망치형 캔들 출현 — 상승 반전 신호',   shape:'하락 추세 중 아래꼬리 긴 캔들(망치형) 출현',   signalText:'하락 추세 바닥 → 강한 상승 전환', note:['망치형(Hammer) 캔들이 하락 추세 끝에 출현할 때 유효', '양봉/음봉 여부보다 발생 위치가 중요', '음봉 망치형은 신뢰도 낮음 / 거래량 동반 시 신뢰도 높음'], keywords:['망치형(해머)','해머','hammer','상승전환','하락추세'] },
@@ -104,50 +102,26 @@ function CandleSVG({ name, variant }) {
       <line x1="57" y1="58" x2="57" y2="64" stroke={RED} strokeWidth="1.5"/>
     </>,
 
-    /* 카드 그리드용 3캔들 */
-    '망치형(해머)': <>
-      <line x1="10" y1="4" x2="10" y2="8" stroke={RED} strokeWidth="1.5"/>
-      <rect x="4" y="8" width="12" height="22" fill={RED} rx="1"/>
-      <line x1="10" y1="30" x2="10" y2="34" stroke={RED} strokeWidth="1.5"/>
-      <line x1="30" y1="14" x2="30" y2="20" stroke={GREEN} strokeWidth="1.5"/>
-      <rect x="24" y="20" width="12" height="8" fill={GREEN} rx="1"/>
-      <line x1="30" y1="28" x2="30" y2="55" stroke={GREEN} strokeWidth="1.5"/>
-      <line x1="52" y1="4" x2="52" y2="10" stroke={GREEN} strokeWidth="1.5"/>
-      <rect x="46" y="10" width="12" height="22" fill={GREEN} rx="1"/>
-      <line x1="52" y1="32" x2="52" y2="38" stroke={GREEN} strokeWidth="1.5"/>
+    /* 카드 그리드용 단일캔들 */
+'망치형(해머)': <>
+      <line x1="32" y1="14" x2="32" y2="22" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="22" y="22" width="20" height="14" fill={GREEN} rx="1"/>
+      <line x1="32" y1="36" x2="32" y2="60" stroke={GREEN} strokeWidth="1.5"/>
     </>,
-    '행잉맨': <>
-      <line x1="10" y1="14" x2="10" y2="20" stroke={GREEN} strokeWidth="1.5"/>
-      <rect x="4" y="20" width="12" height="20" fill={GREEN} rx="1"/>
-      <line x1="10" y1="40" x2="10" y2="46" stroke={GREEN} strokeWidth="1.5"/>
-      <line x1="30" y1="6" x2="30" y2="12" stroke={RED} strokeWidth="1.5"/>
-      <rect x="24" y="12" width="12" height="8" fill={RED} rx="1"/>
-      <line x1="30" y1="20" x2="30" y2="52" stroke={RED} strokeWidth="1.5"/>
-      <line x1="52" y1="16" x2="52" y2="22" stroke={RED} strokeWidth="1.5"/>
-      <rect x="46" y="22" width="12" height="20" fill={RED} rx="1"/>
-      <line x1="52" y1="42" x2="52" y2="48" stroke={RED} strokeWidth="1.5"/>
+    '교수형(행잉맨)': <>
+      <line x1="32" y1="14" x2="32" y2="22" stroke={RED} strokeWidth="1.5"/>
+      <rect x="22" y="22" width="20" height="14" fill={RED} rx="1"/>
+      <line x1="32" y1="36" x2="32" y2="60" stroke={RED} strokeWidth="1.5"/>
     </>,
-    '슈팅스타': <>
-      <line x1="10" y1="28" x2="10" y2="34" stroke={GREEN} strokeWidth="1.5"/>
-      <rect x="4" y="34" width="12" height="20" fill={GREEN} rx="1"/>
-      <line x1="10" y1="54" x2="10" y2="60" stroke={GREEN} strokeWidth="1.5"/>
-      <line x1="30" y1="6" x2="30" y2="30" stroke={RED} strokeWidth="1.5"/>
-      <rect x="24" y="30" width="12" height="8" fill={RED} rx="1"/>
-      <line x1="30" y1="38" x2="30" y2="42" stroke={RED} strokeWidth="1.5"/>
-      <line x1="52" y1="28" x2="52" y2="34" stroke={RED} strokeWidth="1.5"/>
-      <rect x="46" y="34" width="12" height="20" fill={RED} rx="1"/>
-      <line x1="52" y1="54" x2="52" y2="60" stroke={RED} strokeWidth="1.5"/>
+    '유성형(슈팅스타)': <>
+      <line x1="32" y1="8" x2="32" y2="30" stroke={RED} strokeWidth="1.5"/>
+      <rect x="22" y="30" width="20" height="14" fill={RED} rx="1"/>
+      <line x1="32" y1="44" x2="32" y2="52" stroke={RED} strokeWidth="1.5"/>
     </>,
     '역망치형(인버티드해머)': <>
-      <line x1="10" y1="10" x2="10" y2="16" stroke={RED} strokeWidth="1.5"/>
-      <rect x="4" y="16" width="12" height="20" fill={RED} rx="1"/>
-      <line x1="10" y1="36" x2="10" y2="42" stroke={RED} strokeWidth="1.5"/>
-      <line x1="30" y1="8" x2="30" y2="32" stroke={GREEN} strokeWidth="1.5"/>
-      <rect x="24" y="32" width="12" height="8" fill={GREEN} rx="1"/>
-      <line x1="30" y1="40" x2="30" y2="46" stroke={GREEN} strokeWidth="1.5"/>
-      <line x1="52" y1="10" x2="52" y2="16" stroke={GREEN} strokeWidth="1.5"/>
-      <rect x="46" y="16" width="12" height="20" fill={GREEN} rx="1"/>
-      <line x1="52" y1="36" x2="52" y2="42" stroke={GREEN} strokeWidth="1.5"/>
+      <line x1="32" y1="8" x2="32" y2="30" stroke={GREEN} strokeWidth="1.5"/>
+      <rect x="22" y="30" width="20" height="14" fill={GREEN} rx="1"/>
+      <line x1="32" y1="44" x2="32" y2="52" stroke={GREEN} strokeWidth="1.5"/>
     </>,
   }
 
@@ -228,7 +202,7 @@ function CandleSVG({ name, variant }) {
     <polygon points="68,62 65,56 71,56" fill={RED}/>
   </>
 
-  const wide  = ['모닝스타','이브닝스타','백삼병','흑삼병','상승장악형','하락장악형','망치형(해머)','교수형(행잉맨)','유성형(슈팅스타)','역망치형(인버티드해머)'].includes(name)
+  const wide  = ['모닝스타','이브닝스타','백삼병','흑삼병','상승장악형','하락장악형'].includes(name)  
   const xwide = ['다람쥐 패턴','로드트랙 패턴','FVG'].includes(name)
   const w = xwide ? 80 : wide ? 76 : 64
   const h = xwide ? 80 : 70
@@ -238,7 +212,7 @@ function CandleSVG({ name, variant }) {
   if (name === '로드트랙 패턴') content = variant === 'up' ? roadUp       : roadDown
   if (name === 'FVG')           content = variant === 'down' ? fvgDown    : fvgUp
 
-  const isContext = ['망치형(해머)','교수형(행잉맨)','유성형(슈팅스타)','역망치형(인버티드해머)'].includes(name)
+  const isContext = false  
   return (
     <svg width={w} height={h} viewBox={isContext ? `-6 0 ${w} ${h}` : `0 0 ${w} ${h}`} xmlns="http://www.w3.org/2000/svg">
       {content || <line x1="32" y1="10" x2="32" y2="60" stroke={GRAY} strokeWidth="1.5"/>}
@@ -375,10 +349,7 @@ function Modal({ item, onClose }) {
         </div>
         <div className={`flex gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
           <div className="shrink-0 flex items-center">
-            {['망치형(해머)','교수형(행잉맨)','유성형(슈팅스타)','역망치형(인버티드해머)'].includes(item.name)
-              ? <ContextSVG name={item.name} />
-              : <CandleSVG name={item.name} />
-            }
+           <ContextSVG name={item.name} />
           </div>
           <div className="flex-1 space-y-2">
             {[['설명', item.desc], ['구조', item.shape], ['신호', item.signalText], ['참고', item.note]].map(([label, val]) => (
@@ -503,9 +474,8 @@ function RoadtrackModal({ onClose }) {
   const tabInactive = dark ? 'text-[#7a7f94] border border-white/10' : 'text-gray-400 border border-black/10'
 
   const data = {
-    up:   { desc:'하락 예견 중 큰 음봉으로 공매수 청산 유발 후 상승', shape:'①상승 캔들 패턴 2회 → ②큰 장대음봉(순간 급락) → ③상승 반전', signalText:'큰 음봉 출현 = 롱 청산 유발 → 진짜 상승의 시작', note:['두 번째 캔들 종가는 첫 번째 캔들 내에 위치', '이평선/채널 중단 지지로 인한 강력한 양봉(순간적 값 상승) 후 출현', '추세 마지막 부분에서 큰 반전을 위해 출현 — 모닝스타/이브닝스타와 유사', '음봉 거래량이 하락폭 대비 낮음이 핵심'] },
-    down: { desc:'하락 예견 중 큰 양봉으로 공매도 청산 유발 후 하락', shape:'①하락 캔들 패턴 2회 → ②큰 장대양봉(순간 급등) → ③하락 반전', signalText:'큰 양봉 출현 = 숏 청산 유발 → 진짜 하락의 시작', note:['두 번째 캔들 종가는 첫 번째 캔들 내에 위치', '이평선/채널 중단 저항으로 인한 강력한 음봉(순간적 값 하락) 후 출현', '추세 마지막 부분에서 큰 반전을 위해 출현 — 모닝스타/이브닝스타와 유사', '양봉 거래량이 상승폭 대비 낮음이 핵심'] },
-  }
+    up:   { desc:'하락 예견 중 큰 음봉으로 공매수 청산 유발 후 상승', shape:'①상승 캔들 패턴 2회 → ②큰 장대음봉(순간 급락) → ③상승 반전', signalText:'큰 음봉 출현 = 롱 청산 유발 → 진짜 상승의 시작', note:['두 번째 캔들 종가는 첫 번째 캔들 내에 위치', '음봉이 직전 저점 양봉을 잡아먹어야 함 (비슷한 크기 이상)', '음봉은 꼬리 포함 직전 양봉의 저점을 깨면 안 됨', '이평선/채널 중단 지지로 인한 강력한 양봉(순간적 값 상승) 후 출현', '추세 마지막 부분에서 큰 반전을 위해 출현 — 모닝스타/이브닝스타와 유사', '음봉 거래량이 하락폭 대비 낮음이 핵심'] },
+    down: { desc:'하락 예견 중 큰 양봉으로 공매도 청산 유발 후 하락', shape:'①하락 캔들 패턴 2회 → ②큰 장대양봉(순간 급등) → ③하락 반전', signalText:'큰 양봉 출현 = 숏 청산 유발 → 진짜 하락의 시작', note:['두 번째 캔들 종가는 첫 번째 캔들 내에 위치', '양봉이 직전 고점 음봉을 잡아먹어야 함 (비슷한 크기 이상)', '양봉은 꼬리 포함 직전 음봉의 고점을 깨면 안 됨', '이평선/채널 중단 저항으로 인한 강력한 음봉(순간적 값 하락) 후 출현', '추세 마지막 부분에서 큰 반전을 위해 출현 — 모닝스타/이브닝스타와 유사', '양봉 거래량이 상승폭 대비 낮음이 핵심'] },  }
   const cur = data[tab]
 
   return (
