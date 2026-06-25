@@ -11,6 +11,10 @@ const SINGLE = [
   { id:3,  cat:'단일 패턴', name:'역망치형', signal:'down', desc:'위꼬리 긴 캔들 — 상단 저항 신호', shape:'위꼬리 길고 몸통 작음 (아래꼬리 없음)', signalText:'상승 추세 고점에서 하락 신호', note:'슈팅스타: 고점에서 나오는 역망치 음봉', keywords:['역망치','슈팅스타','상단저항','위꼬리'] },
   { id:4,  cat:'단일 패턴', name:'장대양봉', signal:'up', desc:'몸통 크고 꼬리 짧은 양봉', shape:'몸통 큼 / 꼬리 짧음', signalText:'강한 매수세', note:'거래량 동반 시 신뢰도 높음', keywords:['장대양봉','강한매수'] },
   { id:5,  cat:'단일 패턴', name:'장대음봉', signal:'down', desc:'몸통 크고 꼬리 짧은 음봉', shape:'몸통 큼 / 꼬리 짧음', signalText:'강한 매도세', note:'거래량 동반 시 신뢰도 높음', keywords:['장대음봉','강한매도'] },
+  { id:15, cat:'단일 패턴', name:'망치형(해머)',           signal:'up',   desc:'하락 추세 바닥에서 망치형 캔들 출현 — 상승 반전 신호',   shape:'하락 추세 중 아래꼬리 긴 캔들(망치형) 출현',   signalText:'하락 추세 바닥 → 강한 상승 전환', note:['망치형(Hammer) 캔들이 하락 추세 끝에 출현할 때 유효', '양봉/음봉 여부보다 발생 위치가 중요', '음봉 망치형은 신뢰도 낮음 / 거래량 동반 시 신뢰도 높음'], keywords:['망치형(해머)','해머','hammer','상승전환','하락추세'] },
+  { id:16, cat:'단일 패턴', name:'교수형(행잉맨)',         signal:'down', desc:'상승 추세 고점에서 망치형 캔들 출현 — 하락 반전 신호',   shape:'상승 추세 중 아래꼬리 긴 캔들(망치형) 출현',   signalText:'상승 추세 고점 → 강한 하락 전환', note:['망치형(Hammer)과 모양은 동일 — 출현 위치가 다름', '양봉/음봉 여부보다 발생 위치가 중요', '교수형 패턴 / 다음봉 음봉 컨펌 시 신뢰도 상승'], keywords:['행잉맨','교수형(행잉맨)','hanging man','교수형','하락전환','상승추세'] },
+  { id:17, cat:'단일 패턴', name:'유성형(슈팅스타)',       signal:'down', desc:'상승 추세 고점에서 역망치형 캔들 출현 — 하락 반전 신호', shape:'상승 추세 중 위꼬리 긴 캔들(역망치형) 출현',   signalText:'상승 추세 고점 → 강한 하락 전환', note:['역망치형(Inverted Hammer)이 상승 추세 끝에 출현할 때 유효', '양봉/음봉 여부보다 발생 위치가 중요', '음봉일수록 신뢰도 높음 / 다음봉 음봉 컨펌 시 신뢰도 상승'], keywords:['슈팅스타','유성형(슈팅스타)','shooting star','유성형','하락전환','상승추세'] },
+  { id:18, cat:'단일 패턴', name:'역망치형(인버티드해머)', signal:'up',   desc:'하락 추세 바닥에서 역망치형 캔들 출현 — 상승 반전 신호', shape:'하락 추세 중 위꼬리 긴 캔들(역망치형) 출현',   signalText:'하락 추세 바닥 → 상승 전환 신호', note:['역망치형(Inverted Hammer)이 하락 추세 끝에 출현할 때 유효', '양봉/음봉 여부보다 발생 위치가 중요', '슈팅스타와 모양은 동일 — 출현 위치가 다름 / 다음봉 양봉 컨펌 필수', '직전 캔들보다 큰 장대양봉으로 마무리 시 "상승 돌격형" → 하락 이후 나오면 하락 브레이크'], keywords:['역망치형(인버티드해머)','인버티드해머','inverted hammer','상승전환','하락추세'] },
 ]
 
 const REVERSAL = [
@@ -18,11 +22,7 @@ const REVERSAL = [
   { id:7,  cat:'추세 전환형', name:'하락장악형',   signal:'down',    desc:'양봉을 감싸는 장대음봉 — 하락 반전 신호',                    shape:'①장대양봉 → ②장대음봉이 완전히 감쌈',             signalText:'상승 후 강한 하락 신호',          note:'두 캔들 방향이 반대여야 함 / 거래량 동반 시 신뢰도 높음',                               keywords:['하락장악형','베어리쉬인겔핑','engulfing','장악형'] },
   { id:8,  cat:'추세 전환형', name:'모닝스타',     signal:'up',      desc:'하락 추세 바닥에서 나오는 상승 반전 패턴',                    shape:'①장대음봉 → ②십자도지(갭) → ③장대양봉',          signalText:'바닥 반전 — 강한 상승 신호',      note:'도지캔들 1개까지 허용. 다음봉 상승장악형 컨펌 시 신뢰도 상승',                          keywords:['모닝스타','바닥반전','상승전환'] },
   { id:9,  cat:'추세 전환형', name:'이브닝스타',   signal:'down',    desc:'상승 추세 고점에서 나오는 하락 반전 패턴',                    shape:'①장대양봉 → ②십자도지 → ③장대음봉',              signalText:'고점 반전 — 하락 신호',           note:'위꼬리를 만들며 저항이 강함. 다음봉 하락장악형 컨펌 시 신뢰도 상승',                    keywords:['이브닝스타','고점반전','하락전환'] },
-  { id:15, cat:'추세 전환형', name:'망치형(해머)',         signal:'up',      desc:'하락 추세 바닥에서 망치형 캔들 출현 — 상승 반전 신호',        shape:'하락 추세 중 아래꼬리 긴 캔들(망치형) 출현',       signalText:'하락 추세 바닥 → 강한 상승 전환', note:['망치형(Hammer) 캔들이 하락 추세 끝에 출현할 때 유효', '양봉/음봉 여부보다 발생 위치가 중요', '음봉 망치형은 신뢰도 낮음 / 거래량 동반 시 신뢰도 높음'], keywords:['망치형(해머)','해머','hammer','상승전환','하락추세'] },
-  { id:16, cat:'추세 전환형', name:'행잉맨',       signal:'down',    desc:'상승 추세 고점에서 망치형 캔들 출현 — 하락 반전 신호',        shape:'상승 추세 중 아래꼬리 긴 캔들(망치형) 출현',       signalText:'상승 추세 고점 → 강한 하락 전환', note:['망치형(Hammer)과 모양은 동일 — 출현 위치가 다름', '양봉/음봉 여부보다 발생 위치가 중요', '교수형 패턴 / 다음봉 음봉 컨펌 시 신뢰도 상승'],           keywords:['행잉맨','hanging man','교수형','하락전환','상승추세'] },
-  { id:17, cat:'추세 전환형', name:'슈팅스타',     signal:'down',    desc:'상승 추세 고점에서 역망치형 캔들 출현 — 하락 반전 신호',      shape:'상승 추세 중 위꼬리 긴 캔들(역망치형) 출현',       signalText:'상승 추세 고점 → 강한 하락 전환', note:['역망치형(Inverted Hammer)이 상승 추세 끝에 출현할 때 유효', '양봉/음봉 여부보다 발생 위치가 중요', '음봉일수록 신뢰도 높음 / 다음봉 음봉 컨펌 시 신뢰도 상승'], keywords:['슈팅스타','shooting star','유성형','하락전환','상승추세'] },
-  { id:18, cat:'추세 전환형', name:'역망치형(인버티드해머)', signal:'up',     desc:'하락 추세 바닥에서 역망치형 캔들 출현 — 상승 반전 신호',      shape:'하락 추세 중 위꼬리 긴 캔들(역망치형) 출현',       signalText:'하락 추세 바닥 → 상승 전환 신호', note:['역망치형(Inverted Hammer)이 하락 추세 끝에 출현할 때 유효', '양봉/음봉 여부보다 발생 위치가 중요', '슈팅스타와 모양은 동일 — 출현 위치가 다름 / 다음봉 양봉 컨펌 필수', '직전 캔들보다 큰 장대양봉으로 마무리 시 "상승 돌격형" → 하락 이후 나오면 하락 브레이크'], keywords:['역망치형(인버티드해머)','인버티드해머','inverted hammer','상승전환','하락추세'] },
-]
+ ]
 
 const CONTINUATION = [
   { id:10, cat:'추세 지속형', name:'백삼병', signal:'up', desc:'연속 3개 양봉 — 강한 상승 신호', shape:'연속 3개 양봉 / 각 저점 상승', signalText:'상승 추세 강화', note:['1번째 양봉 저점 훼손 시 무효', '꽉 찬 양봉일수록, 아래꼬리가 길수록 신뢰도 높음', '백삼병 3개 완성 후 큰 양봉 예상 / 백삼병 + 흑삼병 출현 시 베어리쉬 캔들 예상'], keywords:['백삼병','연속양봉','쓰리화이트솔저'] },
@@ -228,7 +228,7 @@ function CandleSVG({ name, variant }) {
     <polygon points="68,62 65,56 71,56" fill={RED}/>
   </>
 
-  const wide  = ['모닝스타','이브닝스타','백삼병','흑삼병','상승장악형','하락장악형','망치형(해머)','행잉맨','슈팅스타','역망치형(인버티드해머)'].includes(name)
+  const wide  = ['모닝스타','이브닝스타','백삼병','흑삼병','상승장악형','하락장악형','망치형(해머)','교수형(행잉맨)','유성형(슈팅스타)','역망치형(인버티드해머)'].includes(name)
   const xwide = ['다람쥐 패턴','로드트랙 패턴','FVG'].includes(name)
   const w = xwide ? 80 : wide ? 76 : 64
   const h = xwide ? 80 : 70
@@ -238,7 +238,7 @@ function CandleSVG({ name, variant }) {
   if (name === '로드트랙 패턴') content = variant === 'up' ? roadUp       : roadDown
   if (name === 'FVG')           content = variant === 'down' ? fvgDown    : fvgUp
 
-  const isContext = ['망치형(해머)','행잉맨','슈팅스타','역망치형(인버티드해머)'].includes(name)
+  const isContext = ['망치형(해머)','교수형(행잉맨)','유성형(슈팅스타)','역망치형(인버티드해머)'].includes(name)
   return (
     <svg width={w} height={h} viewBox={isContext ? `-6 0 ${w} ${h}` : `0 0 ${w} ${h}`} xmlns="http://www.w3.org/2000/svg">
       {content || <line x1="32" y1="10" x2="32" y2="60" stroke={GRAY} strokeWidth="1.5"/>}
@@ -283,7 +283,7 @@ function ContextSVG({ name }) {
         <line x1="220" y1="64" x2="220" y2="74" stroke={GREEN} strokeWidth="2"/>
       </svg>
     ),
-    '행잉맨': (
+    '교수형(행잉맨)': (
       <svg width="100%" height="100" viewBox="0 0 280 140" fill="none">
         {/* 상승 양봉 3개 */}
         <line x1="30" y1="82" x2="30" y2="92" stroke={GREEN} strokeWidth="2"/>
@@ -305,7 +305,7 @@ function ContextSVG({ name }) {
         <line x1="230" y1="90" x2="230" y2="100" stroke={RED} strokeWidth="2"/>
       </svg>
     ),
-    '슈팅스타': (
+    '유성형(슈팅스타)': (
       <svg width="100%" height="100" viewBox="0 0 280 140" fill="none">
         {/* 상승 양봉 3개 */}
         <line x1="30" y1="82" x2="30" y2="92" stroke={GREEN} strokeWidth="2"/>
@@ -375,7 +375,7 @@ function Modal({ item, onClose }) {
         </div>
         <div className={`flex gap-4 p-4 rounded-xl mb-4 ${rowBg}`}>
           <div className="shrink-0 flex items-center">
-            {['망치형(해머)','행잉맨','슈팅스타','역망치형(인버티드해머)'].includes(item.name)
+            {['망치형(해머)','교수형(행잉맨)','유성형(슈팅스타)','역망치형(인버티드해머)'].includes(item.name)
               ? <ContextSVG name={item.name} />
               : <CandleSVG name={item.name} />
             }
