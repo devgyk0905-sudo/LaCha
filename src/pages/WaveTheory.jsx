@@ -318,7 +318,7 @@ function ImpulseBasic() {
         rows={[
           [<Code>2파</Code>, '되돌림', '0 → 1', <Code>1파의 0.382~0.618</Code>],
           [<Code>3파</Code>, '되돌림', '1 → 0', <Code>1파의 1.618 ~</Code>],
-          [<Code>4파</Code>, '되돌림', '2 → 3', <Code>3파의 0.236~0.328</Code>],
+          [<Code>4파</Code>, '되돌림', '2 → 3', <Code>3파의 0.236~0.382</Code>],
           [<Code>5파</Code>, '확장', '0 → 1 → 4', <Code>1파의 0.618~1</Code>],
         ]}
       />
