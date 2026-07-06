@@ -787,8 +787,8 @@ function CorrectABC() {
         headers={['파동', '내부 구성', '피보나치 기준', '규칙']}
         rows={[
           [<Code>A파</Code>, '3파동 또는 5파동', '—', '조정 시작'],
-          [<Code>B파</Code>, <><span className="text-red-400">가장 더럽고 길다</span><br/>3파동 (ABC or WXY)</>, <><Code>기본: 0.382~0.5</Code><br/><Code>불규칙: 1.09~1.272</Code></>, 'A 시작점 기준'],
-          [<Code>C파</Code>, <><strong>무조건 5파동</strong><br/>임펄스/터미널/WXYXZ</>, <><Code>1:1</Code> / <Code>1:1.236</Code><br/><Code>1:1.382</Code> / <Code>1:1.618</Code></>, 'A파 저점 이탈'],
+          [<Code>B파</Code>, <><span className="text-red-400">가장 더럽고 길다</span><br/>3파동 (ABC or WXY)</>, <>기본: 0.382~0.5<br/>불규칙: 1.09~1.272<br/><Code>평균적으로 0.5 ~ 1.382</Code></>, 'A 시작점 기준'],
+          [<Code>C파</Code>, <><strong>무조건 5파동</strong><br/>임펄스/터미널/WXYXZ</>, <><Code>1:1</Code> / 1:1.236 / <Code>1:1.272</Code><br/><Code>1:1.382</Code> / 1:1.618 / 1:2.618</>, 'A파 저점 이탈'],
         ]}
       />
       <WaveAlert type="amber">C파 저점을 미리 잡으려 하면 안 됨 — C파 완성 확인 후 진입</WaveAlert>
@@ -870,6 +870,11 @@ function CorrectABC() {
         '1차 판별: 채널 중단에서 끝난 파동이 없음 → Y 또는 Z가 될 수 없음',
         '2차 판별: 소파동을 들여다보면 ABC + ABC 구조 확인 → 두 저점(B-B)을 연결하면 BB 추세선(채널 하단) 완성 → 두 ABC 사이를 X로 설정',
       ]} />
+
+      <WaveAlert type="amber">
+        <strong>ABC X ABC의 BB 추세선</strong><br/>
+        ABC와 ABC의 BB 추세선끼리 연결되어야 함 → BB 추세선이 연결되지 않으면 ABC X ABC 불가
+      </WaveAlert>
 
       <WaveAlert type="red">
         <strong>WXYXZ가 될 수 없는 이유</strong><br/>
