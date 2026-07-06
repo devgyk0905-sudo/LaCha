@@ -1,7 +1,7 @@
 {
-  "name": "Lady&Chart — 레이디와 차트",
-  "short_name": "Lady&Chart",
-  "description": "기술적 차트 분석 학습",
+  "name": "Chart+Book — 차트+북",
+  "short_name": "Chart+Book",
+  "description": "차트 공부 여기에 정리할게!",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f5f3ee",

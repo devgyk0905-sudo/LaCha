@@ -51,7 +51,7 @@ function Layout() {
         </Routes>
       </main>
       <footer className="max-w-4xl mx-auto px-6 py-6 text-center">
-        <p className="text-xs text-[#7a7f94]">© 2026 Lady&Chart · All rights reserved</p>
+        <p className="text-xs text-[#7a7f94]">© 2026 Chart+Book · All rights reserved</p>
       </footer>
     </div>
   )
@@ -113,7 +113,7 @@ function Header() {
               letterSpacing: '-0.3px',
             }}
           >
-            Lady&amp;Chart
+           Chart</span><span className="text-amber-400">+</span><span>Book
           </span>
         </div>
 
