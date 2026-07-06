@@ -1,5 +1,6 @@
 import { useState, createContext, useContext, useEffect } from 'react'
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, NavLink, useNavigate } from 'react-router-dom'
+import { supabase } from './lib/supabase'
 import Concepts from './pages/Concepts'
 import WaveTheory from './pages/WaveTheory'
 import CandlePatterns from './pages/CandlePatterns'
@@ -14,13 +15,67 @@ export const ThemeContext = createContext()
 export const useTheme = () => useContext(ThemeContext)
 
 const NAV = [
+  { path: '/',          label: '개념·용어' },
   { path: '/candle',    label: '캔들 패턴' },
   { path: '/channel',   label: '채널 패턴' },
   { path: '/wave',      label: '파동 이론' },
-  { path: '/',          label: '개념·용어' },
   { path: '/fibonacci', label: '피보나치 확장' },
   { path: '/harmonic',  label: '하모닉' },
 ]
+
+/* ── 관리자 로그인 페이지 ── */
+function AdminPage() {
+  const { dark } = useTheme()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
+
+  const inputC = dark
+    ? 'bg-[#0d0f14] border-white/10 text-[#e8eaf0] placeholder-[#7a7f94]'
+    : 'bg-white border-black/10 text-[#1a1e2a] placeholder-gray-400'
+
+  async function handleLogin(e) {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) setError('이메일 또는 비밀번호가 올바르지 않습니다.')
+    else navigate('/')
+    setLoading(false)
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <form onSubmit={handleLogin} className="flex flex-col gap-3 w-72">
+        <p className="text-sm font-semibold mb-2">관리자 로그인</p>
+        <input
+          type="email"
+          placeholder="이메일"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          className={`border rounded px-3 py-2 text-sm outline-none ${inputC}`}
+        />
+        <input
+          type="password"
+          placeholder="비밀번호"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          className={`border rounded px-3 py-2 text-sm outline-none ${inputC}`}
+        />
+        {error && <p className="text-xs text-red-400">{error}</p>}
+        <button
+          type="submit"
+          disabled={loading}
+          className="bg-[#3ec97e] text-white rounded px-3 py-2 text-sm hover:opacity-90 transition-opacity"
+        >
+          {loading ? '로그인 중...' : '로그인'}
+        </button>
+      </form>
+    </div>
+  )
+}
 
 function Layout() {
   const { dark } = useTheme()
@@ -48,19 +103,19 @@ function Layout() {
           <Route path="/channel"   element={<ChannelPatterns />} />
           <Route path="/fibonacci" element={<Fibonacci />} />
           <Route path="/harmonic"  element={<Harmonic />} />
+          <Route path="/admin"     element={<AdminPage />} />
         </Routes>
       </main>
       <footer className="max-w-4xl mx-auto px-6 py-6 text-center">
-        <p className="text-xs text-[#7a7f94]">© 2025 Chart+Book · All rights reserved</p>
+        <p className="text-xs text-[#7a7f94]">© 2026 Chart+Book · All rights reserved</p>
       </footer>
     </div>
   )
 }
 
 function Header() {
-  const { dark, setDark } = useTheme()
+  const { dark } = useTheme()
 
-  /* 라이트: 종이 텍스처 + 블러로 뒤 비침 / 다크: 기존 반투명 */
   const headerStyle = dark
     ? { background: 'rgba(13,15,20,0.82)', backdropFilter: 'blur(18px) saturate(1.2)' }
     : {
@@ -73,22 +128,12 @@ function Header() {
       }
 
   const borderC   = dark ? 'border-white/10' : 'border-black/10'
-
-  /* 활성 탭: 텍스트 색상만, 박스 없음 */
-  const activeC   = dark
-    ? 'text-[#e8eaf0] font-medium'
-    : 'text-[#1c1b18] font-medium'
-  const inactiveC = dark
-    ? 'text-[#7a7f94] hover:text-[#e8eaf0]'
-    : 'text-[#9a9890] hover:text-[#1c1b18]'
+  const activeC   = dark ? 'text-[#e8eaf0] font-medium' : 'text-[#1c1b18] font-medium'
+  const inactiveC = dark ? 'text-[#7a7f94] hover:text-[#e8eaf0]' : 'text-[#9a9890] hover:text-[#1c1b18]'
 
   return (
-    <header
-      className={`sticky top-0 z-50 border-b ${borderC}`}
-      style={headerStyle}
-    >
+    <header className={`sticky top-0 z-50 border-b ${borderC}`} style={headerStyle}>
       <div className="max-w-4xl mx-auto px-6 flex items-center justify-between h-[52px] gap-4">
-
         {/* 로고 */}
         <div className="flex items-center gap-2 shrink-0">
           <div
@@ -126,7 +171,6 @@ function Header() {
         </div>
       </div>
 
-      {/* 네비게이션 — 활성 탭 박스 없이 텍스트 색상만 */}
       <nav className="max-w-4xl mx-auto px-6 flex gap-0 overflow-x-auto">
         {NAV.map(n => (
           <NavLink
@@ -146,15 +190,25 @@ function Header() {
 }
 
 export default function App() {
-  /* 라이트 모드 디폴트 */
   const [dark, setDark] = useState(false)
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', dark)
   }, [dark])
 
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
+    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
+
   return (
-    <ThemeContext.Provider value={{ dark, setDark }}>
+    <ThemeContext.Provider value={{ dark, setDark, user }}>
       <BrowserRouter>
         <Layout />
       </BrowserRouter>

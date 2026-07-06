@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { useTheme } from '../App'
 import { supabase } from '../lib/supabase'
 
-/* ── 이미지 확대 모달 (휠/핀치 줌 지원) ── */
+/* ── 이미지 확대 모달 ── */
 function ImageZoomModal({ src, onClose }) {
   const [scale, setScale] = useState(1)
   const [pos, setPos] = useState({ x: 0, y: 0 })
@@ -11,13 +11,11 @@ function ImageZoomModal({ src, onClose }) {
   const lastTouches = useRef(null)
   const imgRef = useRef()
 
-  /* 마우스 휠 줌 */
   const handleWheel = useCallback((e) => {
     e.preventDefault()
     setScale(prev => Math.min(5, Math.max(1, prev - e.deltaY * 0.002)))
   }, [])
 
-  /* 드래그 이동 */
   const handleMouseDown = (e) => {
     if (scale <= 1) return
     setDragging(true)
@@ -29,11 +27,8 @@ function ImageZoomModal({ src, onClose }) {
   }
   const handleMouseUp = () => setDragging(false)
 
-  /* 핀치 줌 (모바일) */
   const handleTouchStart = (e) => {
-    if (e.touches.length === 2) {
-      lastTouches.current = e.touches
-    }
+    if (e.touches.length === 2) lastTouches.current = e.touches
   }
   const handleTouchMove = (e) => {
     if (e.touches.length === 2 && lastTouches.current) {
@@ -41,17 +36,12 @@ function ImageZoomModal({ src, onClose }) {
       const prev = lastTouches.current
       const prevDist = Math.hypot(prev[0].clientX - prev[1].clientX, prev[0].clientY - prev[1].clientY)
       const currDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY)
-      const ratio = currDist / prevDist
-      setScale(prev => Math.min(5, Math.max(1, prev * ratio)))
+      setScale(prev => Math.min(5, Math.max(1, prev * (currDist / prevDist))))
       lastTouches.current = e.touches
     }
   }
 
-  /* 더블클릭 리셋 */
-  const handleDoubleClick = () => {
-    setScale(1)
-    setPos({ x: 0, y: 0 })
-  }
+  const handleDoubleClick = () => { setScale(1); setPos({ x: 0, y: 0 }) }
 
   useEffect(() => {
     const el = imgRef.current?.parentElement
@@ -65,16 +55,13 @@ function ImageZoomModal({ src, onClose }) {
       style={{ background: 'rgba(0,0,0,0.9)' }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
-      {/* 닫기 */}
       <button
         onClick={onClose}
         className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/10 text-white flex items-center justify-center text-sm hover:bg-white/20 z-10"
       >✕</button>
-      {/* 힌트 */}
       <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/40 text-xs">
         휠·핀치로 확대 · 더블클릭으로 초기화 · 확대 시 드래그 이동
       </p>
-
       <div
         ref={imgRef}
         className="overflow-hidden"
@@ -92,9 +79,7 @@ function ImageZoomModal({ src, onClose }) {
           alt=""
           draggable={false}
           style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
+            width: '100%', height: '100%', objectFit: 'contain',
             transform: `scale(${scale}) translate(${pos.x / scale}px, ${pos.y / scale}px)`,
             transformOrigin: 'center',
             transition: dragging ? 'none' : 'transform 0.1s',
@@ -106,15 +91,8 @@ function ImageZoomModal({ src, onClose }) {
   )
 }
 
-/**
- * ChartNote
- * page    — 페이지 식별자
- * section — 섹션 식별자
- * label   — 표시 레이블 (기본: '추가 이미지')
- * single  — true면 이미지 1장만
- */
 export default function ChartNote({ page, section, label = '추가 이미지' }) {
-  const { dark } = useTheme()
+  const { dark, user } = useTheme()
   const [records, setRecords] = useState([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
@@ -145,7 +123,7 @@ export default function ChartNote({ page, section, label = '추가 이미지' })
 
   async function handleFile(e) {
     const file = e.target.files[0]
-    if (!file) return
+    if (!file || !user) return
     setUploading(true)
 
     const ext = file.name.split('.').pop().toLowerCase()
@@ -169,6 +147,7 @@ export default function ChartNote({ page, section, label = '추가 이미지' })
       image_url: urlData.publicUrl,
       note: '',
       sort_order: maxOrder + 1,
+      user_id: user.id,
     })
 
     await fetchRecords()
@@ -188,6 +167,7 @@ export default function ChartNote({ page, section, label = '추가 이미지' })
   }
 
   async function handleDelete(id, image_url) {
+    if (!user) return
     if (image_url) {
       const path = image_url.split('/chart-images/')[1]
       if (path) await supabase.storage.from('chart-images').remove([path])
@@ -197,27 +177,20 @@ export default function ChartNote({ page, section, label = '추가 이미지' })
   }
 
   async function handleMove(index, direction) {
+    if (!user) return
     const newRecords = [...records]
     const targetIndex = index + direction
     if (targetIndex < 0 || targetIndex >= newRecords.length) return
-
-    /* 순서 교환 */
     const temp = newRecords[index]
     newRecords[index] = newRecords[targetIndex]
     newRecords[targetIndex] = temp
-
-    /* sort_order 재계산 후 state 업데이트 */
     const updated = newRecords.map((r, i) => ({ ...r, sort_order: i }))
     setRecords(updated)
-
-    /* Supabase 업데이트 (두 레코드만) */
     await Promise.all([
       supabase.from('chart_notes').update({ sort_order: updated[index].sort_order }).eq('id', updated[index].id),
       supabase.from('chart_notes').update({ sort_order: updated[targetIndex].sort_order }).eq('id', updated[targetIndex].id),
     ])
   }
-
-  const showUpload = true
 
   return (
     <>
@@ -240,13 +213,15 @@ export default function ChartNote({ page, section, label = '추가 이미지' })
                         style={{ maxHeight: '320px' }}
                         onClick={() => setZoomSrc(record.image_url)}
                       />
-                      {/* 삭제 버튼 */}
-                      <button
-                        onClick={() => handleDelete(record.id, record.image_url)}
-                        className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/50 text-white text-xs flex items-center justify-center hover:bg-black/70 transition-colors"
-                      >✕</button>
-                      {/* 순서 버튼 */}
-                      {records.length > 1 && (
+                      {/* 삭제 버튼 — 로그인 시에만 */}
+                      {user && (
+                        <button
+                          onClick={() => handleDelete(record.id, record.image_url)}
+                          className="absolute top-2 right-2 w-6 h-6 rounded-full bg-black/50 text-white text-xs flex items-center justify-center hover:bg-black/70 transition-colors"
+                        >✕</button>
+                      )}
+                      {/* 순서 버튼 — 로그인 시에만 */}
+                      {user && records.length > 1 && (
                         <div className="absolute bottom-2 right-2 flex flex-col gap-1">
                           <button
                             onClick={() => handleMove(index, -1)}
@@ -263,12 +238,13 @@ export default function ChartNote({ page, section, label = '추가 이미지' })
                         </div>
                       )}
                     </div>
-                    {/* 노트 */}
+                    {/* 노트 — 로그인 시 편집 가능, 비로그인 시 읽기 전용 */}
                     <textarea
                       value={record.note || ''}
-                      onChange={e => handleNoteChange(record.id, e.target.value)}
-                      onBlur={e => handleNoteBlur(record.id, e.target.value)}
-                      placeholder="설명 입력... (자동 저장)"
+                      onChange={e => user && handleNoteChange(record.id, e.target.value)}
+                      onBlur={e => user && handleNoteBlur(record.id, e.target.value)}
+                      placeholder={user ? '설명 입력... (자동 저장)' : ''}
+                      readOnly={!user}
                       rows={2}
                       className={`w-full text-xs px-3 py-2 outline-none resize-none border-t ${inputC}`}
                       style={{ borderColor: dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)' }}
@@ -278,7 +254,8 @@ export default function ChartNote({ page, section, label = '추가 이미지' })
               </div>
             )}
 
-            {showUpload && (
+            {/* 업로드 영역 — 로그인 시에만 */}
+            {user && (
               <div
                 onClick={() => !uploading && inputRef.current.click()}
                 className={`border border-dashed ${borderC} ${bgC} rounded-lg p-4 text-center cursor-pointer hover:opacity-80 transition-opacity`}
