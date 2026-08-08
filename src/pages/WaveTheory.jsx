@@ -813,7 +813,7 @@ function CorrectABC() {
         rows={[
           ['기본 플랫', <Code>1:0.382~0.5</Code>, 'A 저점 이탈', '가장 일반적'],
           ['확장 플랫', <Code>1.09~1.272 (A 시작점 돌파)</Code>, 'A 저점 이탈', 'B가 A 시작점 스윕'],
-          ['러닝 플랫', 'A 시작점 돌파', <span className="text-amber-400">A 저점 미이탈</span>, 'C파 약함'],
+          ['러닝 플랫', 'A 시작점 돌파', <span className="text-amber-400">A 저점 미이탈, C파가 0.886을 깨면 안됨 </span>, 'C파 약함'],
         ]}
       />
 
