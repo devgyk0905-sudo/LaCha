@@ -101,13 +101,13 @@ function ChannelSVG({ name }) {
       </svg>
     ),
     '더블탑': (
-      <svg width="100%" height="80" viewBox="0 0 510 266" fill="none" preserveAspectRatio="xMidYMid meet">
+      <svg width="80%" height="70" viewBox="0 0 510 266" fill="none" preserveAspectRatio="xMidYMid meet">
         <path d="M447 264.331L353 4.83081L245 187.831L153.5 4.83081L47 264.331" stroke="#D80505" strokeWidth="4"/>
         <line y1="206.831" x2="510" y2="206.831" stroke={c} strokeWidth="4" strokeDasharray="8 8"/>
       </svg>
     ),
     '더블바텀': (
-      <svg width="100%" height="80" viewBox="0 0 510 266" fill="none" preserveAspectRatio="xMidYMid meet">
+      <svg width="80%" height="70" viewBox="0 0 510 266" fill="none" preserveAspectRatio="xMidYMid meet">
         <path d="M47 0.759277L141 260.259L249 77.2593L340.5 260.259L447 0.759277" stroke="#07831E" strokeWidth="4"/>
         <line y1="58.2593" x2="510" y2="58.2593" stroke={c} strokeWidth="4" strokeDasharray="8 8"/>
       </svg>
