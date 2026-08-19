@@ -826,7 +826,7 @@ function CorrectABC() {
       <p className="text-xs font-semibold mb-3">그리는 법 (2단계)</p>
       <StepList steps={[
         '시작점 → A 방향으로 피보나치 되돌림 → B파 수치 확인',
-        'A → 시작점 방향으로 피보나치 되돌림 → C파 수치 확인',
+        '0 → A → B 방향으로 피보나치 확장 → C파 수치 확인',
       ]} />
 
       <WaveTable
